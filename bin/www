@@ -4,10 +4,11 @@
  * Module dependencies.
  */
 
-var app = require("../app");
-var debug = require("debug")("group-project:server");
-var http = require("http");
+import app from "../app.js";
+import debugLib from "debug";
+import http from "http";
 
+const debug = debugLib("group-project:server");
 /**
  * Get port from environment and store in Express.
  */

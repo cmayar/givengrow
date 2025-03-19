@@ -1,5 +1,3 @@
-
-
 import "dotenv/config";
 import mysql from "mysql2/promise"; // Use promise-based API
 
@@ -7,7 +5,7 @@ async function db(query, params = []) {
   const DB_HOST = process.env.DB_HOST || "127.0.0.1";
   const DB_USER = process.env.DB_USER || "root";
   const DB_PASS = process.env.DB_PASS || "";
-  const DB_NAME = process.env.DB_NAME || "travel_planner";
+  const DB_NAME = process.env.DB_NAME || "share";
 
   let connection;
   

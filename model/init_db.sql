@@ -35,7 +35,7 @@ CREATE TABLE `items`(
         'misc'
     ) NOT NULL,
     `owner_id` INT NOT NULL,
-    `status` ENUM('available', 'unavailable', '') NOT NULL,
+    `status` ENUM('available', 'unavailable') NOT NULL,
     `latitude` INT NULL,
     `longitude` INT NULL,
     PRIMARY KEY(`id`),

@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS `interactions`;
+DROP TABLE IF EXISTS `items`; 
 DROP TABLE IF EXISTS `users`;
-DROP TABLE IF EXISTS `items`;
+
 
 CREATE TABLE `users`(
     `id` INT NOT NULL AUTO_INCREMENT,

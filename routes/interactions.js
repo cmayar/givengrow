@@ -98,6 +98,10 @@ router.post("/", async (req, res) => {
     //   "SELECT * FROM interactions ORDER BY id DESC"
     // );
 
+    //REVIEW - is this supposed to be here or in the items.js file?
+    // Update the item's status to "requested" after the interaction is created
+    await db("UPDATE items SET status = 'requested' WHERE id = ?", [item_id]);
+
     res.status(201).json({
       message: "Interaction created successfully!",
       interaction: newInteraction.data[0], // assuming latest is first

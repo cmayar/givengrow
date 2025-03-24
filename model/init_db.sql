@@ -47,7 +47,7 @@ CREATE TABLE `interactions` (
     `borrower_id` INT NOT NULL,
     `owner_id` INT NOT NULL,
     `item_id` INT NOT NULL,
-    `status` ENUM('requested', 'borrowed', 'returned') NOT NULL,
+    `status` ENUM('requested', 'borrowed', 'borrower-returned', 'returned') NOT NULL,
     `start_date` DATE NOT NULL,
     `end_date` DATE NOT NULL,
     PRIMARY KEY (`id`),

@@ -90,6 +90,7 @@ router.post("/", async (req, res) => {
       "INSERT INTO interactions (borrower_id, owner_id, item_id, status, start_date, end_date) VALUES (?, ?, ?, 'requested', ?, ?)",
       [borrower_id, owner_id, item_id, start_date, end_date]
     );
+
     //REVIEW -
     //or interaction: newInteraction.data for all interactions
 
@@ -217,6 +218,47 @@ router.get("/borrower/:id", async (req, res) => {
     });
   } catch (err) {
     res.status(500).send({ message: "Error retrieving interactions" });
+  }
+});
+
+//PUT request for Owner to confirm change status from Requested to Borrowed
+
+router.put("/:id/owner-confirm", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Fetch the interaction based on the id and check if it exists
+    const interaction = await db("SELECT * FROM interactions WHERE id = ?", [
+      id,
+    ]);
+    if (interaction.data.length === 0) {
+      return res.status(404).send({ message: "Interaction not found" });
+    }
+
+    // Only allow the owner to confirm the interaction
+    if (req.body.userType !== "owner") {
+      return res
+        .status(403)
+        .send({ message: "Only the owner can confirm the interaction" });
+    }
+
+    // Check if the interaction status is "requested"
+    if (interaction.data[0].status !== "requested") {
+      return res
+        .status(400)
+        .send({ message: "Interaction status is not 'requested'" });
+    }
+
+    // Update the interaction status to "borrowed"
+    await db("UPDATE interactions SET status = 'borrowed' WHERE id = ?", [id]);
+
+    res
+      .status(200)
+      .send({
+        message: "Interaction status successfully updated to 'borrowed'",
+      });
+  } catch (err) {
+    res.status(500).send({ message: "Error updating interaction" });
   }
 });
 

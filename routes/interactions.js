@@ -86,7 +86,7 @@ const confirmReturnStatusUpdate = async (
     ]);
 
     res.status(200).send({
-      message: `Return confirmed by ${userType}, status updated to '${newStatus}'`,
+      message: `Action confirmed by ${userType}, status updated to '${newStatus}'`,
     });
 
     //REVIEW - how do I make the error message dynamic ?
@@ -103,7 +103,13 @@ const confirmReturnStatusUpdate = async (
 //the borrower cannot be the owner of the item
 
 router.post("/", async (req, res) => {
-  const { borrower_id, owner_id, item_id, start_date, end_date } = req.body;
+  const { borrower_id, item_id, start_date, end_date } = req.body;
+
+  // FIXME - this will come from the token I will put, rec_id
+  const owner_id = 1;
+
+  //NOTE - debug
+  console.log("Received POST request for new interaction");
 
   //return message missing required fields, if client does not provide all required fields
   if (!borrower_id || !owner_id || !item_id || !start_date || !end_date) {
@@ -111,6 +117,8 @@ router.post("/", async (req, res) => {
   }
 
   try {
+    //NOTE - debug
+    console.log("Starting the interaction creation process");
     //check if the item exists
     const itemCheck = await db("SELECT * FROM items WHERE id = ?", [item_id]);
 
@@ -145,33 +153,29 @@ router.post("/", async (req, res) => {
       [borrower_id, owner_id, item_id, start_date, end_date]
     );
 
-    //REVIEW -
-    //or interaction: newInteraction.data for all interactions
-
-    //return message that interraction was created and a list of all interactions
-    // const interactions = await db(
-    //   "SELECT * FROM interactions ORDER BY id DESC"
-    // );
-
-    //REVIEW - is this supposed to be here or in the items.js file?
-    // Update the item's status to "requested" after the interaction is created
-    await db("UPDATE items SET status = 'requested' WHERE id = ?", [item_id]);
+    // await db("UPDATE items SET status = 'requested' WHERE id = ?", [item_id]);
 
     res.status(201).json({
       message: "Interaction created successfully!",
       interaction: newInteraction.data[0], // assuming latest is first
     });
   } catch (err) {
+    //NOTE - debug
+    console.error("Error creating interaction:", err);
     res.status(500).send({ message: "Error creating interaction" });
   }
 });
 
 // GET request for owner interactions
 router.get("/owner/:id", async (req, res) => {
-  const { id: ownerId } = req.params;
+  // const { id: ownerId } = req.params;
+  const { id } = req.params;
+
+  //FIXME - TEMPORARY - this will come from the token
+  const owner_id = 1;
 
   try {
-    const result = await getInteractionsByUser(ownerId, "owner");
+    const result = await getInteractionsByUser(owner_id, "owner"); //FIXME - change ownerId to owner_id
 
     //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {
@@ -223,9 +227,14 @@ router.get("/owner/:id", async (req, res) => {
 
 // GET request for borrower interactions
 router.get("/borrower/:id", async (req, res) => {
-  const { id: borrowerId } = req.params;
+  // const { id: borrowerId } = req.params;
+  const { id } = req.params;
+
+  //FIXME - TEMPORARY - this will come from the token
+  const borrower_id = 2;
+
   try {
-    const result = await getInteractionsByUser(borrowerId, "borrower");
+    const result = await getInteractionsByUser(borrower_id, "borrower"); //FIXME - change borrowerId to borrower_id, temporary
 
     //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {
@@ -275,42 +284,105 @@ router.get("/borrower/:id", async (req, res) => {
   }
 });
 
-// PUT request for Owner to confirm change status from Requested to Borrowed
-router.put("/:id/owner-confirm", async (req, res) => {
+//REVIEW - refractored PUT endpoints from three to one endpint, intent 1
+router.put("/:id/status", async (req, res) => {
   const { id } = req.params;
-  // Call the helper function for owner to confirm borrow
-  confirmReturnStatusUpdate(id, "owner", "requested", "borrowed", res, req);
+  const { userType } = req.body;
+
+  const owner_id = 1;
+
+  // Check is userType is provided
+  if (!userType) {
+    return res.status(400).send({ message: "Missing required user type" });
+  }
+
+  try {
+    if (userType === "owner") {
+      // Owner action: change status from 'requested' to 'borrowed'
+      if (req.body.status === "requested") {
+        return confirmReturnStatusUpdate(
+          id,
+          "owner",
+          "requested",
+          "borrowed",
+          res,
+          req
+        );
+      } else if (req.body.status === "borrower-returned") {
+        return confirmReturnStatusUpdate(
+          id,
+          "owner",
+          "borrower-returned",
+          "returned",
+          res,
+          req
+        );
+      } else {
+        return res
+          .status(400)
+          .send({ message: "Invalid status change for owner" });
+      }
+    }
+
+    if (userType === "borrower") {
+      // Borrower action: change status from 'borrowed' to 'borrowed-return'
+      if (req.body.status === "borrowed") {
+        return confirmReturnStatusUpdate(
+          id,
+          "borrower",
+          "borrowed",
+          "borrower-returned",
+          res,
+          req
+        );
+      } else {
+        return res.status(400).send({
+          message: "Invalid status change for borrower",
+        });
+      }
+    }
+  } catch (err) {
+    res.status(500).send({ message: "Error updating interaction status" });
+  }
 });
 
-// PUT request for Borower to confirm the item was returned on borrower side and change status from 'borrowed' to 'borrower-returned'
-router.put("/:id/borrower-confirm-return", async (req, res) => {
-  const { id } = req.params;
-  // Call the helper function for borrower to confirm return
-  confirmReturnStatusUpdate(
-    id,
-    "borrower",
-    "borrowed",
-    "borrower-returned",
-    res,
-    req
-  );
-});
+// //NOTE - Working PUT endpoints, not refractored in one enpoint only
+// // PUT request for Owner to confirm change status from Requested to Borrowed
+// router.put("/:id/owner-confirm", async (req, res) => {
+//   const { id } = req.params;
+//   // Call the helper function for owner to confirm borrow
+//   confirmReturnStatusUpdate(id, "owner", "requested", "borrowed", res, req);
+// });
 
-// PUT request for Owner to confirm the item was returned on owner side and change status from 'borrower-returned' to 'returned'
-router.put("/:id/owner-confirm-return", async (req, res) => {
-  const { id } = req.params;
-  // Call the helper function for owner to confirm return
-  confirmReturnStatusUpdate(
-    id,
-    "owner",
-    "borrower-returned",
-    "returned",
-    res,
-    req
-  );
-});
+// // PUT request for Borrower to confirm the item was returned on borrower side and change status from 'borrowed' to 'borrower-returned'
+// router.put("/:id/borrower-confirm-return", async (req, res) => {
+//   const { id } = req.params;
+//   // Call the helper function for borrower to confirm return
+//   confirmReturnStatusUpdate(
+//     id,
+//     "borrower",
+//     "borrowed",
+//     "borrower-returned",
+//     res,
+//     req
+//   );
+// });
 
-//NOTE - Working PUT endpoints, NOT refractored
+// // PUT request for Owner to confirm the item was returned on owner side and change status from 'borrower-returned' to 'returned'
+// router.put("/:id/owner-confirm-return", async (req, res) => {
+//   const { id } = req.params;
+//   // Call the helper function for owner to confirm return
+//   confirmReturnStatusUpdate(
+//     id,
+//     "owner",
+//     "borrower-returned",
+//     "returned",
+//     res,
+//     req
+//   );
+// });
+
+//NOTE - Working PUT endpoints, NO hekper fucntion
 // // PUT request for Owner to confirm change status from Requested to Borrowed
 // router.put("/:id/owner-confirm", async (req, res) => {
 //   const { id } = req.params;

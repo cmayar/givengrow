@@ -14,12 +14,12 @@ router.get("/", async (req, res) => {
   }
 })
 
-// GET by user id
+// GET by user_id
 router.get("/:id", async (req, res ) => {
   const { id } = req.params;
 
   try {
-    const result = await db(`SELECT * FROM items WHERE id = ${id};`);
+    const result = await db("SELECT * FROM items WHERE id = ?;", [id]);
 
     if (result.length === 0) {
       return res.status(404).send({ error: "Item not found" });
@@ -31,52 +31,14 @@ router.get("/:id", async (req, res ) => {
 });
 
 // GET items by filtering
-// filter by Category, Status or Owner (NOT WORKING)
-// router.get("/filter", async (req, res) => {
-//   console.log("Received request to /filter");
-//   const { category, status, owner_id } = req.query; // we use req.query for the GET request. Ex. GET /items/filter?category=tools&status=available
-//   console.log('Query parameters:', req.query); 
-  
-//   let query = "SELECT * FROM items WHERE 1=1"; // base query
-//   const values = [];
-  
-//   // conditions based on the provided query params
-//   if (category) {
-//     query += " AND category = ? ";
-//     values.push(category);
-//   }
-//   if (status) {
-//     query += " AND status = ?";
-//     values.push(status);
-//   }
-//   if (owner_id) {
-//     query += " AND owner_id = ?";
-//     values.push(owner_id);
-//   }
-  
-//   try {
-//     console.log('Executing query:', query);
-//     console.log('With values:', values);
+// filter by Category, Status or Owner
 
-//     const result = await db(query, values);
-
-//     if (result.length === 0) {
-//       return res.status(404).send({ message: "No items found" });
-//     }
-
-//     res.status(200).send(result);
-
-//   } catch (err) {
-//     console.error("Error fetching filtered items", err);
-//     res.status(500).send({ message: "Error fetching filtered items" });
-//   }
-// });
 
 
 
 // Create a new Item
 router.post("/", async (req, res) => {
-  const { title, image, description, category, owner_id, status, latitude, longitude} = req.body;
+  const { title, image, description, category, owner_id, status, latitude, longitude } = req.body;
 
   if (!title || !image || !description || !category || !owner_id || !status ) {
     return res.status(400).send({ message: "Missing required information" });
@@ -96,38 +58,93 @@ try {
 });
 
 
-//UPDATE ITEMS STATUS
+//UPDATE ITEMS STATUS --> Finally the status changes are managed in the interactions endpoints.
+// router.put("/:id", async (req, res) => {
+//   const { id } = req.params;
+//   const { status } = req.body;
+
+//   const validStatuses = ["available", "unavailable"];
+
+//   if(status && !validStatuses.includes(status)) {
+//     return res.status(400).json({ error: "Invalid or missing status"});
+//   }
+
+//   try {
+//     const result = await db("SELECT * FROM items WHERE id = ?;", [id]);
+//     console.log("Query result:", result); 
+//     //check if item exists
+//     if (result.data.length === 0) {
+//       return res.status(404).json({ error: "Item not found" });
+//     }
+//     await db("UPDATE items SET status = ? WHERE id = ?;", [status, id]);
+//     res.status(200).json({
+//       message: "Item status updated successfully"
+//     });
+//   } catch (err) {
+//     console.error("Error updating item status:", err);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// })
+
+//UPDATE ITEMS INFO
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
-
-  const validStatuses = ["available", "unavailable"];
-
-  if(status && !validStatuses.includes(status)) {
-    return res.status(400).json({ error: "Invalid or missing status"});
-  }
+  const { title, image, description, category, owner_id, latitude, longitude } = req.body
 
   try {
-    const result = await db("SELECT * FROM items WHERE id = ?;", [id]);
-    console.log("Query result:", result); 
-    //check if item exists
-    if (result.data.length === 0) {
-      return res.status(404).json({ error: "Item not found" });
+    const itemsCheck = await db("SELECT id FROM items WHERE id = ?;", [id]);
+    if(itemsCheck.data.length === 0) {
+      return res.status(404).json({ error: "Item not found" })
     }
-    await db("UPDATE items SET status = ? WHERE id = ?;", [status, id]);
-    res.status(200).json({
-      message: "Item status updated successfully"
-    });
-  } catch (err) {
-    console.error("Error updating item status:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+
+    if ( !title || !image || !description || !category ) {
+      return res.status(400).json({ error: "Missing required fields" })
+    }
+
+    const updatedItems = `
+    UPDATE items
+    SET title = ?, image = ?, description = ?, category = ?, owner_id = ?, status = ?, latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?;
+  `;
+
+  const result = await db(updatedItems, [title, image, description, category, owner_id, latitude, longitude, id]);
+
+  if (result.data.length === 0) {
+    return res.status(400).json({ error: "Failed to update item" });
   }
-})
 
-//UPDATE ITEMS
+  res.status(200).json({ message: "Item updated successfully" });
 
+} catch (error) {
+  console.error("Error updating item:", error);
+  res.status(500).json({ error: "Server error" });
+}
+});
 
+//FILTER BY SOMETHING
+//if I dont have any query parameters, I want to return all the items 
+// (("SELECT * FROM items;"))
+//if I have a query parameter, I want to return the items that match the query parameter
+// ("SELECT * FROM items WHERE title = 'Tent';")
+// ("SELECT * FROM items WHERE catergory = 'outdoor';")
 
+router.get("/filter", async function (req, res) {
+  console.log('REQ.QUERY',req.query)
+
+  const { key, value } = req.query;
+  let url = "SELECT * FROM items";
+  if (key && value) {
+    url += ` WHERE ${key} = '${value};'`;
+  }
+console.log('URL',url)
+  try {
+    const results = await db(url);
+    return results.data;
+  } catch (error) {
+    console.log(error);
+  }
+  res.send(results);
+});
 
 
 // DELETE ITEM 
@@ -152,8 +169,6 @@ router.delete("/:id", async (req, res) => {
   res.status(500).json({ error: "Internal Server Error" });
 }
 })
-
-
 
 
 

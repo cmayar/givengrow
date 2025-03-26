@@ -85,6 +85,13 @@ const confirmReturnStatusUpdate = async (
       id,
     ]);
 
+    //REVIEW - If final status is returned, update the item status to available
+    if (newStatus === "returned") {
+      await db("UPDATE items SET status = 'available' WHERE id = ?", [
+        interaction.item_id,
+      ]);
+    }
+
     res.status(200).send({
       message: `Action confirmed by ${userType}, status updated to '${newStatus}'`,
     });
@@ -153,10 +160,12 @@ router.post("/", async (req, res) => {
       [borrower_id, owner_id, item_id, start_date, end_date]
     );
 
-    // await db("UPDATE items SET status = 'requested' WHERE id = ?", [item_id]);
+    // Update item status to 'unavailable'
+    await db("UPDATE items SET status = 'unavailable' WHERE id = ?", [item_id]);
 
     res.status(201).json({
-      message: "Interaction created successfully!",
+      message:
+        "Interaction created successfully and item marked as unavailable!",
       interaction: newInteraction.data[0], // assuming latest is first
     });
   } catch (err) {
@@ -345,168 +354,5 @@ router.put("/:id/status", async (req, res) => {
     res.status(500).send({ message: "Error updating interaction status" });
   }
 });
-
-// //NOTE - Working PUT endpoints, not refractored in one enpoint only
-// // PUT request for Owner to confirm change status from Requested to Borrowed
-// router.put("/:id/owner-confirm", async (req, res) => {
-//   const { id } = req.params;
-//   // Call the helper function for owner to confirm borrow
-//   confirmReturnStatusUpdate(id, "owner", "requested", "borrowed", res, req);
-// });
-
-// // PUT request for Borrower to confirm the item was returned on borrower side and change status from 'borrowed' to 'borrower-returned'
-// router.put("/:id/borrower-confirm-return", async (req, res) => {
-//   const { id } = req.params;
-//   // Call the helper function for borrower to confirm return
-//   confirmReturnStatusUpdate(
-//     id,
-//     "borrower",
-//     "borrowed",
-//     "borrower-returned",
-//     res,
-//     req
-//   );
-// });
-
-// // PUT request for Owner to confirm the item was returned on owner side and change status from 'borrower-returned' to 'returned'
-// router.put("/:id/owner-confirm-return", async (req, res) => {
-//   const { id } = req.params;
-//   // Call the helper function for owner to confirm return
-//   confirmReturnStatusUpdate(
-//     id,
-//     "owner",
-//     "borrower-returned",
-//     "returned",
-//     res,
-//     req
-//   );
-// });
-
-//NOTE - Working PUT endpoints, NO hekper fucntion
-// // PUT request for Owner to confirm change status from Requested to Borrowed
-// router.put("/:id/owner-confirm", async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     // Fetch the interaction based on the id and check if it exists
-//     const interaction = await db("SELECT * FROM interactions WHERE id = ?", [
-//       id,
-//     ]);
-//     if (interaction.data.length === 0) {
-//       return res.status(404).send({ message: "Interaction not found" });
-//     }
-
-//     // Only allow the owner to confirm the interaction
-//     if (req.body.userType !== "owner") {
-//       return res
-//         .status(403)
-//         .send({ message: "Only the owner can confirm the interaction" });
-//     }
-
-//     // Check if the interaction status is "requested"
-//     if (interaction.data[0].status !== "requested") {
-//       return res
-//         .status(400)
-//         .send({ message: "Interaction status is not 'requested'" });
-//     }
-
-//     // Update the interaction status to "borrowed"
-//     await db("UPDATE interactions SET status = 'borrowed' WHERE id = ?", [id]);
-
-//     res.status(200).send({
-//       message: "Interaction status successfully updated to 'borrowed'",
-//     });
-//   } catch (err) {
-//     res.status(500).send({ message: "Error updating interaction" });
-//   }
-// });
-
-// // PUT request for Borower to confirm the item was returned on bborrower side and change status from 'borrowed' to 'borrower-returned'
-// router.put("/:id/borrower-confirm-return", async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     // Fetch the interaction based on the id and check if it exists
-//     const interactionCheck = await db(
-//       "SELECT * FROM interactions WHERE id = ?",
-//       [id]
-//     );
-//     if (interactionCheck.data.length === 0) {
-//       return res.status(404).send({ message: "Interaction not found" });
-//     }
-
-//     // Get the interaction data
-//     const interaction = interactionCheck.data[0];
-
-//     // Only allow the borrower to confirm the return in this endpoint
-//     if (req.body.userType !== "borrower") {
-//       return res
-//         .status(403)
-//         .send({ message: "Only the borrower can confirm the return" });
-//     }
-
-//     // Check if the interaction status is 'borrowed' before confirming the return on the borrower side
-//     if (interaction.status !== "borrowed") {
-//       return res
-//         .status(400)
-//         .send({ message: "Interaction status is not 'borrowed'" });
-//     }
-
-//     // Update the interaction status to 'borrower-returned'
-//     await db(
-//       "UPDATE interactions SET status = 'borrower-returned' WHERE id = ?",
-//       [id]
-//     );
-
-//     res.status(200).send({
-//       message:
-//         "Return confirmed by borrower, status updated to 'borrower-return'",
-//     });
-//   } catch (err) {
-//     res.status(500).send({ message: "Error confirming return by borrower" });
-//   }
-// });
-
-// // PUT request for Owner to confirm the item was returned on owner side and change status from 'borrower-returned' to 'returned'
-// router.put("/:id/owner-confirm-return", async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     // Fetch the interaction based on the id and check if it exists
-//     const interactionCheck = await db(
-//       "SELECT * FROM interactions WHERE id = ?",
-//       [id]
-//     );
-//     if (interactionCheck.data.length === 0) {
-//       return res.status(404).send({ message: "Interaction not found" });
-//     }
-
-//     // Get the interaction data
-//     const interaction = interactionCheck.data[0];
-
-//     //Only allow the owner to confirm the return in this endpoint
-//     if (req.body.userType !== "owner") {
-//       return res
-//         .status(403)
-//         .send({ message: "Only the owner can confirm the return" });
-//     }
-
-//     // Check if the interaction status is 'borrower-returned' before confirming the return on the owner side
-//     if (interaction.status !== "borrower-returned") {
-//       return res
-//         .status(400)
-//         .send({ message: "Interaction status is not 'borrower-returned'" });
-//     }
-
-//     // Update the interaction status to 'returned'
-//     await db("UPDATE interactions SET status = 'returned' WHERE id = ?", [id]);
-
-//     res.status(200).send({
-//       message: "Return confirmed by owner, status updated to 'returned'",
-//     });
-//   } catch (err) {
-//     res.status(500).send({ message: "Error confirming return by owner" });
-//   }
-// });
 
 export default router;

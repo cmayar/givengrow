@@ -3,7 +3,7 @@ import db from '../model/helper.js';
 
 const router = express.Router();
 
-//GET all Items
+// //GET all Items
 router.get("/", async (req, res) => {
   try {
     const result = await db(`SELECT * FROM items`);
@@ -128,23 +128,24 @@ router.put("/:id", async (req, res) => {
 // ("SELECT * FROM items WHERE title = 'Tent';")
 // ("SELECT * FROM items WHERE catergory = 'outdoor';")
 
-router.get("/filter", async function (req, res) {
-  console.log('REQ.QUERY',req.query)
+// router.get("/filter", async (req, res) => {
+//   console.log('REQ.QUERY',req.query)
 
-  const { key, value } = req.query;
-  let url = "SELECT * FROM items";
-  if (key && value) {
-    url += ` WHERE ${key} = '${value};'`;
-  }
-console.log('URL',url)
-  try {
-    const results = await db(url);
-    return results.data;
-  } catch (error) {
-    console.log(error);
-  }
-  res.send(results);
-});
+//   const { key, value } = req.query;
+//   let url = "SELECT * FROM items";
+//   if (key && value) {
+//     url += ` WHERE ${key} = '${value}'`;
+//   }
+// console.log('URL',url)
+//   try {
+//     const results = await db(url);
+//     res.status(200).send(results.data);
+
+//   } catch (error) {
+//     console.log(error);
+//   }
+//   // res.send(results)
+// });
 
 
 // DELETE ITEM 

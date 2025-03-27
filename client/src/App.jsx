@@ -6,6 +6,7 @@ function App() {
     <>
       <h1> Share & Borrow app</h1>
       <h2> Welcome! </h2>
+      
     </>
   );
 }

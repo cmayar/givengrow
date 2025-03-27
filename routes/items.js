@@ -30,12 +30,6 @@ router.get("/:id", async (req, res ) => {
   }
 });
 
-// GET items by filtering
-// filter by Category, Status or Owner
-
-
-
-
 // Create a new Item
 router.post("/", async (req, res) => {
   const { title, image, description, category, owner_id, status, latitude, longitude } = req.body;

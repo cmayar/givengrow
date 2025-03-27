@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS `interactions`;
-DROP TABLE IF EXISTS `items`;
+DROP TABLE IF EXISTS `items`; 
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users`(

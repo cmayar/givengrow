@@ -160,7 +160,7 @@ router.post("/", async (req, res) => {
       [borrower_id, owner_id, item_id, start_date, end_date]
     );
 
-    // Update item status to 'unavailable'
+    //REVIEW - Update item status to 'unavailable'
     await db("UPDATE items SET status = 'unavailable' WHERE id = ?", [item_id]);
 
     res.status(201).json({

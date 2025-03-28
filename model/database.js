@@ -35,3 +35,6 @@ con.connect(function (err) {
 
   con.end();
 });
+
+// Default export the connection
+export default con;

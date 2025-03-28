@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS `interactions`;
 DROP TABLE IF EXISTS `items`; 
 DROP TABLE IF EXISTS `users`;
 
-
 CREATE TABLE `users`(
     `id` INT NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(255) UNIQUE NOT NULL,
@@ -36,7 +35,7 @@ CREATE TABLE `items`(
         'misc'
     ) NOT NULL,
     `owner_id` INT NOT NULL,
-    `status` ENUM('available', 'unavailable') NOT NULL,
+    `status` ENUM('available', 'unavailable') NOT NULL, DEFAULT 'available',
     `latitude` INT NULL,
     `longitude` INT NULL,
     PRIMARY KEY(`id`),
@@ -48,7 +47,7 @@ CREATE TABLE `interactions` (
     `borrower_id` INT NOT NULL,
     `owner_id` INT NOT NULL,
     `item_id` INT NOT NULL,
-    `status` ENUM('requested', 'borrowed', 'returned') NOT NULL,
+    `status` ENUM('requested', 'borrowed', 'borrower-returned', 'returned') NOT NULL,
     `start_date` DATE NOT NULL,
     `end_date` DATE NOT NULL,
     PRIMARY KEY (`id`),

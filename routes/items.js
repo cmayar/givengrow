@@ -1,5 +1,9 @@
 import express from "express";
 import db from "../model/helper.js";
+import dotenv from "dotenv";
+import loginUsers from "../middleware.js";
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -15,6 +19,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET by user_id
+
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -34,17 +39,19 @@ router.get("/:id", async (req, res) => {
 // filter by Category, Status or Owner
 
 // Create a new Item
-router.post("/", async (req, res) => {
+router.post("/", loginUsers, async (req, res) => {
   const {
     title,
     image,
     description,
     category,
-    owner_id,
+    // owner_id, remove owner_id from here
     status,
     latitude,
     longitude,
   } = req.body;
+
+  const owner_id = req.user_id; //added here
 
   if (!title || !image || !description || !category || !owner_id || !status) {
     return res.status(400).send({ message: "Missing required information" });
@@ -61,8 +68,8 @@ router.post("/", async (req, res) => {
         category,
         owner_id,
         status,
-        latitude,
-        longitude,
+        latitude ?? null, // NOTE replace with null if undefined
+        longitude ?? null, // NOTE replace with null if undefined
       ]
     );
     const result = await db(`SELECT * FROM items`);

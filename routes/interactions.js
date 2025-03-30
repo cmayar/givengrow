@@ -1,5 +1,6 @@
 import express from "express";
 import db from "../model/helper.js";
+import loginUser from "../middleware.js";
 
 const router = express.Router();
 
@@ -109,23 +110,18 @@ const confirmReturnStatusUpdate = async (
 //it has to verify if the item is available
 //the borrower cannot be the owner of the item
 
-router.post("/", async (req, res) => {
-  const { borrower_id, item_id, start_date, end_date } = req.body;
-
-  // FIXME - this will come from the token I will put, rec_id
-  const owner_id = 1;
-
-  //NOTE - debug
-  console.log("Received POST request for new interaction");
+// Add middleware to check if user is logged in
+router.post("/", loginUser, async (req, res) => {
+  //NOTE - Implementint borrower_id after JWT
+  const borrower_id = req.user_id;
+  const { item_id, start_date, end_date } = req.body;
 
   //return message missing required fields, if client does not provide all required fields
-  if (!borrower_id || !owner_id || !item_id || !start_date || !end_date) {
+  if (!borrower_id || !item_id || !start_date || !end_date) {
     return res.status(400).send({ message: "Missing required information" });
   }
 
   try {
-    //NOTE - debug
-    console.log("Starting the interaction creation process");
     //check if the item exists
     const itemCheck = await db("SELECT * FROM items WHERE id = ?", [item_id]);
 
@@ -136,6 +132,8 @@ router.post("/", async (req, res) => {
 
     //check if the item is available
     const item = itemCheck.data[0];
+    const owner_id = item.owner_id;
+
     if (item.status !== "available") {
       return res.status(400).send({ message: "Item is not available" });
     }

@@ -293,21 +293,44 @@ router.get("/borrower/:id", loginUser, async (req, res) => {
 });
 
 //REVIEW - refractored PUT endpoints from three to one endpint, intent 1
-router.put("/:id/status", async (req, res) => {
+router.put("/:id/status", loginUser, async (req, res) => {
+  // const { id } = req.params;
+  // const { userType } = req.body;
+
+  // const owner_id = 1;
+
   const { id } = req.params;
-  const { userType } = req.body;
+  const { status } = req.body;
+  const user_id = req.user_id;
 
-  const owner_id = 1;
-
-  // Check is userType is provided
-  if (!userType) {
-    return res.status(400).send({ message: "Missing required user type" });
-  }
+  // Check is userType is provided NO NEEDED
+  // if (!userType) {
+  //   return res.status(400).send({ message: "Missing required user type" });
+  // }
 
   try {
-    if (userType === "owner") {
+    //NOTE - Fetch interactions and validate
+    const result = await db("SELECT * FROM interactions WHERE id = ?", [id]);
+
+    if (result.data.length === 0) {
+      return res.status(404).send({ message: "Interaction not found" });
+    }
+
+    const interaction = result.data[0];
+
+    // Dynamically determine the userType
+    let userType = null;
+    if (interaction.owner_id === user_id) userType = "owner";
+    if (interaction.borrower_id === user_id) userType = "borrower";
+
+    if (!userType) {
+      return res.status(403).send({ message: "User not authorized" });
+    }
+
+    // Owner actions
+    if (interaction.owner_id === user_id) {
       // Owner action: change status from 'requested' to 'borrowed'
-      if (req.body.status === "requested") {
+      if (status === "requested") {
         return confirmReturnStatusUpdate(
           id,
           "owner",
@@ -316,7 +339,7 @@ router.put("/:id/status", async (req, res) => {
           res,
           req
         );
-      } else if (req.body.status === "borrower-returned") {
+      } else if (status === "borrower-returned") {
         return confirmReturnStatusUpdate(
           id,
           "owner",
@@ -332,9 +355,10 @@ router.put("/:id/status", async (req, res) => {
       }
     }
 
-    if (userType === "borrower") {
+    // Borrower actions
+    if (interaction.borrower_id === user_id) {
       // Borrower action: change status from 'borrowed' to 'borrowed-return'
-      if (req.body.status === "borrowed") {
+      if (status === "borrowed") {
         return confirmReturnStatusUpdate(
           id,
           "borrower",
@@ -349,6 +373,9 @@ router.put("/:id/status", async (req, res) => {
         });
       }
     }
+
+    // If not owner or borrower, return unauthorized
+    res.status(403).send({ message: "User not authorized" });
   } catch (err) {
     res.status(500).send({ message: "Error updating interaction status" });
   }

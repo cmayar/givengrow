@@ -174,15 +174,17 @@ router.post("/", loginUser, async (req, res) => {
 });
 
 // GET request for owner interactions
-router.get("/owner/:id", async (req, res) => {
-  // const { id: ownerId } = req.params;
-  const { id } = req.params;
+router.get("/owner/:id", loginUser, async (req, res) => {
+  // // const { id: ownerId } = req.params;
+  // const { id } = req.params;
 
-  //FIXME - TEMPORARY - this will come from the token
-  const owner_id = 1;
+  // //FIXME - TEMPORARY - this will come from the token
+  // const owner_id = 1;
+
+  const owner_id = req.user_id;
 
   try {
-    const result = await getInteractionsByUser(owner_id, "owner"); //FIXME - change ownerId to owner_id
+    const result = await getInteractionsByUser(owner_id, "owner");
 
     //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {
@@ -233,15 +235,14 @@ router.get("/owner/:id", async (req, res) => {
 });
 
 // GET request for borrower interactions
-router.get("/borrower/:id", async (req, res) => {
+router.get("/borrower/:id", loginUser, async (req, res) => {
   // const { id: borrowerId } = req.params;
-  const { id } = req.params;
+  // const { id } = req.params;
 
-  //FIXME - TEMPORARY - this will come from the token
-  const borrower_id = 2;
+  const borrower_id = req.user_id;
 
   try {
-    const result = await getInteractionsByUser(borrower_id, "borrower"); //FIXME - change borrowerId to borrower_id, temporary
+    const result = await getInteractionsByUser(borrower_id, "borrower");
 
     //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {

@@ -1,8 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Profile.css";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div className="container mt-5">
       <div className="row">
@@ -48,10 +56,11 @@ const Profile = () => {
               {/* <i className="fas fa-chart-line fa-fw me-3"></i> */}
               <span>Borrowed</span>
             </Link>
+
             <Link
-              to="/signout"
-              href="#"
-              className="list-group-item list-group-item-action py-2 ripple"
+              to="/"
+              onClick={handleLogout}
+              className="list-group-item list-group-item-action"
             >
               {/* <i className="fas fa-chart-pie fa-fw me-3"></i> */}
               <span>SignOut</span>

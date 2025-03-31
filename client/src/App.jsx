@@ -5,17 +5,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Profile from "./Components/Profile";
 import Item from "./Components/Item";
+import Landing from "./Components/Landing";
 
 function App() {
   return (
     <Router>
-      <div>
-        <h1> Share & Borrow app</h1>
-        <h2> Welcome! </h2>
-      </div>
-
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/items/:id" element={<Item />} />
         {/* Sidebar pages */}

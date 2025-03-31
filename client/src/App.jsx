@@ -5,10 +5,11 @@ import "./App.css";
 
 function App() {
   return (
-    <div>
-      <h1> Share & Borrow app </h1>
-        <h2> Welcome! </h2>
-    </div>
+    <>
+      <h1> Share & Borrow app</h1>
+      <h2> Welcome! </h2>
+      
+    </>
   );
 };
 

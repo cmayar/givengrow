@@ -7,6 +7,12 @@ body {
   }
 }
 
+.main-content {
+  margin-left: 240px; /* same as sidebar width */
+  min-height: 100vh;
+  background-color: #fbfbfb;
+}
+
 /* Sidebar */
 .sidebar {
   position: fixed;
@@ -37,3 +43,16 @@ body {
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
+
+/* .profile-wrapper {
+  min-height: 100vh;
+}
+
+.sidebar {
+  min-width: 220px;
+  border-right: 1px solid #dee2e6;
+}
+
+.content-area {
+  background-color: #f8f9fa;
+} */

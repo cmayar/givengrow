@@ -17,10 +17,10 @@ function App() {
         <Route path="/items/:id" element={<Item />} />
         {/* Sidebar pages */}
         <Route
-          path="/share"
+          path="/post"
           element={
             <div style={{ padding: "2rem" }}>
-              <h2>Share Page</h2>
+              <h2>Post new object</h2>
             </div>
           }
         />

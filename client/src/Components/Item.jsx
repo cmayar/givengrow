@@ -51,14 +51,6 @@ const Item = () => {
     try {
       const token = localStorage.getItem("token");
 
-      // NOTE: debug code
-      console.log("Sending request with:", {
-        item_id: parseInt(id),
-        start_date: startDate,
-        end_date: endDate,
-        token,
-      });
-
       const res = await axios.post(
         `http://localhost:4000/api/interactions`,
         {

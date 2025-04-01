@@ -1,15 +1,14 @@
-import { React, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import { Outlet } from 'react-router';
+import { React } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
+import { AuthProvider } from "./Components/AuthContext";
+import NavigationBar from "./Components/Navigation";
 
 function App() {
   return (
-    <>
-      <h1> Share & Borrow app</h1>
-      <h2> Welcome! </h2>
-      
-    </>
+<AuthProvider>
+    <NavigationBar/>
+</AuthProvider>
   );
 };
 

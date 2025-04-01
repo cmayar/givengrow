@@ -1,5 +1,4 @@
 import { React, useState } from "react";
-import { Routes, Route } from "react-router-dom";
 import { Outlet } from 'react-router';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,37 +8,36 @@ import Profile from "./Components/Profile";
 import Item from "./Components/Item";
 import LogInPage from "./Components/LogInPage";
 import RegistrationPage from "./Components/RegistrationPage";
+import Landing from "./Components/Landing";
+import MyObjects from "./Components/MyObjects";
 
 function App() {
   return (
     <Router>
-      <div>
-        <h1> Share & Borrow app</h1>
-        <h2> Welcome! </h2>
-      </div>
-
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/login" element={<LogInPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/items/:id" element={<Item />} />
         {/* Sidebar pages */}
         <Route
-          path="/share"
+          path="/post"
           element={
             <div style={{ padding: "2rem" }}>
-              <h2>Share Page</h2>
+              <h2>Post new object</h2>
             </div>
           }
         />
         <Route
           path="/my-objects"
-          element={
-            <div style={{ padding: "2rem" }}>
-              <h2>My Objects</h2>
-            </div>
-          }
+          element={<MyObjects />}
+          // element={
+          //   <div style={{ padding: "2rem" }}>
+          //     <h2>My Objects</h2>
+          //   </div>
+          // }
         />
         <Route
           path="/requests"

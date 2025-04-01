@@ -1,14 +1,12 @@
 import { React, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import { Outlet } from 'react-router';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Profile from "./Components/Profile";
 import Item from "./Components/Item";
-import LogInPage from "./Components/LogInPage";
-import RegistrationPage from "./Components/RegistrationPage";
+import LogInPage from "./Components/LogIn";
+import RegistrationPage from "./Components/Registration";
 
 function App() {
   return (

@@ -18,6 +18,33 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+//FILTER BY SOMETHING
+//if I dont have any query parameters, I want to return all the items
+// (("SELECT * FROM items;"))
+//if I have a query parameter, I want to return the items that match the query parameter
+// ("SELECT * FROM items WHERE title = 'Tent';")
+// ("SELECT * FROM items WHERE catergory = 'outdoor';")
+
+// router.get("/filter", async (req, res) => {
+//   console.log('REQ.QUERY',req.query)
+
+//   const { key, value } = req.query;
+//   let url = "SELECT * FROM items";
+//   if (key && value) {
+//     url += ` WHERE ${key} = '${value}'`;
+//   }
+// console.log('URL',url)
+//   try {
+//     const results = await db(url);
+//     res.status(200).send(results.data);
+
+//   } catch (error) {
+//     console.log(error);
+//   }
+//   // res.send(results)
+// });
+
 // GET by user_id
 
 router.get("/:id", async (req, res) => {
@@ -155,31 +182,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-//FILTER BY SOMETHING
-//if I dont have any query parameters, I want to return all the items
-// (("SELECT * FROM items;"))
-//if I have a query parameter, I want to return the items that match the query parameter
-// ("SELECT * FROM items WHERE title = 'Tent';")
-// ("SELECT * FROM items WHERE catergory = 'outdoor';")
-
-// router.get("/filter", async (req, res) => {
-//   console.log('REQ.QUERY',req.query)
-
-//   const { key, value } = req.query;
-//   let url = "SELECT * FROM items";
-//   if (key && value) {
-//     url += ` WHERE ${key} = '${value}'`;
-//   }
-// console.log('URL',url)
-//   try {
-//     const results = await db(url);
-//     res.status(200).send(results.data);
-
-//   } catch (error) {
-//     console.log(error);
-//   }
-//   // res.send(results)
-// });
 
 // DELETE ITEM
 router.delete("/:id", async (req, res) => {

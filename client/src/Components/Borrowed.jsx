@@ -9,7 +9,9 @@ import axios from "axios";
 const Borrowed = () => {
   const [interactions, setInteractions] = useState([]);
 
-  const fetchRequest = async () => {
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const fetchBorrowed = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
@@ -21,10 +23,10 @@ const Borrowed = () => {
           },
         }
       );
-      const borrowedItems = res.data.interactions.filter(
-        ({ interaction }) => interaction.status === "borrowed"
-      );
-      setInteractions(borrowedItems);
+
+      //NOTE - debug code
+      console.log("API Response: ", res.data);
+      setInteractions(res.data.interactions);
     } catch (error) {
       console.error("Error fetching borrowed items:", error);
     }
@@ -49,23 +51,39 @@ const Borrowed = () => {
           },
         }
       );
-      fetchBorrower(); // Refresh the list of interactions
+      // Notify the user that the item has been returned
+      setSuccessMessage(
+        "Item marked as returned! Awaiting owner confirmation."
+      );
+
+      fetchBorrowed(); // Refresh the list of interactions
     } catch (error) {
       console.error("Error accepting request:", error);
+      setSuccessMessage("Something went wrong. Please try again.");
     }
   };
+
+  const borrowedItems = interactions.filter(
+    ({ interaction }) => interaction.status === "borrowed"
+  );
+  console.log("Borrowed Items: ", borrowedItems);
 
   return (
     <div className="container mt-5">
       <h2>Borrowed Items</h2>
-      {interactions.length === 0 ? (
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
+        </div>
+      )}
+      {borrowedItems.length === 0 ? (
         <p>You haven't borrowed any items currently.</p>
       ) : (
-        interactions.map(({ interaction }) => (
+        borrowedItems.map(({ interaction }) => (
           <div key={interaction.id} className="card mb-3">
             <h5>{interaction.item.title}</h5>
             <p>
-              <strong>Borrower:</strong> {interaction.borrower.username}
+              <strong>Owner:</strong> {interaction.owner.username}
             </p>
             <p>
               <strong>From:</strong> {interaction.dates.start}
@@ -76,14 +94,12 @@ const Borrowed = () => {
             <p>
               <strong>Status:</strong> {interaction.status}
             </p>
-            {interaction.status === "requested" && (
-              <button
-                className="btn btn-success"
-                onClick={() => handleAccept(interaction.id)}
-              >
-                Accept Request
-              </button>
-            )}
+            <button
+              className="btn btn-success"
+              onClick={() => handleReturn(interaction.id)}
+            >
+              Return Item
+            </button>
           </div>
         ))
       )}

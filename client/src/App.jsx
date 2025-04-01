@@ -15,6 +15,11 @@ import Requests from "./Components/Requests";
 function App() {
   return (
     <Router>
+      <div>
+        <h1> Share & Borrow app</h1>
+        <h2> Welcome! </h2>
+      </div>
+
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />

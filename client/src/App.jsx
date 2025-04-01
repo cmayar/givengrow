@@ -1,7 +1,8 @@
 import { React, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import { Outlet } from 'react-router';
 import "./App.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Profile from "./Components/Profile";
@@ -67,6 +68,6 @@ function App() {
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;

@@ -46,19 +46,29 @@ const Item = () => {
   };
 
   // Request to borrow item
+  // Rewrite this to use the token
   const requestItem = async () => {
     try {
-      const res = await axios.post(`http://localhost:4000/api/interactions`, {
-        borrower_id: 2, // TODO: Replace with actual user from token later
-        item_id: parseInt(id),
-        start_date: startDate,
-        end_date: endDate,
-      });
+      const token = localStorage.getItem("token");
+
+      const res = await axios.post(
+        `http://localhost:4000/api/interactions`,
+        {
+          item_id: parseInt(id),
+          start_date: startDate,
+          end_date: endDate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       console.log("Interaction response:", res.data);
       setMessage(res.data.message);
-    } catch (error) {
-      console.error("Error requesting item:", error);
+    } catch (err) {
+      console.err("Error requesting item:", err);
       setMessage(err.response?.data?.message || "Something went wrong");
     }
   };

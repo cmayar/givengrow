@@ -1,5 +1,12 @@
 /* Card styles*/
-
+/* .container .header-card {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    padding: 20px;
+    color: #000; 
+  } */
+  
 .card {
     border: none;
     
@@ -17,3 +24,4 @@
     height: 100%;
     object-fit: cover;
 }
+

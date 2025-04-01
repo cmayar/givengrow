@@ -56,9 +56,9 @@ const Home = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Link to="/profile" className="btn btn-outline-primary">
+      {/* <Link to="/profile" className="btn btn-outline-primary">
         Go to profile
-      </Link>
+      </Link> */}
       
       {/* //NOTE - header image */}
       <Container className="mt-3" style={{ position: "relative" }}>
@@ -80,17 +80,18 @@ const Home = () => {
             padding: "20px",
           }}
         >
-          <Card>
+          <Card className="header-card"> 
             <Card.Body>
-              <Card.Title>Welcome to Sharing is Caring</Card.Title>
+              <Card.Title>Welcome to Sharing app</Card.Title>
               <Card.Text>
-                This is a platform where you can share your items and help others.
+                Share objects to help others, borrow objects that you need!
               </Card.Text>
-              <Button variant="primary">Learn More</Button>
+                <Link to="/register" className="btn btn-outline-primary">
+              Sign Up
+              </Link>
             </Card.Body>
           </Card>
         </div>
-        
       </Container>
 
       {/* //NOTE - Shared object container */}
@@ -104,16 +105,17 @@ const Home = () => {
                 <Card.Body>
                   {/* Imagen cuadrada */}
                   <div className="card-img-container">
+                    {/* //REVIEW - need to change this logic when upload is ready */}
                     <Image
                       src={item.imageUrl ? item.imageUrl : defaultImage}
                       alt="Item Image"
                       className="card-img"
                     />
                   </div>
-                  <Card.Title>Title: {item.title}</Card.Title>
-                  <Card.Text>Item Description: {item.description}</Card.Text>
+                  <Card.Title>{item.title}</Card.Title>
+                  <Card.Text>{item.description}</Card.Text>
                   <Card.Text>Category: {item.category}</Card.Text>
-                  <Card.Text>Status: {item.status}</Card.Text>
+                  <Card.Text> {item.status}</Card.Text>
                   <Link to={`/items/${item.id}`}>
                     <Button variant="primary" className="mt-2">
                       Show more

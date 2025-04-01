@@ -75,14 +75,14 @@ const Item = () => {
 
   return (
     <div className="container mt-5">
-      <div className="card" style={{ width: "18rem" }}>
+      <div className="card" style={{ width: "800px" }}>
         <div className="container mt-5">
-          <h3>Title: {item.title}</h3>
-          <p>Item Description: {item.description}</p>
+          <h3> {item.title}</h3>
+          <p>Description: {item.description}</p>
           <p>Category: {item.category}</p>
-          <p>Status: {item.status}</p>
-
-          <Link to="/home" className="btn btn-outline-primary">
+          <p>{item.status}</p>
+          {/* //NOTE - route to home is "/" */}
+          <Link to="/" className="btn btn-outline-primary">
             Back to Home
           </Link>
 

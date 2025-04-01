@@ -1,39 +1,23 @@
 import { useState } from "react";
-import LogInPage from "./LogIn";
-import RegistrationPage from "./Registration";
+import LogInPage from "./LogIn"; // To be used later
+import RegistrationPage from "./Registration"; // To be used later
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Landing() {
-  // //NOTE - temporary code
-  // const [view, setView] = useState("login");
-
-  // // ✅ Login logic handled here directly
-  // const [data, setData] = useState({
-  //   username: "",
-  //   password: "",
-  // });
-
-  // function handleChange(e) {
-  //   const { name, value } = e.target;
-  //   setData((prev) => ({ ...prev, [name]: value }));
-  // }
-
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-  //   localStorage.setItem("userToken", "your-temporary-token");
-  //   console.log("Submitted login:", data);
-  // }
-
-  // NOTE: not needed anymore
+  // State to store user input for login credentials
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
 
+  // State to handle and display login error messages
   const [error, setError] = useState(null);
+
+  // Hook for navigating to a new route
   const navigate = useNavigate();
 
+  // Handles form submission and login logic
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials({ ...credentials, [name]: value });
@@ -42,81 +26,29 @@ function Landing() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Send a POST request to beckend with the user's credentials
       const { data } = await axios("http://localhost:4000/auth/login", {
         method: "POST",
         data: credentials,
       });
 
+      // Stores the received token in localStorage for future authenticated requests
       localStorage.setItem("token", data.token);
+
+      // Redirects the user to the home page
       navigate("/home");
     } catch (err) {
       console.error("Login failed:", err);
       setError(err.response?.data?.message || "Login failed");
     }
   };
-  //   return (
-  //     <div className="container mt-5" style={{ maxWidth: "400px" }}>
-  //       <h1 className="text-center mb-4">Share & Borrow App</h1>
-  //       <h2 className="text-center mb-4">Welcome!</h2>
-
-  //       {/* Conditional rendering */}
-  //       {view === "login" && (
-  //         <form onSubmit={handleSubmit}>
-  //           <div className="mb-3">
-  //             <input
-  //               type="text"
-  //               className="form-control"
-  //               name="username"
-  //               placeholder="Email address"
-  //               value={data.username}
-  //               onChange={handleChange}
-  //             />
-  //           </div>
-
-  //           <div className="mb-3">
-  //             <input
-  //               type="password"
-  //               className="form-control"
-  //               name="password"
-  //               placeholder="Password"
-  //               value={data.password}
-  //               onChange={handleChange}
-  //             />
-  //           </div>
-  //           <div className="d-grid mb-3">
-  //             <button
-  //               type="submit"
-  //               className="btn btn-primary fw-bold text-uppercase"
-  //             >
-  //               Sign In
-  //             </button>
-  //           </div>
-
-  //           <div className="text-center">
-  //             <small>
-  //               Not a member?{" "}
-  //               <span
-  //                 className="text-primary"
-  //                 style={{ cursor: "pointer" }}
-  //                 onClick={() => setView("register")}
-  //               >
-  //                 Register
-  //               </span>
-  //             </small>
-  //           </div>
-  //         </form>
-  //       )}
-
-  //       {view === "register" && <RegistrationPage />}
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="container mt-5" style={{ maxWidth: "400px" }}>
       <h1 className="text-center mb-4">Share & Borrow App</h1>
       <h2 className="text-center mb-4">Welcome!</h2>
 
+      {/* Login Form */}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <input
@@ -146,13 +78,7 @@ function Landing() {
           </div>
         )}
 
-        <div className="mb-3 form-check">
-          <input type="checkbox" className="form-check-input" id="remember" />
-          <label className="form-check-label" htmlFor="remember">
-            Remember me
-          </label>
-        </div>
-
+        {/* Login button */}
         <div className="d-grid mb-3">
           <button
             type="submit"

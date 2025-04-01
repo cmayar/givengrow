@@ -2,6 +2,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+/*
+  STILL DEVELOPING THIS COMPONENT
+*/
+
 const Borrowed = () => {
   const [interactions, setInteractions] = useState([]);
 

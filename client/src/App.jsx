@@ -1,5 +1,4 @@
-import { React, useState } from "react";
-import { Outlet } from "react-router";
+import { React } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -14,12 +13,15 @@ import Requests from "./Components/Requests";
 
 function App() {
   return (
+    // Router component to manage the routes and enable navigation
     <Router>
-      <div>
+      {/* This is already in Landin.jsx*/}
+      {/* <div>
         <h1> Share & Borrow app</h1>
         <h2> Welcome! </h2>
-      </div>
+      </div> */}
 
+      {/* Routes define URL paths and corresponding components */}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
@@ -27,8 +29,7 @@ function App() {
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/items/:id" element={<Item />} />
 
-        {/* Profile dashboard with sidebar pages/nested routes  */}
-
+        {/* Profile dashboardwith nested routes and shared sidebar layout */}
         <Route path="/profile" element={<Profile />}>
           <Route
             path="post"

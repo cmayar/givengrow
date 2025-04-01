@@ -2,39 +2,42 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const Requests = () => {
+const Borrowed = () => {
   const [interactions, setInteractions] = useState([]);
 
   const fetchRequest = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        //owner 0 is a placeholder for the owner id
-        "http://localhost:4000/api/interactions/owner/0",
+        //owner 0 is a placeholder for the borrower id
+        "http://localhost:4000/api/interactions/borrower/0",
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setInteractions(res.data.interactions);
+      const borrowedItems = res.data.interactions.filter(
+        ({ interaction }) => interaction.status === "borrowed"
+      );
+      setInteractions(borrowedItems);
     } catch (error) {
-      console.error("Error fetching interactions:", error);
+      console.error("Error fetching borrowed items:", error);
     }
   };
 
   useEffect(() => {
-    fetchRequest();
+    fetchBorrowed();
   }, []);
 
-  const handleAccept = async (interactionId) => {
+  const handleReturn = async (interactionId) => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
         `http://localhost:4000/api/interactions/${interactionId}/status`,
         {
-          status: "requested",
-          userType: "owner",
+          status: "borrowed",
+          userType: "borrower",
         },
         {
           headers: {
@@ -42,7 +45,7 @@ const Requests = () => {
           },
         }
       );
-      fetchRequest(); // Refresh the list of interactions
+      fetchBorrower(); // Refresh the list of interactions
     } catch (error) {
       console.error("Error accepting request:", error);
     }
@@ -50,9 +53,9 @@ const Requests = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Incoming Requests</h2>
+      <h2>Borrowed Items</h2>
       {interactions.length === 0 ? (
-        <p>No requests at the moment.</p>
+        <p>You haven't borrowed any items currently.</p>
       ) : (
         interactions.map(({ interaction }) => (
           <div key={interaction.id} className="card mb-3">
@@ -84,4 +87,4 @@ const Requests = () => {
   );
 };
 
-export default Requests;
+export default Borrowed;

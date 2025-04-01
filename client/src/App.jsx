@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { React, useState } from "react";
+import { Outlet } from 'react-router';
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Profile from "./Components/Profile";
 import Item from "./Components/Item";
+<<<<<<< HEAD
+=======
+import LogInPage from "./Components/LogInPage";
+import RegistrationPage from "./Components/RegistrationPage";
+>>>>>>> main
 import Landing from "./Components/Landing";
 import MyObjects from "./Components/MyObjects";
 
@@ -15,6 +21,8 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/login" element={<LogInPage />} />
+        <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/items/:id" element={<Item />} />
         {/* Sidebar pages */}
         <Route
@@ -61,6 +69,6 @@ function App() {
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

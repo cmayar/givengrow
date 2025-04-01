@@ -12,6 +12,8 @@ import itemsRouter from "./routes/items.js";
 
 const app = express();
 
+app.use('/auth', auth);
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -3,6 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
+import authRouter from "./routes/auth.js";
 
 import interactionsRouter from "./routes/interactions.js";
 import usersRouter from "./routes/users.js";
@@ -10,7 +11,7 @@ import itemsRouter from "./routes/items.js";
 
 const app = express();
 
-app.use('/auth', auth);
+app.use('/auth', authRouter);
 
 app.use(logger("dev"));
 app.use(express.json());

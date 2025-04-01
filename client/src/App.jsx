@@ -6,6 +6,7 @@ import Home from "./Components/Home";
 import Profile from "./Components/Profile";
 import Item from "./Components/Item";
 import Landing from "./Components/Landing";
+import MyObjects from "./Components/MyObjects";
 
 function App() {
   return (
@@ -26,11 +27,12 @@ function App() {
         />
         <Route
           path="/my-objects"
-          element={
-            <div style={{ padding: "2rem" }}>
-              <h2>My Objects</h2>
-            </div>
-          }
+          element={<MyObjects />}
+          // element={
+          //   <div style={{ padding: "2rem" }}>
+          //     <h2>My Objects</h2>
+          //   </div>
+          // }
         />
         <Route
           path="/requests"

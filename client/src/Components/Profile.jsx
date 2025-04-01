@@ -17,6 +17,9 @@ const Profile = () => {
       <div className="sidebar bg-light p-4">
         {/* <div className="col-md-3"> */}
         <h5 className="mb-4">Dashboard</h5>
+        <Link to="/home" className="btn btn-outline-primary w-100 mb-3">
+          Go to Home
+        </Link>
         <div className="list-group">
           <Link
             to="/post"

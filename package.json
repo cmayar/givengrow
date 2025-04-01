@@ -20,6 +20,7 @@
     "morgan": "~1.9.1",
     "mysql2": "^3.13.0",
     "nodemon": "^3.1.9",
+    "react-bootstrap": "^2.10.9",
     "react-router-dom": "^7.4.0"
   }
 }

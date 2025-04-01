@@ -11,11 +11,6 @@ import RegistrationPage from "./Components/Registration";
 function App() {
   return (
     <Router>
-      <div>
-        <h1> Share & Borrow app</h1>
-        <h2> Welcome! </h2>
-      </div>
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />}></Route>

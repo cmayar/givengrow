@@ -106,11 +106,12 @@ router.post("/", loginUsers, async (req, res) => {
 
 
 //UPDATE ITEMS INFO
-router.put("/:id", async (req, res) => {
+router.put("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
-  const { title, image, description, category, owner_id, latitude, longitude } =
+  const { title, image, description, category, latitude, longitude } =
     req.body;
 
+    const owner_id = req.user_id;
   try {
     const itemsCheck = await db("SELECT id FROM items WHERE id = ?;", [id]);
     if (itemsCheck.data.length === 0) {
@@ -151,7 +152,7 @@ router.put("/:id", async (req, res) => {
 
 
 // DELETE ITEM
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
 
   try {

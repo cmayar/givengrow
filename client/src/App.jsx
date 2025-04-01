@@ -1,18 +1,15 @@
 import { React, useState } from "react";
-import { Outlet } from 'react-router';
+import { Outlet } from "react-router";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Profile from "./Components/Profile";
 import Item from "./Components/Item";
-<<<<<<< HEAD
-=======
-import LogInPage from "./Components/LogInPage";
-import RegistrationPage from "./Components/RegistrationPage";
->>>>>>> main
+import LogInPage from "./Components/LogIn";
+import RegistrationPage from "./Components/Registration";
 import Landing from "./Components/Landing";
-import MyObjects from "./Components/MyObjects";
+// import MyObjects from "./Components/MyObjects";
 
 function App() {
   return (
@@ -33,7 +30,7 @@ function App() {
             </div>
           }
         />
-        <Route
+        {/* <Route
           path="/my-objects"
           element={<MyObjects />}
           // element={
@@ -41,7 +38,7 @@ function App() {
           //     <h2>My Objects</h2>
           //   </div>
           // }
-        />
+        /> */}
         <Route
           path="/requests"
           element={
@@ -69,6 +66,6 @@ function App() {
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;

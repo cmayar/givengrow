@@ -18,6 +18,33 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+//FILTER BY SOMETHING
+//if I dont have any query parameters, I want to return all the items
+// (("SELECT * FROM items;"))
+//if I have a query parameter, I want to return the items that match the query parameter
+// ("SELECT * FROM items WHERE title = 'Tent';")
+// ("SELECT * FROM items WHERE catergory = 'outdoor';")
+
+router.get("/filter", async (req, res) => {
+  console.log('REQ.QUERY',req.query)
+
+  const { key, value } = req.query;
+  let url = "SELECT * FROM items";
+  if (key && value) {
+    url += ` WHERE ${key} = '${value}'`;
+  }
+console.log('URL',url)
+  try {
+    const results = await db(url);
+    res.status(200).send(results.data);
+
+  } catch (error) {
+    console.log(error);
+  }
+  res.send(results)
+});
+
 // GET by user_id
 
 router.get("/:id", async (req, res) => {
@@ -34,9 +61,6 @@ router.get("/:id", async (req, res) => {
     res.status(500).send({ error: "Internal Server Error" });
   }
 });
-
-// GET items by filtering
-// filter by Category, Status or Owner
 
 // Create a new Item
 router.post("/", loginUsers, async (req, res) => {
@@ -80,33 +104,6 @@ router.post("/", loginUsers, async (req, res) => {
   }
 });
 
-//UPDATE ITEMS STATUS --> Finally the status changes are managed in the interactions endpoints.
-// router.put("/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const { status } = req.body;
-
-//   const validStatuses = ["available", "unavailable"];
-
-//   if(status && !validStatuses.includes(status)) {
-//     return res.status(400).json({ error: "Invalid or missing status"});
-//   }
-
-//   try {
-//     const result = await db("SELECT * FROM items WHERE id = ?;", [id]);
-//     console.log("Query result:", result);
-//     //check if item exists
-//     if (result.data.length === 0) {
-//       return res.status(404).json({ error: "Item not found" });
-//     }
-//     await db("UPDATE items SET status = ? WHERE id = ?;", [status, id]);
-//     res.status(200).json({
-//       message: "Item status updated successfully"
-//     });
-//   } catch (err) {
-//     console.error("Error updating item status:", err);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// })
 
 //UPDATE ITEMS INFO
 router.put("/:id", async (req, res) => {
@@ -152,31 +149,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-//FILTER BY SOMETHING
-//if I dont have any query parameters, I want to return all the items
-// (("SELECT * FROM items;"))
-//if I have a query parameter, I want to return the items that match the query parameter
-// ("SELECT * FROM items WHERE title = 'Tent';")
-// ("SELECT * FROM items WHERE catergory = 'outdoor';")
-
-// router.get("/filter", async (req, res) => {
-//   console.log('REQ.QUERY',req.query)
-
-//   const { key, value } = req.query;
-//   let url = "SELECT * FROM items";
-//   if (key && value) {
-//     url += ` WHERE ${key} = '${value}'`;
-//   }
-// console.log('URL',url)
-//   try {
-//     const results = await db(url);
-//     res.status(200).send(results.data);
-
-//   } catch (error) {
-//     console.log(error);
-//   }
-//   // res.send(results)
-// });
 
 // DELETE ITEM
 router.delete("/:id", async (req, res) => {

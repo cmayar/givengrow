@@ -27,7 +27,7 @@ const getItems = async () => {
       return;
     }
 
-    const fetchedItems = response.data.data; // Axios automatically parses JSON
+    const fetchedItems = response.data.data; // Axios automatically parses JSON. We have to put .data
     console.log("Fetched items:", fetchedItems);
     setItems(fetchedItems);
   } catch (error) {

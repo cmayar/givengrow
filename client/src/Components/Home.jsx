@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -8,39 +8,74 @@ import './styles.css';
 import headerImg from "../assets/images/header_image.jpg";
 import defaultImage from "../assets/images/default_image.png";
 
+// Home component displays shared items and filters them by category
 const Home = () => {
+  // State to store all fetched items
   const [items, setItems] = useState([]);
 
+  // State to store selected category from dropdown
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  // Categories used for dropdown filter as per ENUM in DB
+  const categories = [
+    "tools",
+    "outdoor",
+    "kitchenware",
+    "cleaning",
+    "electronics",
+    "sports",
+    "furniture",
+    "events",
+    "childrens",
+    "seasonal",
+    "crafts",
+    "media",
+    "vehicles",
+    "misc",
+  ];
+
+  // Fetch all items when the component mounts
   useEffect(() => {
     getItems();
   }, []);
 
+  // Re-fetch items when selected category changes
   useEffect(() => {
-    console.log("Updated items state:", items);
-  }, [items]);
+    if (selectedCategory === "") {
+      getItems(); // If no category selected, fetch all items
+    } else {
+      filteredByCategory(selectedCategory); // Otherwise, filter by selected category
+    }
+  }, [selectedCategory]);
 
-  //Fetch all Items
+  // Fetch all items form beckend
   const getItems = async () => {
     try {
       console.log("Fetching items...");
       const response = await axios.get("http://localhost:4000/api/items/");
-
       console.log("Axios response:", response);
 
-      if (response.status !== 200) {
-        console.error("Error fetching items:", response.statusText);
-        return;
-      }
-
-      const fetchedItems = response.data.data; // Axios automatically parses JSON
-      console.log("Fetched items:", fetchedItems);
-      setItems(fetchedItems);
+      // Set items state or fallback to empty array to avoid crashes
+      setItems(response.data?.data || []);
     } catch (error) {
       console.error("Error fetching items:", error);
+      setItems([]);
     }
   };
 
-  console.log("Items state:", items);
+  // Fetch items filtered by category from backend
+  const filteredByCategory = async (category) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/items/filter?key=category&value=${category}`
+      );
+      console.log("Filtered response:", response.data);
+      setItems(response.data || []);
+    } catch (error) {
+      console.error("Error filtering items:", error);
+      setItems([]);
+    }
+  };
 
   return (
     <>
@@ -92,6 +127,31 @@ const Home = () => {
         </div>
       </Container>
 
+      {/* Category dropdown filter */}
+      <div>
+        <label htmlFor="categoryFilter" className="form-label">
+          Filter by category:
+        </label>
+        <select
+          id="categoryFilter"
+          className="form-select"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {/* Option to show all items */}
+          <option value="">All categories</option>
+
+          {/* Loop through categories to build dropdown options */}
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* List of shared objects */}
+      
       {/* //NOTE - Shared object container */}
       <Container className="mt-5">
         <h4 className="subtitle">Need something? Explore!</h4>

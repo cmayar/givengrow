@@ -75,7 +75,7 @@ const Item = () => {
 
   return (
     <div className="container mt-5">
-      <div className="card" style={{ width: "18rem" }}>
+      <div className="card" style={{ width: "800px" }}>
         <div className="container mt-5">
           <h3>{item.title}</h3>
           <p>

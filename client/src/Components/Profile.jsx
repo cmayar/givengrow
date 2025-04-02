@@ -31,7 +31,6 @@ const Profile = () => {
       >
         <h5 className="mb-4">Dashboard</h5>
 
-        {/* Link to go back to Home */}
         <Link to="/home" className="btn btn-outline-primary w-100 mb-3">
           Go to Home
         </Link>

@@ -45,7 +45,6 @@ router.get("/filter", async (req, res) => {
 });
 
 // GET by user_id
-
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -61,7 +60,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Create a new Item
+
+// Create a new Item (protected)
 router.post("/", loginUsers, async (req, res) => {
   const {
     title,
@@ -103,12 +103,13 @@ router.post("/", loginUsers, async (req, res) => {
   }
 });
 
-//UPDATE ITEMS INFO
-router.put("/:id", async (req, res) => {
+//UPDATE ITEMS INFO (protected)
+router.put("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
-  const { title, image, description, category, owner_id, latitude, longitude } =
+  const { title, image, description, category, latitude, longitude } =
     req.body;
 
+    const owner_id = req.user_id;
   try {
     const itemsCheck = await db("SELECT id FROM items WHERE id = ?;", [id]);
     if (itemsCheck.data.length === 0) {
@@ -147,12 +148,14 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE ITEM
-router.delete("/:id", async (req, res) => {
+// DELETE ITEM (protected)
+router.delete("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
+  const owner_id = req.user_id; // Get the authenticated user's ID from the middleware
 
   try {
-    const item = await db("SELECT * FROM items WHERE id = ?;", [id]);
+    // Check if the item exists and belongs to the user
+    const item = await db("SELECT * FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
 
     if (item.length === 0) {
       return res
@@ -160,7 +163,8 @@ router.delete("/:id", async (req, res) => {
         .json({ error: "Item not found or does not belong to the user" });
     }
 
-    await db("DELETE FROM items WHERE id = ?;", [id]);
+    // Delete the item
+    await db("DELETE FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
 
     res.status(200).json({
       message: "Item deleted successfully",

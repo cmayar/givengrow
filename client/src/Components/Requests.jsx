@@ -3,8 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Requests = () => {
+  // Store the interactions where the user is the owner
   const [interactions, setInteractions] = useState([]);
 
+  // Store the success message to display to the user
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Fetch owner interactions from the API
   const fetchRequest = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -23,10 +28,12 @@ const Requests = () => {
     }
   };
 
+  // Load the data when the component mounts
   useEffect(() => {
     fetchRequest();
   }, []);
 
+  // Hanlde the accept request
   const handleAccept = async (interactionId) => {
     try {
       const token = localStorage.getItem("token");
@@ -42,19 +49,37 @@ const Requests = () => {
           },
         }
       );
-      fetchRequest(); // Refresh the list of interactions
+
+      // Notify the user that the request has been accepted
+      setSuccessMessage("Request accepted successfully!");
+
+      // Refetch data
+      fetchRequest();
     } catch (error) {
       console.error("Error accepting request:", error);
     }
   };
 
+  // Filter interactions with status 'requested'
+  const requestedInteractions = interactions.filter(
+    ({ interaction }) => interaction.status === "requested"
+  );
+
   return (
     <div className="container mt-5">
       <h2>Incoming Requests</h2>
-      {interactions.length === 0 ? (
+
+      {/* Success message */}
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
+        </div>
+      )}
+
+      {requestedInteractions.length === 0 ? (
         <p>No requests at the moment.</p>
       ) : (
-        interactions.map(({ interaction }) => (
+        requestedInteractions.map(({ interaction }) => (
           <div key={interaction.id} className="card mb-3">
             <h5>{interaction.item.title}</h5>
             <p>
@@ -69,14 +94,13 @@ const Requests = () => {
             <p>
               <strong>Status:</strong> {interaction.status}
             </p>
-            {interaction.status === "requested" && (
-              <button
-                className="btn btn-success"
-                onClick={() => handleAccept(interaction.id)}
-              >
-                Accept Request
-              </button>
-            )}
+
+            <button
+              className="btn btn-success"
+              onClick={() => handleAccept(interaction.id)}
+            >
+              Accept Request
+            </button>
           </div>
         ))
       )}

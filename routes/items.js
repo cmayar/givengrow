@@ -18,7 +18,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 //FILTER BY SOMETHING
 //if I dont have any query parameters, I want to return all the items
 // (("SELECT * FROM items;"))
@@ -27,22 +26,22 @@ router.get("/", async (req, res) => {
 // ("SELECT * FROM items WHERE catergory = 'outdoor';")
 
 router.get("/filter", async (req, res) => {
-  console.log('REQ.QUERY',req.query)
+  console.log("REQ.QUERY", req.query);
 
   const { key, value } = req.query;
   let url = "SELECT * FROM items";
   if (key && value) {
     url += ` WHERE ${key} = '${value}'`;
   }
-console.log('URL',url)
+  console.log("URL", url);
   try {
     const results = await db(url);
     res.status(200).send(results.data);
-
   } catch (error) {
     console.log(error);
   }
-  res.send(results)
+  // NOTE: This is the same as res.status(200).send(results.data) in the try block
+  // res.send(results)
 });
 
 // GET by user_id
@@ -104,7 +103,6 @@ router.post("/", loginUsers, async (req, res) => {
   }
 });
 
-
 //UPDATE ITEMS INFO
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
@@ -148,7 +146,6 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
 
 // DELETE ITEM
 router.delete("/:id", async (req, res) => {

@@ -7,14 +7,18 @@ import axios from "axios";
 */
 
 const Borrowed = () => {
-  const [interactions, setInteractions] = useState([]);
+  // const [interactions, setInteractions] = useState([]);
+
+  const [borrowerInteractions, setBorrowerInteractions] = useState([]);
+  const [ownerInteractions, setOwnerInteractions] = useState([]);
 
   const [successMessage, setSuccessMessage] = useState("");
 
-  const fetchBorrowed = async () => {
+  const fetchInteractions = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(
+
+      const borrowerRes = await axios.get(
         //owner 0 is a placeholder for the borrower id
         "http://localhost:4000/api/interactions/borrower/0",
         {
@@ -24,18 +28,28 @@ const Borrowed = () => {
         }
       );
 
-      //NOTE - debug code
-      console.log("API Response: ", res.data);
-      setInteractions(res.data.interactions);
+      const ownerRes = await axios.get(
+        //owner 0 is a placeholder for the owner id
+        "http://localhost:4000/api/interactions/owner/0",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setBorrowerInteractions(borrowerRes.data.interactions);
+      setOwnerInteractions(ownerRes.data.interactions);
     } catch (error) {
       console.error("Error fetching borrowed items:", error);
     }
   };
 
   useEffect(() => {
-    fetchBorrowed();
+    fetchInteractions();
   }, []);
 
+  // Borrower returns the item
   const handleReturn = async (interactionId) => {
     try {
       const token = localStorage.getItem("token");
@@ -56,31 +70,64 @@ const Borrowed = () => {
         "Item marked as returned! Awaiting owner confirmation."
       );
 
-      fetchBorrowed(); // Refresh the list of interactions
+      fetchInteractions(); // Refresh the list of interactions
     } catch (error) {
       console.error("Error accepting request:", error);
       setSuccessMessage("Something went wrong. Please try again.");
     }
   };
 
-  const borrowedItems = interactions.filter(
+  // Owner confirms the item has been returned
+  const handleConfirmReturn = async (interactionId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:4000/api/interactions/${interactionId}/status`,
+        {
+          status: "borrower-returned",
+          userType: "owner",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Notify the user that the item has been returned
+
+      setSuccessMessage("Return confirmed. Item is now available.");
+      fetchInteractions(); // Refresh the list of interactions
+    } catch (error) {
+      console.error("Error accepting request:", error);
+      setSuccessMessage("Something went wrong. Please try again.");
+    }
+  };
+
+  // filter out the borrowed items
+  const borrowedItems = borrowerInteractions.filter(
     ({ interaction }) => interaction.status === "borrowed"
   );
-  console.log("Borrowed Items: ", borrowedItems);
+
+  const ownerReturnedItems = ownerInteractions.filter(
+    ({ interaction }) => interaction.status === "borrower-returned"
+  );
 
   return (
     <div className="container mt-5">
       <h2>Borrowed Items</h2>
+
       {successMessage && (
         <div className="alert alert-success" role="alert">
           {successMessage}
         </div>
       )}
+
+      <h4>Items You Borrowed</h4>
       {borrowedItems.length === 0 ? (
         <p>You haven't borrowed any items currently.</p>
       ) : (
         borrowedItems.map(({ interaction }) => (
-          <div key={interaction.id} className="card mb-3">
+          <div key={interaction.id} className="card mb-3 p-3">
             <h5>{interaction.item.title}</h5>
             <p>
               <strong>Owner:</strong> {interaction.owner.username}
@@ -99,6 +146,37 @@ const Borrowed = () => {
               onClick={() => handleReturn(interaction.id)}
             >
               Return Item
+            </button>
+          </div>
+        ))
+      )}
+
+      <hr className="my-5" />
+
+      <h4>Items Borrowed From You</h4>
+      {ownerReturnedItems.length === 0 ? (
+        <p>No items are awaiting your return confirmation.</p>
+      ) : (
+        ownerReturnedItems.map(({ interaction }) => (
+          <div key={interaction.id} className="card mb-3 p-3">
+            <h5>{interaction.item.title}</h5>
+            <p>
+              <strong>Borrower:</strong> {interaction.borrower.username}
+            </p>
+            <p>
+              <strong>From:</strong> {interaction.dates.start}
+            </p>
+            <p>
+              <strong>To:</strong> {interaction.dates.end}
+            </p>
+            <p>
+              <strong>Status:</strong> {interaction.status}
+            </p>
+            <button
+              className="btn btn-success"
+              onClick={() => handleConfirmReturn(interaction.id)}
+            >
+              Confirm Return
             </button>
           </div>
         ))

@@ -77,12 +77,18 @@ const Item = () => {
     <div className="container mt-5">
       <div className="card" style={{ width: "800px" }}>
         <div className="container mt-5">
-          <h3> {item.title}</h3>
-          <p>Description: {item.description}</p>
-          <p>Category: {item.category}</p>
-          <p>{item.status}</p>
-          {/* //NOTE - route to home is "/" */}
-          <Link to="/" className="btn btn-outline-primary">
+          <h3>{item.title}</h3>
+          <p>
+            <strong>Description:</strong> {item.description}
+          </p>
+          <p>
+            <strong>Category:</strong> {item.category}
+          </p>
+          <p>
+            <strong>Status:</strong> {item.status}
+          </p>
+
+          <Link to="/home" className="btn btn-outline-primary">
             Back to Home
           </Link>
 

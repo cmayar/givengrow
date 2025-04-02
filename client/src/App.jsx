@@ -9,6 +9,7 @@ import LogInPage from "./Components/LogIn";
 import RegistrationPage from "./Components/Registration";
 import Landing from "./Components/Landing";
 import Requests from "./Components/Requests";
+import Borrowed from "./Components/Borrowed";
 // import MyObjects from "./Components/MyObjects";
 
 function App() {
@@ -48,14 +49,7 @@ function App() {
             }
           />
           <Route path="requests" element={<Requests />} />
-          <Route
-            path="borrowed"
-            element={
-              <div style={{ padding: "2rem" }}>
-                <h2>Borrowed Items</h2>
-              </div>
-            }
-          />
+          <Route path="borrowed" element={<Borrowed />} />
           <Route
             path="signout"
             element={

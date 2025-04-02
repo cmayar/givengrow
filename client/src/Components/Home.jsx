@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Button, Card, Row, Col, Container, Navbar, Nav, Image } from 'react-bootstrap';
-
-import headerImg from "../assets/images/header_image.png";
+import './home.css';
+import './styles.css';
+import headerImg from "../assets/images/header_image.jpg";
 import defaultImage from "../assets/images/default_image.png";
 
 const Home = () => {
@@ -43,28 +44,25 @@ const Home = () => {
 
   return (
     <>
-      {/* //NOTE - Navbar goes here*/}
-      <Navbar bg="dark" variant="dark" expand="lg">
+      {/* //NOTE - Navbar goes here waiting mattea's one */}
+      <Navbar style={{ backgroundColor: '#A59AAA', color: 'white' }} variant="dark" expand="lg">
         <Container>
-          <Navbar.Brand href="/">Sharing Is Caring</Navbar.Brand>
+          <Navbar.Brand href="/">Share&Borrow</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/home">Home</Nav.Link>
               <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {/* <Link to="/profile" className="btn btn-outline-primary">
-        Go to profile
-      </Link> */}
       
       {/* //NOTE - header image */}
       <Container className="mt-3" style={{ position: "relative" }}>
         <Image
         src={ headerImg }
-          alt="sharing is caring header image"
+          alt="shareapp header image"
           fluid 
           className="mb-4" 
           style={{ width: '100%', height: 'auto' }}
@@ -72,7 +70,7 @@ const Home = () => {
         <div 
           style={{
             position: "absolute", 
-            top: "30%", 
+            top: "50%", 
             left: "0%", 
             zIndex: 1,
             width: "40%",
@@ -80,14 +78,14 @@ const Home = () => {
             padding: "20px",
           }}
         >
-          <Card className="header-card"> 
+          <Card className="custom-card header-card"> 
             <Card.Body>
               <Card.Title>Welcome to Sharing app</Card.Title>
               <Card.Text>
                 Share objects to help others, borrow objects that you need!
               </Card.Text>
-                <Link to="/register" className="btn btn-outline-primary">
-              Sign Up
+                <Link to="/post" style={{ textDecoration: 'none' }} className="button">
+              Start sharing!
               </Link>
             </Card.Body>
           </Card>
@@ -96,7 +94,7 @@ const Home = () => {
 
       {/* //NOTE - Shared object container */}
       <Container className="mt-5">
-        <h4>Need something? Explore!</h4>
+        <h4 className="subtitle">Need something? Explore!</h4>
         <Row>
         {items.length > 0 ? (
           items.map((item) => (
@@ -117,7 +115,7 @@ const Home = () => {
                   <Card.Text>Category: {item.category}</Card.Text>
                   <Card.Text> {item.status}</Card.Text>
                   <Link to={`/items/${item.id}`}>
-                    <Button variant="primary" className="mt-2">
+                    <Button variant="primary" className="button mt-2">
                       Show more
                     </Button>
                   </Link>

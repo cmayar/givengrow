@@ -30,8 +30,8 @@ const Profile = () => {
         }}
       >
         <h5 className="mb-4">Dashboard</h5>
-        {/* //NOTE - I fix the route, now go to home  */}
-        <Link to="/" className="btn btn-outline-primary w-100 mb-3">
+
+        <Link to="/home" className="btn btn-outline-primary w-100 mb-3">
           Go to Home
         </Link>
 

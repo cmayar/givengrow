@@ -154,9 +154,11 @@ router.put("/:id", loginUsers, async (req, res) => {
 // DELETE ITEM
 router.delete("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
+  const owner_id = req.user_id; // Get the authenticated user's ID from the middleware
 
   try {
-    const item = await db("SELECT * FROM items WHERE id = ?;", [id]);
+    // Check if the item exists and belongs to the user
+    const item = await db("SELECT * FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
 
     if (item.length === 0) {
       return res
@@ -164,7 +166,8 @@ router.delete("/:id", loginUsers, async (req, res) => {
         .json({ error: "Item not found or does not belong to the user" });
     }
 
-    await db("DELETE FROM items WHERE id = ?;", [id]);
+    // Delete the item
+    await db("DELETE FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
 
     res.status(200).json({
       message: "Item deleted successfully",

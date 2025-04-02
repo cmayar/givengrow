@@ -45,7 +45,6 @@ router.get("/filter", async (req, res) => {
 });
 
 // GET by user_id
-
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -61,7 +60,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Create a new Item
+
+// Create a new Item (protected)
 router.post("/", loginUsers, async (req, res) => {
   const {
     title,
@@ -103,7 +103,7 @@ router.post("/", loginUsers, async (req, res) => {
   }
 });
 
-//UPDATE ITEMS INFO
+//UPDATE ITEMS INFO (protected)
 router.put("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
   const { title, image, description, category, latitude, longitude } =
@@ -148,7 +148,7 @@ router.put("/:id", loginUsers, async (req, res) => {
   }
 });
 
-// DELETE ITEM
+// DELETE ITEM (protected)
 router.delete("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
   const owner_id = req.user_id; // Get the authenticated user's ID from the middleware

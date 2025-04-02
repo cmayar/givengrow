@@ -105,10 +105,9 @@ const Home = () => {
         <div 
           style={{
             position: "absolute", 
-            top: "50%", 
+            top: "30%", 
             left: "0%", 
             zIndex: 1,
-            width: "40%",
             width: "40%",
             padding: "20px",
           }}
@@ -127,11 +126,12 @@ const Home = () => {
         </div>
       </Container>
 
+   <h4 className="subtitle">Need something? Explore!</h4>
       {/* Category dropdown filter */}
-      <div>
-        <label htmlFor="categoryFilter" className="form-label">
+      <div className="category-filter-container mt-3">
+        {/* <label htmlFor="categoryFilter" className="form-label">
           Filter by category:
-        </label>
+        </label> */}
         <select
           id="categoryFilter"
           className="form-select"
@@ -154,7 +154,6 @@ const Home = () => {
       
       {/* //NOTE - Shared object container */}
       <Container className="mt-5">
-        <h4 className="subtitle">Need something? Explore!</h4>
         <Row>
         {items.length > 0 ? (
           items.map((item) => (
@@ -172,7 +171,7 @@ const Home = () => {
                   </div>
                   <Card.Title>{item.title}</Card.Title>
                   <Card.Text>{item.description}</Card.Text>
-                  <Card.Text>Category: {item.category}</Card.Text>
+                  <Card.Text><strong>Category:</strong> {item.category}</Card.Text>
                   <Card.Text> {item.status}</Card.Text>
                   <Link to={`/items/${item.id}`}>
                     <Button variant="primary" className="button mt-2">

@@ -66,14 +66,14 @@ router.get("/:id", async (req, res) => {
       JOIN users ON items.owner_id = users.id
       WHERE items.id = ?;
     `;
-    console.log("Executing query:", query, "with id:", id);
+    // console.log("Executing query:", query, "with id:", id);
     const result = await db(query, [id]);
-    console.log("Query result:", result); 
+    // console.log("Query result:", result); 
 
     if (result.data.length === 0) {
       return res.status(404).send({ error: "Item not found" });
     }
-    console.log("Sending response", result.data[0]);
+    // console.log("Sending response", result.data[0]);
     res.status(200).send(result.data[0]); // Send the first item
   } catch (err) {
     console.error("Error fetching item:", err);

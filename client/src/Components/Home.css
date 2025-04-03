@@ -16,7 +16,13 @@
     max-width: 90%;  /* Take up 90% of the screen width */
   }
 }
+.status-available {
+  color: rgb(112, 204, 112);
+}
 
+.status-unavailable {
+  color: rgb(226, 92, 92);
+}
 .custom-card.header-card .card-title {
   font-size: 24px;
   font-weight: bold;
@@ -109,6 +115,8 @@
     background-color: var(--button-hover-color); /* variable color here */
     text-decoration:  'none';
   }
+
+
 
 
 

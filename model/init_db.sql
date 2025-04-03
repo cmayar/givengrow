@@ -35,7 +35,7 @@ CREATE TABLE `items`(
         'misc'
     ) NOT NULL,
     `owner_id` INT NOT NULL,
-    `status` ENUM('available', 'unavailable') NOT NULL, DEFAULT 'available',
+    `status` ENUM('available', 'unavailable') NOT NULL DEFAULT 'available',
     `latitude` INT NULL,
     `longitude` INT NULL,
     PRIMARY KEY(`id`),
@@ -54,4 +54,10 @@ CREATE TABLE `interactions` (
     FOREIGN KEY (`borrower_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`item_id`) REFERENCES `items`(`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `images`(
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `path` VARCHAR(255) NOT NULL,
+    PRIMARY KEY(`id`)
 );

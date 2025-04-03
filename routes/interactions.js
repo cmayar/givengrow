@@ -1,5 +1,6 @@
 import express from "express";
 import db from "../model/helper.js";
+import loginUser from "../middleware.js";
 
 const router = express.Router();
 
@@ -109,23 +110,18 @@ const confirmReturnStatusUpdate = async (
 //it has to verify if the item is available
 //the borrower cannot be the owner of the item
 
-router.post("/", async (req, res) => {
-  const { borrower_id, item_id, start_date, end_date } = req.body;
-
-  // FIXME - this will come from the token I will put, rec_id
-  const owner_id = 1;
-
-  //NOTE - debug
-  console.log("Received POST request for new interaction");
+// Add middleware to check if user is logged in
+router.post("/", loginUser, async (req, res) => {
+  //NOTE - Implementint borrower_id after JWT
+  const borrower_id = req.user_id;
+  const { item_id, start_date, end_date } = req.body;
 
   //return message missing required fields, if client does not provide all required fields
-  if (!borrower_id || !owner_id || !item_id || !start_date || !end_date) {
+  if (!borrower_id || !item_id || !start_date || !end_date) {
     return res.status(400).send({ message: "Missing required information" });
   }
 
   try {
-    //NOTE - debug
-    console.log("Starting the interaction creation process");
     //check if the item exists
     const itemCheck = await db("SELECT * FROM items WHERE id = ?", [item_id]);
 
@@ -136,6 +132,8 @@ router.post("/", async (req, res) => {
 
     //check if the item is available
     const item = itemCheck.data[0];
+    const owner_id = item.owner_id;
+
     if (item.status !== "available") {
       return res.status(400).send({ message: "Item is not available" });
     }
@@ -176,15 +174,17 @@ router.post("/", async (req, res) => {
 });
 
 // GET request for owner interactions
-router.get("/owner/:id", async (req, res) => {
-  // const { id: ownerId } = req.params;
-  const { id } = req.params;
+router.get("/owner/:id", loginUser, async (req, res) => {
+  // // const { id: ownerId } = req.params;
+  // const { id } = req.params;
 
-  //FIXME - TEMPORARY - this will come from the token
-  const owner_id = 1;
+  // //FIXME - TEMPORARY - this will come from the token
+  // const owner_id = 1;
+
+  const owner_id = req.user_id;
 
   try {
-    const result = await getInteractionsByUser(owner_id, "owner"); //FIXME - change ownerId to owner_id
+    const result = await getInteractionsByUser(owner_id, "owner");
 
     //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {
@@ -235,15 +235,14 @@ router.get("/owner/:id", async (req, res) => {
 });
 
 // GET request for borrower interactions
-router.get("/borrower/:id", async (req, res) => {
+router.get("/borrower/:id", loginUser, async (req, res) => {
   // const { id: borrowerId } = req.params;
-  const { id } = req.params;
+  // const { id } = req.params;
 
-  //FIXME - TEMPORARY - this will come from the token
-  const borrower_id = 2;
+  const borrower_id = req.user_id;
 
   try {
-    const result = await getInteractionsByUser(borrower_id, "borrower"); //FIXME - change borrowerId to borrower_id, temporary
+    const result = await getInteractionsByUser(borrower_id, "borrower");
 
     //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {
@@ -294,21 +293,44 @@ router.get("/borrower/:id", async (req, res) => {
 });
 
 //REVIEW - refractored PUT endpoints from three to one endpint, intent 1
-router.put("/:id/status", async (req, res) => {
+router.put("/:id/status", loginUser, async (req, res) => {
+  // const { id } = req.params;
+  // const { userType } = req.body;
+
+  // const owner_id = 1;
+
   const { id } = req.params;
-  const { userType } = req.body;
+  const { status } = req.body;
+  const user_id = req.user_id;
 
-  const owner_id = 1;
-
-  // Check is userType is provided
-  if (!userType) {
-    return res.status(400).send({ message: "Missing required user type" });
-  }
+  // Check is userType is provided NO NEEDED
+  // if (!userType) {
+  //   return res.status(400).send({ message: "Missing required user type" });
+  // }
 
   try {
-    if (userType === "owner") {
+    //NOTE - Fetch interactions and validate
+    const result = await db("SELECT * FROM interactions WHERE id = ?", [id]);
+
+    if (result.data.length === 0) {
+      return res.status(404).send({ message: "Interaction not found" });
+    }
+
+    const interaction = result.data[0];
+
+    // Dynamically determine the userType
+    let userType = null;
+    if (interaction.owner_id === user_id) userType = "owner";
+    if (interaction.borrower_id === user_id) userType = "borrower";
+
+    if (!userType) {
+      return res.status(403).send({ message: "User not authorized" });
+    }
+
+    // Owner actions
+    if (interaction.owner_id === user_id) {
       // Owner action: change status from 'requested' to 'borrowed'
-      if (req.body.status === "requested") {
+      if (status === "requested") {
         return confirmReturnStatusUpdate(
           id,
           "owner",
@@ -317,7 +339,7 @@ router.put("/:id/status", async (req, res) => {
           res,
           req
         );
-      } else if (req.body.status === "borrower-returned") {
+      } else if (status === "borrower-returned") {
         return confirmReturnStatusUpdate(
           id,
           "owner",
@@ -333,9 +355,10 @@ router.put("/:id/status", async (req, res) => {
       }
     }
 
-    if (userType === "borrower") {
+    // Borrower actions
+    if (interaction.borrower_id === user_id) {
       // Borrower action: change status from 'borrowed' to 'borrowed-return'
-      if (req.body.status === "borrowed") {
+      if (status === "borrowed") {
         return confirmReturnStatusUpdate(
           id,
           "borrower",
@@ -350,6 +373,9 @@ router.put("/:id/status", async (req, res) => {
         });
       }
     }
+
+    // If not owner or borrower, return unauthorized
+    res.status(403).send({ message: "User not authorized" });
   } catch (err) {
     res.status(500).send({ message: "Error updating interaction status" });
   }

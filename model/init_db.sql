@@ -55,3 +55,9 @@ CREATE TABLE `interactions` (
     FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`item_id`) REFERENCES `items`(`id`) ON DELETE CASCADE
 );
+
+CREATE TABLE `images`(
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `path` VARCHAR(255) NOT NULL,
+    PRIMARY KEY(`id`)
+);

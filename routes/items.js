@@ -9,8 +9,16 @@ const router = express.Router();
 
 // //GET all Items
 router.get("/", async (req, res) => {
+  //NOTE - I change this endpoint to use the join to access to username of the owner.
   try {
-    const result = await db(`SELECT * FROM items`);
+    const query = `
+      SELECT 
+        items.*, 
+        users.username AS owner_name 
+      FROM items 
+      JOIN users ON items.owner_id = users.id;
+    `;
+    const result = await db(query);
     res.status(200).send(result);
   } catch (err) {
     console.error("Error fetching items", err);
@@ -45,17 +53,30 @@ router.get("/filter", async (req, res) => {
 });
 
 // GET by user_id
+  //NOTE - I change this endpoint to use the join to access to username of the owner.
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await db("SELECT * FROM items WHERE id = ?;", [id]);
+    const query = `
+      SELECT 
+        items.*, 
+        users.username AS owner_name 
+      FROM items 
+      JOIN users ON items.owner_id = users.id
+      WHERE items.id = ?;
+    `;
+    console.log("Executing query:", query, "with id:", id);
+    const result = await db(query, [id]);
+    console.log("Query result:", result); 
 
-    if (result.length === 0) {
+    if (result.data.length === 0) {
       return res.status(404).send({ error: "Item not found" });
     }
-    res.send(result.data);
+    console.log("Sending response", result.data[0]);
+    res.status(200).send(result.data[0]); // Send the first item
   } catch (err) {
+    console.error("Error fetching item:", err);
     res.status(500).send({ error: "Internal Server Error" });
   }
 });

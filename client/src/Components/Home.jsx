@@ -173,6 +173,7 @@ const Home = () => {
                   <Card.Text>{item.description}</Card.Text>
                   <Card.Text><strong>Category:</strong> {item.category}</Card.Text>
                   <Card.Text> {item.status}</Card.Text>
+                  <Card.Text><strong>Owner:</strong> {item.owner_name}</Card.Text> {/* Display the owner's username */}
                   <Link to={`/items/${item.id}`}>
                     <Button variant="primary" className="button mt-2">
                       Show more

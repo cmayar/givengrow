@@ -5,6 +5,7 @@
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 400px;
+  min-width: 300px;
   margin: 0 auto;
 }
 
@@ -93,8 +94,7 @@
 
 
   .button {
-    background-color: var(--button-background-color);
-    
+    background-color: var(--button-background-color);  /* I use here the variable of the styles.css for the button color */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -105,8 +105,8 @@
     text-decoration:  'none';
   }
   
-  .button :hover {
-    background-color: var(--button-hover-color);
+.button :hover {
+    background-color: var(--button-hover-color); /* variable color here */
     text-decoration:  'none';
   }
 

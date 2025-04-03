@@ -12,10 +12,8 @@ const formatDate = (date) => {
 const Item = () => {
   const { id } = useParams();
   const [item, setItem] = useState({});
-
   const [startDate, setStartDate] = useState(formatDate(new Date()));
   const [endDate, setEndDate] = useState(formatDate(new Date()));
-
   // Message for
   const [message, setMessage] = useState("");
 
@@ -30,16 +28,13 @@ const Item = () => {
   const getItem = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/api/items/${id}`);
-      console.log("Axios response:", response);
-
-      const fetchedItem = response.data[0];
-      console.log("Fetched item:", fetchedItem);
+      console.log("Fetched item:", response.data);
 
       if (response.status !== 200) {
         console.error("Error fetching item:", response.statusText);
         return;
       }
-      setItem(fetchedItem);
+      setItem(response.data); // Set the fetched item
     } catch (error) {
       console.error("Error fetching item:", error);
     }
@@ -73,6 +68,10 @@ const Item = () => {
     }
   };
 
+  if (!item) {
+    return <p>Loading item details...</p>;
+  }
+
   return (
     <div className="container mt-5">
       <div className="card" style={{ width: "800px" }}>
@@ -87,6 +86,10 @@ const Item = () => {
           <p>
             <strong>Status:</strong> {item.status}
           </p>
+          <p>
+          <strong>Owner:</strong> {item.owner_name}
+          </p>
+
 
           <Link to="/home" className="btn btn-outline-primary">
             Back to Home

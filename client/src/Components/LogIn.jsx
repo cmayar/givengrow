@@ -6,26 +6,24 @@ function LogInPage() {
     password: "",
   });
 
+  function handleChange(e) {}
 
-  function handleChange(e) {
-
-  }
-  
-
-  function setError(e) {
-    
-  }
+  function setError(e) {}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Send a POST request to beckend with the user's credentials
       const { data } = await axios("http://localhost:4000/auth/login", {
         method: "POST",
         data: credentials,
       });
 
+      // Stores the received token in localStorage for future authenticated requests
       localStorage.setItem("token", data.token);
-      navigate("/");
+
+      // Redirects the user to the home page
+      navigate("/home");
     } catch (err) {
       console.error("Login failed:", err);
       setError(err.response?.data?.message || "Login failed");

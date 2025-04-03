@@ -81,6 +81,27 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//TODO - New endpoint to get the objects of login user. It user the owner_id of the loged user.
+router.get("/my-objects", loginUsers, async (req, res) => {
+  const owner_id = req.user_id; // Obtenemos el ID del usuario autenticado
+
+  try {
+    const query = `
+      SELECT 
+        items.*, 
+        users.username AS owner_name 
+      FROM items 
+      JOIN users ON items.owner_id = users.id
+      WHERE items.owner_id = ?;
+    `;
+    const result = await db(query, [owner_id]);
+    res.status(200).send(result); 
+  } catch (err) {
+    console.error("Error fetching user's objects:", err);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+});
+
 
 // Create a new Item (protected)
 router.post("/", loginUsers, async (req, res) => {

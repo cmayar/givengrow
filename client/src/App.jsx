@@ -10,7 +10,7 @@ import RegistrationPage from "./Components/Registration";
 import Landing from "./Components/Landing";
 import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
-// import MyObjects from "./Components/MyObjects";
+import MyObjects from "./Components/MyObjects";
 
 function App() {
   return (
@@ -40,6 +40,7 @@ function App() {
               </div>
             }
           />
+          <Route path="my-objects" element={<MyObjects />} />
           <Route
             path="my-objects"
             element={

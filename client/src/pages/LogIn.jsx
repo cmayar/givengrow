@@ -6,23 +6,31 @@ function LogInPage() {
     password: "",
   });
 
+
   function handleChange(e) {
-    const { name, value } = e.target;
-    setData((prevData) => {
-      const newState = { ...prevData, [name]: value };
-      console.log("Updated State:", newState);
-      return newState;
-    });
+
+  }
+  
+
+  function setError(e) {
+    
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem(
-      "userToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NDMxMDQ3MDIsImV4cCI6MTc0MzEwODMwMn0.tiGwj_nb0kVL1NWgzq3VbpCUEkPhqKbGFbIHkNMc1t4"
-    );
-    console.log("Final User Log In Data:", data);
-  }
+    try {
+      const { data } = await axios("http://localhost:4000/auth/login", {
+        method: "POST",
+        data: credentials,
+      });
+
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError(err.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div>

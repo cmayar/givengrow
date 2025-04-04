@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Image } from "react-bootstrap";
+import "./item.css";
+import "./styles.css";
+import defaultImage from "../assets/images/default_image.png";
 
 const formatDate = (date) => {
   if (!(date instanceof Date)) return "";
@@ -12,10 +16,8 @@ const formatDate = (date) => {
 const Item = () => {
   const { id } = useParams();
   const [item, setItem] = useState({});
-
   const [startDate, setStartDate] = useState(formatDate(new Date()));
   const [endDate, setEndDate] = useState(formatDate(new Date()));
-
   // Message for
   const [message, setMessage] = useState("");
 
@@ -30,16 +32,13 @@ const Item = () => {
   const getItem = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/api/items/${id}`);
-      console.log("Axios response:", response);
-
-      const fetchedItem = response.data[0];
-      console.log("Fetched item:", fetchedItem);
+      console.log("Fetched item:", response.data);
 
       if (response.status !== 200) {
         console.error("Error fetching item:", response.statusText);
         return;
       }
-      setItem(fetchedItem);
+      setItem(response.data); // Set the fetched item
     } catch (error) {
       console.error("Error fetching item:", error);
     }
@@ -73,10 +72,21 @@ const Item = () => {
     }
   };
 
+  if (!item) {
+    return <p>Loading item details...</p>;
+  }
+
   return (
-    <div className="container mt-5">
-      <div className="card" style={{ width: "800px" }}>
+    <div className="item-card-container">
+      <div className="card">
         <div className="container mt-5">
+          <div className="item-img-container">
+        <Image
+         src={item.imageUrl ? item.imageUrl : defaultImage}
+         alt="Item Image"
+         className="card-img"
+        />
+        </div>
           <h3>{item.title}</h3>
           <p>
             <strong>Description:</strong> {item.description}
@@ -84,10 +94,18 @@ const Item = () => {
           <p>
             <strong>Category:</strong> {item.category}
           </p>
+          <p
+                      className={
+                        item.status === "available"
+                          ? "status-available"
+                          : "status-unavailable"
+                      }
+                    >
+                      <strong>{item.status}</strong>
+                    </p>
           <p>
-            <strong>Status:</strong> {item.status}
+          <strong>Owner:</strong> {item.owner_name}
           </p>
-
           <Link to="/home" className="btn btn-outline-primary">
             Back to Home
           </Link>
@@ -109,7 +127,7 @@ const Item = () => {
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />
-              <button className="btn btn-primary" onClick={requestItem}>
+              <button className="button" onClick={requestItem}>
                 Request to borrow
               </button>
             </div>

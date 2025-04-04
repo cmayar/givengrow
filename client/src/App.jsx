@@ -11,7 +11,7 @@ import Landing from "./Components/Landing";
 import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
 import Images from "./Components/ImageUploader.jsx";
-// import MyObjects from "./Components/MyObjects";
+import MyObjects from "./Components/MyObjects";
 
 function App() {
   return (
@@ -42,14 +42,7 @@ function App() {
               </div>
             }
           />
-          <Route
-            path="my-objects"
-            element={
-              <div style={{ padding: "2rem" }}>
-                <h2>My Objects</h2>
-              </div>
-            }
-          />
+          <Route path="my-objects" element={<MyObjects />} />       
           <Route path="requests" element={<Requests />} />
           <Route path="borrowed" element={<Borrowed />} />
           <Route

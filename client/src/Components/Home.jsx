@@ -7,6 +7,7 @@ import './home.css';
 import './styles.css';
 import headerImg from "../assets/images/header_image.jpg";
 import defaultImage from "../assets/images/default_image.png";
+import { NavigationBar } from "./Navigation.jsx";
 
 // Home component displays shared items and filters them by category
 const Home = () => {
@@ -80,7 +81,7 @@ const Home = () => {
   return (
     <>
       {/* //NOTE - Navbar goes here waiting mattea's one */}
-      <Navbar style={{ backgroundColor: '#A59AAA', color: 'white' }} variant="dark" expand="lg">
+      {/* <Navbar style={{ backgroundColor: '#A59AAA', color: 'white' }} variant="dark" expand="lg">
         <Container>
           <Navbar.Brand href="/">Share&Borrow</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -91,7 +92,8 @@ const Home = () => {
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
+      </Navbar> */}
+      <NavigationBar/>
       
       {/* //NOTE - header image */}
       <Container className="mt-3" style={{ position: "relative" }}>

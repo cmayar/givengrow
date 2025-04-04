@@ -3,9 +3,9 @@ import GuestNavigationBar from "./GuestNavigation";
 import UserNavigationBar from "./UserNavigation";
 import React from "react";
 
-const NavigationBar = () => {
-    const { isSignedIn } = useAuth(); 
-    return isSignedIn ? (
+export const NavigationBar = () => {
+    let authProvider = useAuth(); //was isSignedIn
+    return authProvider ? (
         <UserNavigationBar />
     ) : (
         <GuestNavigationBar />

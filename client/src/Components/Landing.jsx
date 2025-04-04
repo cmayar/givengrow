@@ -1,9 +1,6 @@
 import { useState } from "react";
-// import LogInPage from "./LogIn"; 
-// import RegistrationPage from "./Registration"; 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { handleSubmit } from "./LogIn"; 
 
 
 function Landing() {

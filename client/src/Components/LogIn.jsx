@@ -1,14 +1,19 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function LogInPage() {
-  const [data, setData] = useState({
+  const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  function handleChange(e) {}
-
-  function setError(e) {}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({ ...credentials, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,7 +44,7 @@ function LogInPage() {
           type="text"
           id="username"
           name="username"
-          value={data.username}
+          value={credentials.username}
           onChange={handleChange}
         />
         <br />
@@ -49,7 +54,7 @@ function LogInPage() {
           type="password"
           id="password"
           name="password"
-          value={data.password}
+          value={credentials.password}
           onChange={handleChange}
         />
         <br />

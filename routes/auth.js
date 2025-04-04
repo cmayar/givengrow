@@ -65,8 +65,8 @@ console.log(results);
 // 🔹 Get user profile (Protected Route)
 router.get("/profile", loginUsers, async (req, res) => {
   try {
-    const [result] = await pool.query(`SELECT username, id FROM users WHERE id = ?`, [req.user_id]);
-    res.json(result[0]);
+    const results = await db(`SELECT username, id FROM users WHERE id = ?`, [req.user_id]);
+    res.json(results.data[0]);
   } catch (err) {
     res.status(500).send({ message: err.message });
   }

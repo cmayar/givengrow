@@ -10,6 +10,8 @@ import RegistrationPage from "./Components/Registration";
 import Landing from "./Components/Landing";
 import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
+import Images from "./Components/ImageUploader.jsx";
+// import MyObjects from "./Components/MyObjects";
 import MyObjects from "./Components/MyObjects";
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
         <Route path="/login" element={<LogInPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/items/:id" element={<Item />} />
+        <Route path="/images" element={<Images />} />
 
         {/* Profile dashboardwith nested routes and shared sidebar layout */}
         <Route path="/profile" element={<Profile />}>

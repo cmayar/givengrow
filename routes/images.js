@@ -5,6 +5,11 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import mime from "mime-types";
 import multer from "multer";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const router = express.Router();
 const upload = multer({ dest: "public/img/" });
@@ -38,7 +43,7 @@ router.post("/", upload.single('imagefile'), async (req, res) => {
 
   // construct the new path for the final file
   const target_path = path.join(__dirname, "../public/img/") + filename;
-
+console.log('Target', target_path)
   try {
     // rename the file
     await fs.rename(tmp_path, target_path);

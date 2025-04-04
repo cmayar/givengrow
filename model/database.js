@@ -25,16 +25,6 @@ con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
 
-  //NOTE: This is causing a probem
-  //   let sql = fs.readFileSync(__dirname + "/init_db.sql").toString();
-  //   con.query(sql, function (err) {
-  //     if (err) throw err;
-  //     con.end();
-  //   });
-
-  //   // con.end();
-  // });
-
   // Check if any of your tables already exist before initializing
   con.query(
     "SHOW TABLES LIKE 'users'; SHOW TABLES LIKE 'items'; SHOW TABLES LIKE 'interactions';",

@@ -31,10 +31,6 @@ const Profile = () => {
       >
         <h5 className="mb-4">Dashboard</h5>
 
-        <Link to="/home" className="btn btn-outline-primary w-100 mb-3">
-          Go to Home
-        </Link>
-
         {/* Sidebar navigation links */}
         <div className="list-group">
           {/* Link to post a new object */}
@@ -74,17 +70,24 @@ const Profile = () => {
           >
             Sign Out
           </Link>
+
+          <Link to="/home" className="btn button-back">
+          Go to Home
+        </Link>
+
         </div>
       </div>
 
       {/* Main content area where nested routes will render */}
-      <div className="main-content flex-grow-1 p-4">
-        <div className="card shadow-sm p-4">
-          <Outlet />{" "}
+      <div
+        className="main-content flex-grow-1 p-4"
+      >
+   <Outlet />{" "}
           {/* This renders nested routes inside the Profile layout */}
         </div>
       </div>
-    </div>
+   
+   
   );
 };
 

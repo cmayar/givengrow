@@ -98,7 +98,6 @@
   outline: none;
 }
 
-
   .button {
     background-color: var(--button-background-color);  /* I use here the variable of the styles.css for the button color */
     color: white;
@@ -109,6 +108,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     text-decoration:  'none';
+
   }
   
 .button :hover {

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
-  Button,
   Card,
   Row,
   Col,
@@ -11,6 +10,7 @@ import {
   Navbar,
   Nav,
   Image,
+  Button,
 } from "react-bootstrap";
 import "./home.css";
 import "./styles.css";
@@ -136,11 +136,11 @@ const Home = () => {
                 Share objects to help others, borrow objects that you need!
               </Card.Text>
               <Link
-                to="/post"
+                to="/how"
                 style={{ textDecoration: "none" }}
                 className="button"
               >
-                Start sharing!
+                How it works?
               </Link>
             </Card.Body>
           </Card>
@@ -206,12 +206,10 @@ const Home = () => {
                     </Card.Text>
                     <Card.Text>
                       <strong>Owner:</strong> {item.owner_name}
-                    </Card.Text>{" "}
+                    </Card.Text>
                     {/* Display the owner's username */}
                     <Link to={`/items/${item.id}`}>
-                      <Button variant="primary" className="button mt-2">
-                        Show more
-                      </Button>
+                     <Button className="button">Show More</Button>
                     </Link>
                   </Card.Body>
                 </Card>

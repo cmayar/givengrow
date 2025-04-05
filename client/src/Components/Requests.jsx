@@ -1,21 +1,28 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Requests = () => {
   // Store the interactions where the user is the owner
   const [interactions, setInteractions] = useState([]);
 
-  // Store the success message to display to the user
-  const [successMessage, setSuccessMessage] = useState("");
+  // Helper to get user ID from localStorage
+  const getUserId = () => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user).id : null;
+  };
 
   // Fetch owner interactions from the API
   const fetchRequest = async () => {
     try {
       const token = localStorage.getItem("token");
+      const userId = getUserId();
+
       const res = await axios.get(
         //owner 0 is a placeholder for the owner id
-        "http://localhost:4000/api/interactions/owner/0",
+        `http://localhost:4000/api/interactions/owner/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,9 +57,8 @@ const Requests = () => {
         }
       );
 
-      // Notify the user that the request has been accepted
-      setSuccessMessage("Request accepted successfully!");
-
+      // Show success message
+      toast.success("Request accepted successfully!");
       // Refetch data
       fetchRequest();
     } catch (error) {
@@ -68,13 +74,6 @@ const Requests = () => {
   return (
     <div className="container mt-5">
       <h2>Incoming Requests</h2>
-
-      {/* Success message */}
-      {successMessage && (
-        <div className="alert alert-success" role="alert">
-          {successMessage}
-        </div>
-      )}
 
       {requestedInteractions.length === 0 ? (
         <p>No requests at the moment.</p>

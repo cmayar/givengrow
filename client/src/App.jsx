@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
-import Profile from "./Components/Profile";
+import Dashboard from "./Components/Dashboard";
 import Item from "./Components/Item";
 import LogInPage from "./Components/LogIn";
 import RegistrationPage from "./Components/Registration";
@@ -12,6 +12,8 @@ import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
 import Images from "./Components/ImageUploader.jsx";
 import MyObjects from "./Components/MyObjects";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <h1> Share & Borrow app</h1>
         <h2> Welcome! </h2>
       </div> */}
+      {/* ToastContainer to show notifications */}
+      <ToastContainer position="top-center" autoClose={3000} />
 
       {/* Routes define URL paths and corresponding components */}
       <Routes>
@@ -33,7 +37,7 @@ function App() {
         <Route path="/images" element={<Images />} />
 
         {/* Profile dashboardwith nested routes and shared sidebar layout */}
-        <Route path="/profile" element={<Profile />}>
+        <Route path="/dashboard" element={<Dashboard />}>
           <Route
             path="post"
             element={
@@ -42,7 +46,7 @@ function App() {
               </div>
             }
           />
-          <Route path="my-objects" element={<MyObjects />} />       
+          <Route path="my-objects" element={<MyObjects />} />
           <Route path="requests" element={<Requests />} />
           <Route path="borrowed" element={<Borrowed />} />
           <Route

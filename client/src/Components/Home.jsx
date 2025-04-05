@@ -102,8 +102,8 @@ const Home = () => {
               <Nav.Link as={Link} to="/home">
                 Home
               </Nav.Link>
-              <Nav.Link as={Link} to="/profile">
-                Profile
+              <Nav.Link as={Link} to="/dashboard">
+                Dashboard
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -209,7 +209,7 @@ const Home = () => {
                     </Card.Text>
                     {/* Display the owner's username */}
                     <Link to={`/items/${item.id}`}>
-                     <Button className="button">Show More</Button>
+                      <Button className="button">Show More</Button>
                     </Link>
                   </Card.Body>
                 </Card>

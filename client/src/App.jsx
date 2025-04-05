@@ -11,11 +11,14 @@ import Landing from "./Components/Landing";
 import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
 import Images from "./Components/ImageUploader.jsx";
+import { AuthProvider } from "./Components/AuthContext.jsx";
 // import MyObjects from "./Components/MyObjects";
 
 function App() {
   return (
-    // Router component to manage the routes and enable navigation
+    // AuthProvider component to manage authentication state and provide context for navigation bar
+    <AuthProvider>
+    {/* Router component to manage the routes and enable navigation */}
     <Router>
       {/* This is already in Landin.jsx*/}
       {/* <div>
@@ -63,7 +66,8 @@ function App() {
         </Route>
       </Routes>
     </Router>
-  );
+    </AuthProvider >
+          );
 }
 
 export default App;

@@ -4,8 +4,9 @@ import UserNavigationBar from "./UserNavigation";
 import React from "react";
 
 export const NavigationBar = () => {
-    let authProvider = useAuth(); //was isSignedIn
-    return authProvider ? (
+    const authProvider = useAuth(); //changed isSignedIn to authProvider
+//add console logs to help w/ debugging?
+    return authProvider.isSignedIn ? (
         <UserNavigationBar />
     ) : (
         <GuestNavigationBar />
@@ -13,7 +14,3 @@ export const NavigationBar = () => {
 };
 
 export default NavigationBar;
-
-
-
-

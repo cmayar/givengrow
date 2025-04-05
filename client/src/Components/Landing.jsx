@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import NavigationBar from "./Navigation";
 
 function Landing() {
   // State to store user input for login credentials

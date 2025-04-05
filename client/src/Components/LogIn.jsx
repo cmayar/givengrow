@@ -29,6 +29,9 @@ function LogInPage() {
 
       // Redirects the user to the home page
       navigate("/home");
+      setisSignedIn(true); // This updates the context for the navigation bar
+      console.log("Login successful:", data);
+
     } catch (err) {
       console.error("Login failed:", err);
       setError(err.response?.data?.message || "Login failed");

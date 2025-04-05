@@ -7,6 +7,7 @@ import { Image } from "react-bootstrap";
 import "./item.css";
 import "./styles.css";
 import defaultImage from "../assets/images/default_image.png";
+import { toast } from "react-toastify";
 
 const formatDate = (date) => {
   if (!(date instanceof Date)) return "";
@@ -18,8 +19,6 @@ const Item = () => {
   const [item, setItem] = useState({});
   const [startDate, setStartDate] = useState(formatDate(new Date()));
   const [endDate, setEndDate] = useState(formatDate(new Date()));
-  // Message for
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     getItem();
@@ -65,10 +64,10 @@ const Item = () => {
       );
 
       console.log("Interaction response:", res.data);
-      setMessage(res.data.message);
+      toast.success("Request submitted! The owner will review it soon.");
     } catch (err) {
       console.err("Error requesting item:", err);
-      setMessage(err.response?.data?.message || "Something went wrong");
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -81,12 +80,12 @@ const Item = () => {
       <div className="card">
         <div className="container mt-5">
           <div className="item-img-container">
-        <Image
-         src={item.imageUrl ? item.imageUrl : defaultImage}
-         alt="Item Image"
-         className="card-img"
-        />
-        </div>
+            <Image
+              src={item.imageUrl ? item.imageUrl : defaultImage}
+              alt="Item Image"
+              className="card-img"
+            />
+          </div>
           <h3>{item.title}</h3>
           <p>
             <strong>Description:</strong> {item.description}
@@ -95,16 +94,16 @@ const Item = () => {
             <strong>Category:</strong> {item.category}
           </p>
           <p
-                      className={
-                        item.status === "available"
-                          ? "status-available"
-                          : "status-unavailable"
-                      }
-                    >
-                      <strong>{item.status}</strong>
-                    </p>
+            className={
+              item.status === "available"
+                ? "status-available"
+                : "status-unavailable"
+            }
+          >
+            <strong>{item.status}</strong>
+          </p>
           <p>
-          <strong>Owner:</strong> {item.owner_name}
+            <strong>Owner:</strong> {item.owner_name}
           </p>
           <Link to="/home" className="btn btn-outline-primary">
             Back to Home

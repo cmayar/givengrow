@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate, Outlet } from "react-router-dom";
-import "./Profile.css";
+import "./Dashboard.css";
 
-const Profile = () => {
+const Dashboard = () => {
   // Hook for navigating to a new route
   const navigate = useNavigate();
 
@@ -72,23 +72,18 @@ const Profile = () => {
           </Link>
 
           <Link to="/home" className="btn button-back">
-          Go to Home
-        </Link>
-
+            Go to Home
+          </Link>
         </div>
       </div>
 
       {/* Main content area where nested routes will render */}
-      <div
-        className="main-content flex-grow-1 p-4"
-      >
-   <Outlet />{" "}
-          {/* This renders nested routes inside the Profile layout */}
-        </div>
+      <div className="main-content flex-grow-1 p-4">
+        <Outlet />{" "}
+        {/* This renders nested routes inside the Dashboard layout */}
       </div>
-   
-   
+    </div>
   );
 };
 
-export default Profile;
+export default Dashboard;

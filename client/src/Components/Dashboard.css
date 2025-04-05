@@ -9,7 +9,7 @@ body {
 
 .card {
   width: 100%;
-  max-width: 800px; 
+  max-width: 800px;
   margin: auto;
 }
 
@@ -49,7 +49,6 @@ body {
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
-
 
 /* .profile-wrapper {
   min-height: 100vh;

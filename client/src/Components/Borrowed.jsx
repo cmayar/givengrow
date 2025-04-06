@@ -52,9 +52,19 @@ const Borrowed = () => {
     }
   };
 
-  // Load the data when the component mounts
+  // Load the data when the component mounts, but need to refreh for new inractions
+  // useEffect(() => {
+  //   fetchInteractions();
+  // }, []);
+
+  // NOTE Auto update every 10 seconds
   useEffect(() => {
     fetchInteractions();
+
+    const interval = setInterval(() => {
+      fetchInteractions();
+    }, 10000); // 10 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   // Called when the user returns an item

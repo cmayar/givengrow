@@ -35,9 +35,18 @@ const Requests = () => {
     }
   };
 
-  // Load the data when the component mounts
+  // Load the data when the component mounts, but need to refreh for new inractions
+  // useEffect(() => {
+  //   fetchInteractions();
+  // }, []);
+
+  // NOTE Auto update every 10 seconds
   useEffect(() => {
     fetchRequest();
+    const interval = setInterval(() => {
+      fetchRequest();
+    }, 10000); // 10 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   // Hanlde the accept request

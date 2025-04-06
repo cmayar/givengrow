@@ -24,7 +24,7 @@ app.use(express.static("public"));
 app.use("/auth", auth);
 
 app.use("/api/interactions", interactionsRouter);
-app.use("/", usersRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/items", itemsRouter);
 app.use("/api/images", imagesRouter);
 

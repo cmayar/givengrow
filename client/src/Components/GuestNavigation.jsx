@@ -1,31 +1,36 @@
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 
 export const GuestNavigationBar = () => {
   return (
-    <div>
-      <nav>
-        <div>
-          <Link to="/">
-            <h1> Title </h1>
-          </Link>
-          <div>
-            <Link to="/">
+    <Navbar
+      style={{ backgroundColor: "#3469b7", color: "white" }}
+      variant="dark"
+      expand="lg"
+    >
+      <Container>
+        <Navbar.Brand as={Link} to="/">
+          Share Cycle
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link as={Link} to="/">
               Home
-            </Link>
-            <Link to="/search">
-            Search
-            </Link>
-            <Link to="/login">
+            </Nav.Link>
+            <Nav.Link as={Link} to="/search">
+              Search
+            </Nav.Link>
+            <Nav.Link as={Link} to="/login">
               Log In
-            </Link>
-            <Link to="/register">
-            Register
-            </Link>
-          </div>
-        </div>
-      </nav>
-    </div>
+            </Nav.Link>
+            <Nav.Link as={Link} to="/register">
+              Register
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 

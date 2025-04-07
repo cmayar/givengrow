@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 
-
 export const UserNavigationBar = () => {
   return (
     <div>
       <nav>
         <div>
           <Link to="/">
-            <h1> Title </h1>
           </Link>
           <div>
             <Link to="/">

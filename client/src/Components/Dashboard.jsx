@@ -1,10 +1,15 @@
 import React from "react";
+import { useState } from "react";
 import { Link, useNavigate, Outlet } from "react-router-dom";
+import { useBadgeCounts } from "./BadgeCountsContext";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   // Hook for navigating to a new route
   const navigate = useNavigate();
+
+  // Use custom hook
+  const { requestsCount, borrowedCount } = useBadgeCounts();
 
   // Function to handle logout
   const handleLogout = (e) => {
@@ -52,6 +57,12 @@ const Dashboard = () => {
             className="list-group-item list-group-item-action"
           >
             Requests
+            {/* count section */}
+            {requestsCount > 0 && (
+              <span className="badge bg-primary rounded-pill float-end">
+                {requestsCount}
+              </span>
+            )}
           </Link>
 
           {/* Link to view borrowed items, when user can be both borrower or owner*/}
@@ -60,6 +71,12 @@ const Dashboard = () => {
             className="list-group-item list-group-item-action"
           >
             Borrowed
+            {/* count section */}
+            {borrowedCount > 0 && (
+              <span className="badge bg-primary rounded-pill float-end">
+                {borrowedCount}
+              </span>
+            )}
           </Link>
 
           {/* Link to sign out */}
@@ -79,8 +96,7 @@ const Dashboard = () => {
 
       {/* Main content area where nested routes will render */}
       <div className="main-content flex-grow-1 p-4">
-        <Outlet />{" "}
-        {/* This renders nested routes inside the Dashboard layout */}
+        <Outlet />
       </div>
     </div>
   );

@@ -3,10 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useBadgeCounts } from "./BadgeCountsContext";
 
 const Requests = () => {
   // Store the interactions where the user is the owner
   const [interactions, setInteractions] = useState([]);
+
+  const { updateRequestsCount } = useBadgeCounts();
 
   // Helper to get user ID from localStorage
   const getUserId = () => {
@@ -30,14 +33,29 @@ const Requests = () => {
         }
       );
       setInteractions(res.data.interactions);
+
+      // Filter for badge and count
+      const requested = res.data.interactions.filter(
+        ({ interaction }) => interaction.status === "requested"
+      );
+      updateRequestsCount(requested.length);
     } catch (error) {
       console.error("Error fetching interactions:", error);
     }
   };
 
-  // Load the data when the component mounts
+  // Load the data when the component mounts, but need to refreh for new inractions
+  // useEffect(() => {
+  //   fetchInteractions();
+  // }, []);
+
+  // NOTE Auto update every 10 seconds
   useEffect(() => {
     fetchRequest();
+    const interval = setInterval(() => {
+      fetchRequest();
+    }, 10000); // 10 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   // Hanlde the accept request

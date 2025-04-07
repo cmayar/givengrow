@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useBadgeCounts } from "./BadgeCountsContext";
 import { Card, Image } from "react-bootstrap";
 import "./item.css";
 import "./MyObject.css";
@@ -15,6 +16,8 @@ const Borrowed = () => {
 
   // Store the interactions where the user is the owner
   const [ownerInteractions, setOwnerInteractions] = useState([]);
+
+  const { updateBorrowedCount } = useBadgeCounts();
 
   // Helper to get user ID from localStorage
   const getUserId = () => {
@@ -52,14 +55,30 @@ const Borrowed = () => {
       // Store the data in the state
       setBorrowerInteractions(borrowerRes.data.interactions);
       setOwnerInteractions(ownerRes.data.interactions);
+
+      // Filter for badge and count
+      const borrowedToReturn = borrowerRes.data.interactions.filter(
+        ({ interaction }) => interaction.status === "borrowed"
+      );
+      const returnsToConfirm = ownerRes.data.interactions.filter(
+        ({ interaction }) => interaction.status === "borrower-returned"
+      );
+
+      // Update badge count
+      updateBorrowedCount(borrowedToReturn.length + returnsToConfirm.length);
     } catch (error) {
       console.error("Error fetching borrowed items:", error);
     }
   };
 
-  // Load the data when the component mounts
+  // NOTE Auto update every 10 seconds
   useEffect(() => {
     fetchInteractions();
+
+    const interval = setInterval(() => {
+      fetchInteractions();
+    }, 10000); // 10 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   // Called when the user returns an item

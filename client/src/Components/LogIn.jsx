@@ -1,4 +1,6 @@
 import { useState } from "react";
+import "./LogIn.css";
+import "./styles.css";
 
 function LogInPage() {
   const [data, setData] = useState({
@@ -26,7 +28,7 @@ function LogInPage() {
 
   return (
     <div>
-      <h1>Log In Page</h1>
+      <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username"> Username: </label>
         <input

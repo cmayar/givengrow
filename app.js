@@ -1,10 +1,10 @@
 import express from "express";
-import path from "path";
+//import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
 
-import auth from "./routes/auth.js";
+import auth from "./routes/auth.js"; //Import the auth routes
 
 import interactionsRouter from "./routes/interactions.js";
 import usersRouter from "./routes/users.js";
@@ -21,10 +21,10 @@ app.use(cookieParser());
 app.use(express.static("public"));
 //app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/auth", auth);
+app.use("/api", auth); // Use the routes defined in auth.js under "/api"
+app.use("/api/users", usersRouter);
 
 app.use("/api/interactions", interactionsRouter);
-app.use("/api/users", usersRouter);
 app.use("/api/items", itemsRouter);
 app.use("/api/images", imagesRouter);
 

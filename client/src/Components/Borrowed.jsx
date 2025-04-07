@@ -8,7 +8,6 @@ import "./item.css";
 import "./MyObject.css";
 import "./borrowed.css";
 import defaultImage from "../assets/images/default_image.png";
-import { useBadgeCounts } from "./BadgeCountsContext";
 
 // Component to display borrowed items and manage the return flow
 const Borrowed = () => {

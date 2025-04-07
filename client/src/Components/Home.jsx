@@ -89,6 +89,11 @@ const Home = () => {
 
   return (
     <>
+      
+      {/* Flexible navigation bar that changes based on user login status */}
+      <NavigationBar/>
+      
+  
       {/* Flexible navigation bar that changes based on user login status */}
       <NavigationBar />
 

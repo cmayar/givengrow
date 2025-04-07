@@ -12,11 +12,12 @@ import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
 import Images from "./Components/ImageUploader.jsx";
 import MyObjects from "./Components/MyObjects";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-bootstrap";
+// import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
+    
     // Router component to manage the routes and enable navigation
     <Router>
       {/* This is already in Landin.jsx*/}

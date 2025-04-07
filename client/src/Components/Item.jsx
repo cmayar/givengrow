@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Image } from "react-bootstrap";
+import { Card, Form, Image, Row, Col } from "react-bootstrap";
 import "./item.css";
 import "./styles.css";
 import defaultImage from "../assets/images/default_image.png";
@@ -76,63 +76,78 @@ const Item = () => {
   }
 
   return (
-    <div className="item-card-container">
-      <div className="card">
-        <div className="container mt-5">
-          <div className="item-img-container">
-            <Image
-              src={item.imageUrl ? item.imageUrl : defaultImage}
-              alt="Item Image"
-              className="card-img"
-            />
-          </div>
-          <h3>{item.title}</h3>
-          <p>
+    <div className="container mt-5">
+    <Card className="mx-auto p-3" style={{ maxWidth: "800px" }}>
+    <Row>
+    <Col md={4} className="d-flex align-self-start">
+    
+      <Image
+        variant="left"
+        src={item.imageUrl || defaultImage}
+        alt="Item Image"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = defaultImage;
+        }}
+         className="img-fluid rounded"
+      />
+          </Col>
+          <Col md={8}>
+          
+    <Card.Body>
+          <Card.Title>{item.title}</Card.Title>
+          <Card.Text>
             <strong>Description:</strong> {item.description}
-          </p>
-          <p>
+          </Card.Text>
+          <Card.Text>
             <strong>Category:</strong> {item.category}
-          </p>
-          <p
+          </Card.Text>
+          <Card.Text
             className={
               item.status === "available"
                 ? "status-available"
                 : "status-unavailable"
             }
           >
-            <strong>{item.status}</strong>
-          </p>
-          <p>
+          <strong> {item.status}</strong>
+          </Card.Text>
+          <Card.Text>
             <strong>Owner:</strong> {item.owner_name}
-          </p>
-          <Link to="/home" className="btn btn-outline-primary">
-            Back to Home
-          </Link>
-
+          </Card.Text>
           {/* Set date and request */}
           {item.status === "available" && (
-            <div>
-              <label>Start date</label>
-              <input
-                type="date"
-                className="form-control mb-2"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-              <label>End Date:</label>
-              <input
-                type="date"
-                className="form-control mb-2"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label><strong>Start Date</strong></Form.Label>
+                <Form.Control
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label><strong>End Date</strong></Form.Label>
+                <Form.Control
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </Form.Group>
               <button className="button" onClick={requestItem}>
-                Request to borrow
+                Request to Borrow
               </button>
-            </div>
+            </Form>
+            
           )}
-        </div>
-      </div>
+           <Link to="/home" className="custom-link">
+            Back to Home
+          </Link>
+        </Card.Body>
+        
+        </Col>
+        
+        </Row>
+      </Card>
     </div>
   );
 };

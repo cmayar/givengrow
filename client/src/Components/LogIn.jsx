@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext"; 
 import "./LogIn.css";
 import "./styles.css";
 
@@ -11,6 +12,7 @@ function LogInPage() {
   });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { setIsSignedIn } = useAuth(); // grab setIsSignedIn from context
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,20 +22,17 @@ function LogInPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Send a POST request to beckend with the user's credentials
       const { data } = await axios("http://localhost:4000/api/login", {
         method: "POST",
         data: credentials,
       });
 
-      // Stores the received token in localStorage for future authenticated requests
       localStorage.setItem("token", data.token);
 
-      // Redirects the user to the home page
-      navigate("/home");
-      setisSignedIn(true); // This updates the context for the navigation bar
-      console.log("Login successful:", data);
+      setIsSignedIn(true); // set isSignedIn to true in context
 
+      navigate("/home");
+      console.log("Login successful:", data);
     } catch (err) {
       console.error("Login failed:", err);
       setError(err.response?.data?.message || "Login failed");
@@ -66,6 +65,7 @@ function LogInPage() {
 
         <input type="submit" value="Submit" />
       </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }

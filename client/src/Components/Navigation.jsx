@@ -5,7 +5,7 @@ import React from "react";
 
 export const NavigationBar = () => {
     const authProvider = useAuth(); //changed isSignedIn to authProvider
-//add console logs to help w/ debugging?
+ 
     return authProvider.isSignedIn ? (
         <UserNavigationBar />
     ) : (

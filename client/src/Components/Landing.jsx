@@ -26,7 +26,7 @@ function Landing() {
     e.preventDefault();
     try {
       // Send a POST request to beckend with the user's credentials
-      const { data } = await axios("http://localhost:4000/auth/login", {
+      const { data } = await axios("http://localhost:4000/api/login", {
         method: "POST",
         data: credentials,
       });

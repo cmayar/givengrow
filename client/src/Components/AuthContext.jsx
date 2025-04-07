@@ -5,7 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isSignedIn, setIsSignedIn] = useState(false);
     
-//add console logs to help w/ debugging?
+//add console logs to help w/ debugging???
 return (
     <AuthContext.Provider value={{ isSignedIn, setIsSignedIn }}>
         {children}  

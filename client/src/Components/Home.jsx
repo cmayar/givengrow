@@ -105,6 +105,9 @@ const Home = () => {
               <Nav.Link as={Link} to="/dashboard">
                 Dashboard
               </Nav.Link>
+              <Nav.Link as={Link} to="/profile">
+                Profile
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

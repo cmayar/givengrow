@@ -14,6 +14,8 @@ import Images from "./Components/ImageUploader.jsx";
 import MyObjects from "./Components/MyObjects";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BadgeCountsProvider } from "./Components/BadgeCountsContext.jsx";
+import Profile from "./Components/Profile.jsx";
 
 function App() {
   return (
@@ -35,9 +37,18 @@ function App() {
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/items/:id" element={<Item />} />
         <Route path="/images" element={<Images />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* Profile dashboardwith nested routes and shared sidebar layout */}
-        <Route path="/dashboard" element={<Dashboard />}>
+        {/* wrapped in BadgeCountsProvider */}
+        <Route
+          path="/dashboard"
+          element={
+            <BadgeCountsProvider>
+              <Dashboard />
+            </BadgeCountsProvider>
+          }
+        >
           <Route
             path="post"
             element={

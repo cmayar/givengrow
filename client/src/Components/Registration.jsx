@@ -1,37 +1,58 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Registration.css";
+import "./styles.css";
 
 function RegistrationPage() {
-  const [data, setData] = useState({
+  const [credentials, setCredentials] = useState({
     username: "",
     email: "",
     phonenumber: "",
     password: "",
   });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setData((prevData) => {
+    setCredentials((prevData) => {
       const newState = { ...prevData, [name]: value };
       console.log("Updated State:", newState);
       return newState;
     });
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Final Submitted User Data:", data);
-  }
+    try {
+      // Send a POST request to beckend with the user's credentials
+      const { data } = await axios("http://localhost:4000/auth/register", {
+        method: "POST",
+        data: credentials,
+      });
+
+      // Stores the received token in localStorage for future authenticated requests
+      localStorage.setItem("token", data.token);
+
+      // Redirects the user to the home page
+      navigate("/home");
+    } catch (err) {
+      console.error("Registration failed:", err);
+      setError(err.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div>
-      <h1>Registration Page</h1>
+      <h1>Registration</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username"> Username: </label>
         <input
           type="text"
           id="username"
           name="username"
-          value={data.username}
+          value={credentials.username}
           onChange={handleChange}
         />
         <br />
@@ -41,7 +62,7 @@ function RegistrationPage() {
           type="text"
           id="email"
           name="email"
-          value={data.email}
+          value={credentials.email}
           onChange={handleChange}
         />
         <br />
@@ -51,7 +72,7 @@ function RegistrationPage() {
           type="text"
           id="phonenumber"
           name="phonenumber"
-          value={data.phonenumber}
+          value={credentials.phonenumber}
           onChange={handleChange}
         />
         <br />
@@ -61,7 +82,7 @@ function RegistrationPage() {
           type="password"
           id="password"
           name="password"
-          value={data.password}
+          value={credentials.password}
           onChange={handleChange}
         />
         <br />

@@ -17,6 +17,7 @@ import "./styles.css";
 import headerImg from "../assets/images/header_image.jpg";
 import defaultImage from "../assets/images/default_image.png";
 import How from "./how";
+import NavigationBar from "./Navigation.jsx";
 
 // Home component displays shared items and filters them by category
 const Home = () => {
@@ -107,10 +108,16 @@ const Home = () => {
               <Nav.Link as={Link} to="/dashboard">
                 Dashboard
               </Nav.Link>
+              <Nav.Link as={Link} to="/profile">
+                Profile
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
+      </Navbar> 
+      <NavigationBar/>
+      
+  
 
       {/* //NOTE - header image */}
       <Container className="mt-3" style={{ position: "relative" }}>

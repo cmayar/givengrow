@@ -11,14 +11,19 @@ import Landing from "./Components/Landing";
 import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
 import Images from "./Components/ImageUploader.jsx";
+import { AuthProvider } from "./Components/AuthContext.jsx";
+// import MyObjects from "./Components/MyObjects";
 import MyObjects from "./Components/MyObjects";
-import { ToastContainer } from "react-bootstrap";
-// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BadgeCountsProvider } from "./Components/BadgeCountsContext.jsx";
+import Profile from "./Components/Profile.jsx";
 
 function App() {
   return (
-    
-    // Router component to manage the routes and enable navigation
+    // AuthProvider component to manage authentication state and provide context for navigation bar
+    <AuthProvider>
+    {/* Router component to manage the routes and enable navigation */}
     <Router>
       {/* This is already in Landin.jsx*/}
       {/* <div>
@@ -36,9 +41,18 @@ function App() {
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/items/:id" element={<Item />} />
         <Route path="/images" element={<Images />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* Profile dashboardwith nested routes and shared sidebar layout */}
-        <Route path="/dashboard" element={<Dashboard />}>
+        {/* wrapped in BadgeCountsProvider */}
+        <Route
+          path="/dashboard"
+          element={
+            <BadgeCountsProvider>
+              <Dashboard />
+            </BadgeCountsProvider>
+          }
+        >
           <Route
             path="post"
             element={
@@ -61,7 +75,8 @@ function App() {
         </Route>
       </Routes>
     </Router>
-  );
+    </AuthProvider >
+          );
 }
 
 export default App;

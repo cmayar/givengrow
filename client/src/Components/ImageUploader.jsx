@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "./ImageUploader.css";
+import "./styles.css";
 
 export default function Images() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -13,6 +15,7 @@ export default function Images() {
     try {
       const res = await axios.get("/api/images");
       setImages(res.data);
+      console.log(images);
     } catch (err) {
       console.log(err);
     }
@@ -58,7 +61,7 @@ export default function Images() {
 
     <div>
       {images.map((image) => (
-        <img key={image.id} src={`/img/${image.path}`} />
+        <img key={image.id} src={`/${image.path}`} alt={image.path} />
       ))}
     </div>
   </div>

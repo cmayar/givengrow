@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
 h3 {
     text-align: center;
@@ -13,6 +13,7 @@ h3 {
     font-family: 'Poppins', sans-serif;
 }
 
+/*
 .App {
     display: flex;
     flex-direction: column;
@@ -23,6 +24,7 @@ h3 {
     background-color: var(--color-background);
     border-radius: 10px;
 }
+
 
 /*input file */
 input[type="file"] {
@@ -86,3 +88,4 @@ div {
     gap: 20px; /* Space between images */
     margin-top: 20px;
 }
+*/

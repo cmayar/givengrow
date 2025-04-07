@@ -9,15 +9,15 @@ const router = express.Router();
 router.get("/profile", loginUsers, async (req, res) => {
   try {
         // Fetch user data from the database based on the user_id from the JWT token
-    const [users] = await db("SELECT username, email FROM users WHERE id = ?", [req.user_id]);
-    console.log("Users Query Result:", users); // Log the raw response to see its structure
+    const result = await db("SELECT username, email FROM users WHERE id = ?", [req.user_id]);
+    console.log("Users Query Result:", result); // Log the raw response to see its structure
     
     //check if user was found
-    if (users.length === 0) {
+    if (result.data.length === 0) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json(users[0]);
+    res.json(result.data[0]);
   } catch (err) {
     console.error("Database error:", err);
     res.status(500).json({ message: "Error retrieving profile" });

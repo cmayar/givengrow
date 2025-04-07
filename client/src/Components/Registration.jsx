@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Registration.css";
+import "./styles.css";
 
 function RegistrationPage() {
   const [credentials, setCredentials] = useState({
@@ -43,7 +45,7 @@ function RegistrationPage() {
 
   return (
     <div>
-      <h1>Registration Page</h1>
+      <h1>Registration</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username"> Username: </label>
         <input

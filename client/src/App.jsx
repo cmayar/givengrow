@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
-import Profile from "./Components/Profile";
+import Dashboard from "./Components/Dashboard";
 import Item from "./Components/Item";
 import LogInPage from "./Components/LogIn";
 import RegistrationPage from "./Components/Registration";
@@ -13,6 +13,11 @@ import Borrowed from "./Components/Borrowed";
 import Images from "./Components/ImageUploader.jsx";
 import { AuthProvider } from "./Components/AuthContext.jsx";
 // import MyObjects from "./Components/MyObjects";
+import MyObjects from "./Components/MyObjects";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BadgeCountsProvider } from "./Components/BadgeCountsContext.jsx";
+import Profile from "./Components/Profile.jsx";
 
 function App() {
   return (
@@ -25,6 +30,8 @@ function App() {
         <h1> Share & Borrow app</h1>
         <h2> Welcome! </h2>
       </div> */}
+      {/* ToastContainer to show notifications */}
+      <ToastContainer position="top-center" autoClose={3000} />
 
       {/* Routes define URL paths and corresponding components */}
       <Routes>
@@ -34,9 +41,18 @@ function App() {
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/items/:id" element={<Item />} />
         <Route path="/images" element={<Images />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* Profile dashboardwith nested routes and shared sidebar layout */}
-        <Route path="/profile" element={<Profile />}>
+        {/* wrapped in BadgeCountsProvider */}
+        <Route
+          path="/dashboard"
+          element={
+            <BadgeCountsProvider>
+              <Dashboard />
+            </BadgeCountsProvider>
+          }
+        >
           <Route
             path="post"
             element={
@@ -45,14 +61,7 @@ function App() {
               </div>
             }
           />
-          <Route
-            path="my-objects"
-            element={
-              <div style={{ padding: "2rem" }}>
-                <h2>My Objects</h2>
-              </div>
-            }
-          />
+          <Route path="my-objects" element={<MyObjects />} />
           <Route path="requests" element={<Requests />} />
           <Route path="borrowed" element={<Borrowed />} />
           <Route

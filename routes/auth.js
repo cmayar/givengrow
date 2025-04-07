@@ -66,6 +66,7 @@ console.log(results);
 router.get("/profile", loginUsers, async (req, res) => {
   try {
     const results = await db(`SELECT username, id FROM users WHERE id = ?`, [req.user_id]);
+    console.log(results); // Check the data returned
     res.json(results.data[0]);
   } catch (err) {
     res.status(500).send({ message: err.message });

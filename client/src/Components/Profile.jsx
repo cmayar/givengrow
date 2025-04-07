@@ -1,90 +1,247 @@
-import React from "react";
-import { Link, useNavigate, Outlet } from "react-router-dom";
-import "./Profile.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Card, Container, Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
-  // Hook for navigating to a new route
-  const navigate = useNavigate();
+  // State to store the user data
+  const [user, setUser] = useState(null);
+  // State to track which fields are being edited
+  const [isEditing, setIsEditing] = useState({
+    username: false,
+    email: false,
+    phoneNumber: false,
+    password: false,
+  });
 
-  // Function to handle logout
-  const handleLogout = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("token");
-    navigate("/");
+  // State to store the form data
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+  });
+
+  // Hardcoded user ID for testing
+  const userId = 1;
+
+  //FIXME: Commented code to be uncommented when backend is ready
+  //   useEffect(() => {
+  //     const fetchUserData = async () => {
+  //       try {
+  //         const response = await axios.get(
+  //           `http://localhost:4000/api/users/${userId}`
+  //         );
+  //         setUser(response.data);
+  //         setFormData({
+  //           username: response.data.username,
+  //           email: response.data.email,
+  //           phoneNumber: response.data.phoneNumber,
+  //           password: response.data.password,
+  //         });
+  //       } catch (error) {
+  //         console.error("Error fetching user data:", error);
+  //       }
+  //     };
+  //     fetchUserData();
+  //   }, []);
+
+  // FIXME - Hardcoded user data (remove this once the backend is fixed)
+  // Effect hook to set hardcoded user data for testing (replace with API call when backend is ready)
+  useEffect(() => {
+    setUser({
+      id: 1,
+      username: "tania",
+      email: "tania@test.com",
+      phoneNumber: "1234567890",
+      password: "******",
+    });
+
+    setFormData({
+      username: "tania",
+      email: "tania@test.com",
+      phoneNumber: "1234567890",
+      password: "******",
+    });
+  }, []);
+
+  // Handle form field changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
+  // Handle form submission for updating user data (currently uses hardcoded data)
+  const handleSubmit = async (e, field) => {
+    e.preventDefault();
+    const updatedData = { [field]: formData[field] };
+
+    try {
+      // FIXME: Uncomment this when backend is ready
+      //   const response = await axios.put(
+      //     `http://localhost:4000/api/users/${userId}`,
+      //     updatedData
+      //   );
+      //   setUser(response.data);
+      // FIXME: cancel this line once backend it's fixed as it's to temporarily update the user state wihtout API
+      setUser({ ...user, [field]: formData[field] });
+      setIsEditing((prev) => ({ ...prev, [field]: false }));
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
+
+  // Toggle edit mode for a specific field
+  const handleEdit = (field) => {
+    setIsEditing((prev) => ({ ...prev, [field]: true }));
+  };
+
+  // If no user data is available, return nothing (loading state or error handling can be added here)
+  if (!user) {
+    return null;
+  }
+
   return (
-    <div
-      className="profile-wrapper d-flex"
-      style={{ minHeight: "100vh", height: "100vh", overflow: "hidden" }}
-    >
-      {/* Sidebar navigation */}
-      <div
-        className="sidebar bg-light p-4"
-        style={{
-          minWidth: "250px",
-          height: "100vh",
-          overflowY: "auto",
-          position: "sticky",
-          top: 0,
-        }}
-      >
-        <h5 className="mb-4">Dashboard</h5>
+    <Container className="mt-5">
+      <Card>
+        <Card.Body>
+          <Card.Title className="text-center mt-3">{user.username}</Card.Title>
 
-        <Link to="/home" className="btn btn-outline-primary w-100 mb-3">
-          Go to Home
-        </Link>
+          {/* Username */}
+          <Card.Text>
+            <strong>Username: </strong>
+            {isEditing.username ? (
+              <Form onSubmit={(e) => handleSubmit(e, "username")}>
+                <Form.Control
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+                <Button variant="primary" type="submit" className="mt-2">
+                  Save Username
+                </Button>
+              </Form>
+            ) : (
+              <>
+                {user.username}
+                <Button
+                  variant="link"
+                  onClick={() => handleEdit("username")}
+                  className="ml-2"
+                >
+                  Edit
+                </Button>
+              </>
+            )}
+          </Card.Text>
 
-        {/* Sidebar navigation links */}
-        <div className="list-group">
-          {/* Link to post a new object */}
-          <Link to="post" className="list-group-item list-group-item-action">
-            Post new object
-          </Link>
+          {/* Email */}
+          <Card.Text>
+            <strong>Email:</strong>
+            {isEditing.email ? (
+              <Form onSubmit={(e) => handleSubmit(e, "email")}>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <Button variant="primary" type="submit" className="mt-2">
+                  Save Email
+                </Button>
+              </Form>
+            ) : (
+              <>
+                {user.email}
+                <Button
+                  variant="link"
+                  onClick={() => handleEdit("email")}
+                  className="ml-3"
+                >
+                  Edit
+                </Button>
+              </>
+            )}
+          </Card.Text>
 
-          {/* Link to view user's own objects */}
-          <Link
-            to="my-objects"
-            className="list-group-item list-group-item-action"
-          >
-            My Objects
-          </Link>
+          {/* Phone number */}
+          <Card.Text>
+            <strong>Phone Number:</strong>
+            {isEditing.phoneNumber ? (
+              <Form onSubmit={(e) => handleSubmit(e, "phoneNumber")}>
+                <Form.Control
+                  type="text"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                />
+                <Button variant="primary" type="submit" className="mt-2">
+                  Save Phone Number
+                </Button>
+              </Form>
+            ) : (
+              <>
+                {user.phoneNumber}
+                <Button
+                  variant="link"
+                  onClick={() => handleEdit("phoneNumber")}
+                  className="ml-3"
+                >
+                  Edit
+                </Button>
+              </>
+            )}
+          </Card.Text>
 
-          {/* Link to view incoming requests */}
-          <Link
-            to="requests"
-            className="list-group-item list-group-item-action"
-          >
-            Requests
-          </Link>
+          {/* Password */}
+          <Card.Text>
+            <strong>Password:</strong>
+            {isEditing.password ? (
+              <Form onSubmit={(e) => handleSubmit(e, "password")}>
+                <Form.Control
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <Button variant="primary" type="submit" className="mt-2">
+                  Save Password
+                </Button>
+              </Form>
+            ) : (
+              <>
+                {user.password}
+                <Button
+                  variant="link"
+                  onClick={() => handleEdit("password")}
+                  className="ml-3"
+                >
+                  Edit
+                </Button>
+              </>
+            )}
+          </Card.Text>
 
-          {/* Link to view borrowed items, when user can be both borrower or owner*/}
-          <Link
-            to="borrowed"
-            className="list-group-item list-group-item-action"
-          >
-            Borrowed
-          </Link>
-
-          {/* Link to sign out */}
-          <Link
-            to="/"
-            onClick={handleLogout}
-            className="list-group-item list-group-item-action"
-          >
-            Sign Out
-          </Link>
-        </div>
-      </div>
-
-      {/* Main content area where nested routes will render */}
-      <div className="main-content flex-grow-1 p-4">
-        <div className="card shadow-sm p-4">
-          <Outlet />{" "}
-          {/* This renders nested routes inside the Profile layout */}
-        </div>
-      </div>
-    </div>
+          {/* Navigation Buttons */}
+          <div className="d-flex justify-content-center mt-4">
+            <Link to="/home">
+              <Button variant="primat" className="mr-4">
+                Go to Home
+              </Button>
+            </Link>
+            <Link to="/dashboard">
+              <Button variant="primary" className="ml-3">
+                Go to Dashboard
+              </Button>
+            </Link>
+          </div>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

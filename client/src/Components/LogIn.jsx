@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./LogIn.css";
+import "./styles.css";
 
 function LogInPage() {
   const [credentials, setCredentials] = useState({
@@ -40,7 +42,7 @@ function LogInPage() {
 
   return (
     <div>
-      <h1>Log In Page</h1>
+      <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username"> Username: </label>
         <input

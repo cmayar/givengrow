@@ -98,6 +98,7 @@ const Home = () => {
         expand="lg"
       >
         <Container>
+        <NavigationBar/>
           <Navbar.Brand href="/">Share&Borrow</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -114,10 +115,9 @@ const Home = () => {
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar> 
-      <NavigationBar/>
-      
+        </Navbar>
   
+      
 
       {/* //NOTE - header image */}
       <Container className="mt-3" style={{ position: "relative" }}>

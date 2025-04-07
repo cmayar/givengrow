@@ -23,10 +23,11 @@ const How = () => {
           </p>
         </Col>
         <Col md={3} sm={6} xs={12} className="how-column">
-          <Image src={requestImg} alt="Request" className="how-image" />
-         <strong> Need something? </strong> Send a request to another user and wait for their
-          confirmation.
-        </Col>
+  <Image src={requestImg} alt="Request" className="how-image" />
+  <p>
+    <strong>Need something?</strong> Send a request to another user and wait for their confirmation.
+  </p>
+</Col>
         <Col md={3} sm={6} xs={12} className="how-column">
           <Image src={confirmImg} alt="confirm" className="how-image" />
           <p>

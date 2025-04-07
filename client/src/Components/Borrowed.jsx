@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useBadgeCounts } from "./BadgeCountsContext";
+import { Card, Image } from "react-bootstrap";
+import "./item.css";
+import "./MyObject.css";
+import "./borrowed.css";
+import defaultImage from "../assets/images/default_image.png";
 
 // Component to display borrowed items and manage the return flow
 const Borrowed = () => {
@@ -141,35 +146,49 @@ const Borrowed = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Borrowed Items</h2>
-
       {/* Section: Items currently borrowed by the user */}
-      <h4>Items You Borrowed</h4>
+      <h4 className="title-style">Items You Borrowed</h4>
       {borrowedItems.length === 0 ? (
         <p>You haven't borrowed any items currently.</p>
       ) : (
         borrowedItems.map(({ interaction }) => (
-          <div key={interaction.id} className="card mb-3 p-3">
-            <h5>{interaction.item.title}</h5>
-            <p>
-              <strong>Owner:</strong> {interaction.owner.username}
-            </p>
-            <p>
-              <strong>From:</strong> {interaction.dates.start}
-            </p>
-            <p>
-              <strong>To:</strong> {interaction.dates.end}
-            </p>
-            <p>
-              <strong>Status:</strong> {interaction.status}
-            </p>
-            <button
-              className="btn btn-success"
-              onClick={() => handleReturn(interaction.id)}
-            >
-              Return Item
-            </button>
-          </div>
+          <Card
+            key={interaction.id}
+            className="card item-card-container mb-3 p-3"
+          >
+            <div className="item-img-container">
+              <Image
+                src={interaction.item.imageUrl || defaultImage}
+                alt="Item Image"
+                className="card-img"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = defaultImage;
+                }}
+              />
+            </div>
+            <Card.Body>
+              <Card.Title>{interaction.item.title}</Card.Title>
+              <Card.Text>
+                <strong>Owner:</strong> {interaction.owner.username}
+              </Card.Text>
+              <Card.Text>
+                <strong>From:</strong> {interaction.dates.start}
+              </Card.Text>
+              <Card.Text>
+                <strong>To:</strong> {interaction.dates.end}
+              </Card.Text>
+              <Card.Text>
+                <strong>Status:</strong> {interaction.status}
+              </Card.Text>
+              <button
+                className="button-success"
+                onClick={() => handleReturn(interaction.id)}
+              >
+                Return Item
+              </button>
+            </Card.Body>
+          </Card>
         ))
       )}
 
@@ -177,31 +196,47 @@ const Borrowed = () => {
       <hr className="my-5" />
 
       {/* Section: Items borrowed from the user that need confirmation */}
-      <h4>Items Borrowed From You</h4>
+      <h4 className="title-style">Items Borrowed From You</h4>
       {ownerReturnedItems.length === 0 ? (
         <p>No items are awaiting your return confirmation.</p>
       ) : (
         ownerReturnedItems.map(({ interaction }) => (
-          <div key={interaction.id} className="card mb-3 p-3">
-            <h5>{interaction.item.title}</h5>
-            <p>
-              <strong>Borrower:</strong> {interaction.borrower.username}
-            </p>
-            <p>
-              <strong>From:</strong> {interaction.dates.start}
-            </p>
-            <p>
-              <strong>To:</strong> {interaction.dates.end}
-            </p>
-            <p>
-              <strong>Status:</strong> {interaction.status}
-            </p>
-            <button
-              className="btn btn-success"
-              onClick={() => handleConfirmReturn(interaction.id)}
-            >
-              Confirm Return
-            </button>
+          <div
+            key={interaction.id}
+            className="card item-card-container mb-3 p-3"
+          >
+            <div className="item-img-container">
+              <Image
+                src={interaction.item.imageUrl || defaultImage}
+                alt="Item Image"
+                className="card-img"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = defaultImage;
+                }}
+              />
+            </div>
+            <div className="card-body">
+              <h5>{interaction.item.title}</h5>
+              <p>
+                <strong>Borrower:</strong> {interaction.borrower.username}
+              </p>
+              <p>
+                <strong>From:</strong> {interaction.dates.start}
+              </p>
+              <p>
+                <strong>To:</strong> {interaction.dates.end}
+              </p>
+              <p>
+                <strong>Status:</strong> {interaction.status}
+              </p>
+              <button
+                className="btn btn-success"
+                onClick={() => handleConfirmReturn(interaction.id)}
+              >
+                Confirm Return
+              </button>
+            </div>
           </div>
         ))
       )}

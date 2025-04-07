@@ -27,7 +27,7 @@ h3 {
 
 
 /*input file */
-input[type="file"] {
+/* input[type="file"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -37,16 +37,16 @@ input[type="file"] {
     transition: all 0.3s ease;
     text-align: center;
     background-color: #fff;
-}
+} */
 
-input[type="file"]:focus {
+/* input[type="file"]:focus {
     border-color: var(--color-primary);
     outline:none;
     box-shadow: 0 0 5px var(--color-primary);
-}
+} */
 
 /*upload button*/
-button {
+/* button {
     width: 100%;
     padding: 12px;
     background-color: var(--color-primary);
@@ -57,35 +57,33 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /*submit hover function*/
-button:hover {
+/* button:hover {
     background-color: var(--color-secondary);
     transform: scale(1.05);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-}
+} */
 /*submit active (clicked) effect*/
-button:active {
+/* button:active {
     background-color: var(--color-primary);
     transform: scale(0.98);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /* Image gallery */
-div img {
+/* div img {
     max-width: 100%;
     margin: 10px;
     border-radius: 10px; 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /* Responsive Image Layout */
-div {
+/* div {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px; /* Space between images */
-    margin-top: 20px;
-}
-*/
+    /* margin-top: 20px; */

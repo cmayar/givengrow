@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap'); */
 
 /* container for the form */
-form {
+/* form {
     background-color: var(--color-background);
     padding: 20px;
     border-radius: 8px;
     max-width: 400px;
     margin: 40px auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+} */
 
-h1 {
+/* h1 {
     text-align: center;
     color: var(--color-primary);
     background: var(--color-primary), var(--color-secondary);
@@ -21,9 +21,9 @@ h1 {
     margin-bottom: 20px;
     margin-top: 40px;
     font-family: 'Poppins', sans-serif;
-}
+} */
 /*input form fields */
-input[type="text"],
+/* input[type="text"],
 input[type="password"],
 input[type="email"] {
     width: 100%;
@@ -32,9 +32,9 @@ input[type="email"] {
     border: 1px solid var(--color-secondary);
     border-radius: 4px;
     font-size: 16px;
-}
+} */
 /*submit button*/
-input[type="submit"] {
+/* input[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: var(--color-primary);
@@ -45,23 +45,23 @@ input[type="submit"] {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /*submit hover function*/
-input[type="submit"]:hover {
+/* input[type="submit"]:hover {
     background-color: var(--color-secondary);
     transform: scale(1.05);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-}
+} */
 /*submit active (clicked) effect*/
-input[type="submit"]:active {
+/* input[type="submit"]:active {
     background-color: var(--color-primary);
     transform: scale(0.98);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /*label*/
-label {
+/* label {
     font-size: 14px;
     font-weight: 600;
     color: var(--color-text);
@@ -71,4 +71,4 @@ label {
 
 br {
     margin-bottom: 10px;
-}
+} */

@@ -1,8 +1,7 @@
 import { useState } from "react";
-import LogInPage from "./LogIn"; // To be used later
-import RegistrationPage from "./Registration"; // To be used later
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import NavigationBar from "./Navigation";
 
 function Landing() {
   // State to store user input for login credentials
@@ -27,7 +26,7 @@ function Landing() {
     e.preventDefault();
     try {
       // Send a POST request to beckend with the user's credentials
-      const { data } = await axios("http://localhost:4000/auth/login", {
+      const { data } = await axios("http://localhost:4000/api/login", {
         method: "POST",
         data: credentials,
       });
@@ -42,6 +41,8 @@ function Landing() {
       setError(err.response?.data?.message || "Login failed");
     }
   };
+
+
 
   return (
     <div className="container mt-5" style={{ maxWidth: "400px" }}>

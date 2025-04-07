@@ -1,30 +1,44 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./LogIn.css";
 import "./styles.css";
 
 function LogInPage() {
-  const [data, setData] = useState({
+  const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prevData) => {
-      const newState = { ...prevData, [name]: value };
-      console.log("Updated State:", newState);
-      return newState;
-    });
-  }
+    setCredentials({ ...credentials, [name]: value });
+  };
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem(
-      "userToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NDMxMDQ3MDIsImV4cCI6MTc0MzEwODMwMn0.tiGwj_nb0kVL1NWgzq3VbpCUEkPhqKbGFbIHkNMc1t4"
-    );
-    console.log("Final User Log In Data:", data);
-  }
+    try {
+      // Send a POST request to beckend with the user's credentials
+      const { data } = await axios("http://localhost:4000/api/login", {
+        method: "POST",
+        data: credentials,
+      });
+
+      // Stores the received token in localStorage for future authenticated requests
+      localStorage.setItem("token", data.token);
+
+      // Redirects the user to the home page
+      navigate("/home");
+      setisSignedIn(true); // This updates the context for the navigation bar
+      console.log("Login successful:", data);
+
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError(err.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div>
@@ -35,7 +49,7 @@ function LogInPage() {
           type="text"
           id="username"
           name="username"
-          value={data.username}
+          value={credentials.username}
           onChange={handleChange}
         />
         <br />
@@ -45,7 +59,7 @@ function LogInPage() {
           type="password"
           id="password"
           name="password"
-          value={data.password}
+          value={credentials.password}
           onChange={handleChange}
         />
         <br />

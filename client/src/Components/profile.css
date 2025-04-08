@@ -1,10 +1,10 @@
 /* Container styling */
-.container {
+.container-profile {
     margin-top: 50px;
   }
   
   /* Card styling */
-  .card {
+  .card-profile {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #f9f9f9;
@@ -34,7 +34,7 @@
   }
    */
   /* Form input styling */
-  form .form-control {
+  form .form-control .profile-control {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 10px;

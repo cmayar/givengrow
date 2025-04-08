@@ -106,8 +106,8 @@ const Profile = () => {
   }
 
   return (
-    <Container className="mt-5">
-      <Card>
+    <Container className="container-profile mt-5">
+      <Card className="card-profile">
         <Card.Body>
           <Card.Title className="card-title-profile text-center mt-3">{user.username}</Card.Title>
 
@@ -117,6 +117,7 @@ const Profile = () => {
             {isEditing.username ? (
               <Form onSubmit={(e) => handleSubmit(e, "username")}>
                 <Form.Control
+                className="profile-control"
                   type="text"
                   name="username"
                   value={formData.username}

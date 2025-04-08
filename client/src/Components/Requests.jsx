@@ -12,9 +12,18 @@ const Requests = () => {
   const { updateRequestsCount } = useBadgeCounts();
 
   // Helper to get user ID from localStorage
+
   const getUserId = () => {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user).id : null;
+    const userStr = localStorage.getItem("user");
+    if (!userStr || userStr === "undefined") return null;
+
+    try {
+      const user = JSON.parse(userStr);
+      return user?.id || null;
+    } catch (err) {
+      console.error("Failed to parse user from localStorage:", err);
+      return null;
+    }
   };
 
   // Fetch owner interactions from the API

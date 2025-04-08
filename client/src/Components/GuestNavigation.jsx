@@ -14,7 +14,6 @@ export const GuestNavigationBar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/search">Search</Nav.Link>
             <Nav.Link as={Link} to="/login">Log In</Nav.Link>
             <Nav.Link as={Link} to="/register">Register</Nav.Link>
           </Nav>

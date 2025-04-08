@@ -23,22 +23,20 @@ function LogInPage() {
     e.preventDefault();
 
     try {
-      const { data } = await axios("http://localhost:4000/api/login", {
-        method: "POST",
-        data: credentials,
-      });
+      const { data } = await axios.post(
+        "http://localhost:4000/api/login",
+        credentials
+      );
 
       console.log("Login response:", data);
 
       const token = data?.token;
-      const user = data?.user || data?.data?.[0];
 
-      if (!token || !user || !user.id) {
+      if (!token) {
         throw new Error("Invalid login response from server");
       }
 
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("isSignedIn", "true"); // for auth context
 
       setIsSignedIn(true);

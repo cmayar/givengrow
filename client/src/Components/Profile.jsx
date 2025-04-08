@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Container, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "./Profile.css";
 
 const Profile = () => {
   // State to store the user data
@@ -105,10 +106,10 @@ const Profile = () => {
   }
 
   return (
-    <Container className="mt-5">
-      <Card>
+    <Container className="container-profile mt-5">
+      <Card className="card-profile">
         <Card.Body>
-          <Card.Title className="text-center mt-3">{user.username}</Card.Title>
+          <Card.Title className="card-title-profile text-center mt-3">{user.username}</Card.Title>
 
           {/* Username */}
           <Card.Text>
@@ -116,12 +117,13 @@ const Profile = () => {
             {isEditing.username ? (
               <Form onSubmit={(e) => handleSubmit(e, "username")}>
                 <Form.Control
+                className="profile-control"
                   type="text"
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button className="profile-button" type="submit">
                   Save Username
                 </Button>
               </Form>
@@ -131,7 +133,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("username")}
-                  className="ml-2"
+                  className="edit-button"
                 >
                   Edit
                 </Button>
@@ -150,7 +152,7 @@ const Profile = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button type="submit" className="profile-button">
                   Save Email
                 </Button>
               </Form>
@@ -158,9 +160,8 @@ const Profile = () => {
               <>
                 {user.email}
                 <Button
-                  variant="link"
+     className="edit-button"
                   onClick={() => handleEdit("email")}
-                  className="ml-3"
                 >
                   Edit
                 </Button>
@@ -179,7 +180,7 @@ const Profile = () => {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button variant="primary" type="submit" className="profile-button ">
                   Save Phone Number
                 </Button>
               </Form>
@@ -189,7 +190,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("phoneNumber")}
-                  className="ml-3"
+                 className="edit-button"
                 >
                   Edit
                 </Button>
@@ -208,7 +209,7 @@ const Profile = () => {
                   value={formData.password}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button variant="primary" type="submit" className="profile-button">
                   Save Password
                 </Button>
               </Form>
@@ -218,7 +219,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("password")}
-                  className="ml-3"
+                  className="edit-button"
                 >
                   Edit
                 </Button>
@@ -229,14 +230,14 @@ const Profile = () => {
           {/* Navigation Buttons */}
           <div className="d-flex justify-content-center mt-4">
             <Link to="/home">
-              <Button variant="primat" className="mr-4">
+              <button className="profile-back-button m-2">
                 Go to Home
-              </Button>
+              </button>
             </Link>
             <Link to="/dashboard">
-              <Button variant="primary" className="ml-3">
+              <button className="profile-back-button m-2">
                 Go to Dashboard
-              </Button>
+              </button>
             </Link>
           </div>
         </Card.Body>

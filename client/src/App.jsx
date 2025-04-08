@@ -14,7 +14,6 @@ import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
 import Images from "./Components/ImageUploader.jsx";
 import { AuthProvider } from "./Components/AuthContext.jsx";
-// import MyObjects from "./Components/MyObjects";
 import MyObjects from "./Components/MyObjects";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

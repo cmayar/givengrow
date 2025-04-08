@@ -1,19 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap'); */
 
 /* container for the login form */
-form {
+
+.form-container-login {
     display: flex;
-    flex-direction: column;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    min-height: 100vh; /* Makes the container take the full height of the viewport */
+    background-color: #f4f4f4; /* Optional: Add a background color */
+  }
+
+.login-form {
+    margin: 0 auto;
     background-color: var(--color-background);
     padding: 20px;
     border-radius: 8px;
     max-width: 400px;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+.title-login {
     text-align: center;
     color: var(--color-primary);
     background: var(--color-primary), var(--color-secondary);
@@ -25,6 +31,23 @@ h1 {
     margin-top: 40px;
     font-family: 'Poppins', sans-serif;
 }
+
+.login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  
 
 /*input form fields */
 input[type="text"],

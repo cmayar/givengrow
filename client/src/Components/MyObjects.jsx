@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Container, Row, Col, Image } from "react-bootstrap";
-import "./home.css";
 import "./MyObject.css";
+import "./item.css";
 import "./styles.css";
 import defaultImage from "../assets/images/default_image.png";
 
@@ -34,14 +34,14 @@ const MyObjects = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <h3>My Objects</h3>
+    <Container>
+      <h3 className="title-style">My Objects</h3>
       <Row>
         {objects.length > 0 ? (
           objects.map((object) => {
             return (
               <Col md={4} sm={6} xs={12} key={object.id}>
-                <Card className="p-3" border="0">
+                <Card className="my-object-card p-3" border="0">
                   <Card.Body>
                     <div className="card-img-container">
                       <Image

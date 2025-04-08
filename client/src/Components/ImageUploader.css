@@ -37,9 +37,9 @@ h3 {
     transition: all 0.3s ease;
     text-align: center;
     background-color: #fff;
-}
+} */
 
-input[type="file"]:focus {
+/* input[type="file"]:focus {
     border-color: var(--color-primary);
     outline:none;
     box-shadow: 0 0 5px var(--color-primary);

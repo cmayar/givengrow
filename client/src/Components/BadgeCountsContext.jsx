@@ -14,18 +14,14 @@ export const BadgeCountsProvider = ({ children }) => {
   // Use isSignedIn state from AuthContext
   const { isSignedIn } = useAuth();
 
-  //NOTE - debug get userId
-
   // Function to get user ID from localStorage safely
   const getUserId = () => {
     const userStr = localStorage.getItem("user");
-    console.log("Raw user data from localStorage:", userStr); // Debugging log
 
     if (!userStr || userStr === "undefined") return null;
 
     try {
       const user = JSON.parse(userStr);
-      console.log("Parsed user data:", user); // Debugging log
       return user?.id || null;
     } catch (err) {
       console.error("Failed to parse user from localStorage:", err);

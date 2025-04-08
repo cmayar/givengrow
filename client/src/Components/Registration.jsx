@@ -28,7 +28,7 @@ function RegistrationPage() {
     e.preventDefault();
     try {
       // Send a POST request to beckend with the user's credentials
-      const { data } = await axios("http://localhost:4000/auth/register", {
+      const { data } = await axios("http://localhost:4000/api/register", {
         method: "POST",
         data: credentials,
       });
@@ -37,7 +37,7 @@ function RegistrationPage() {
       localStorage.setItem("token", data.token);
 
       // Redirects the user to the home page
-      navigate("/home");
+      navigate("/login");
     } catch (err) {
       console.error("Registration failed:", err);
       setError(err.response?.data?.message || "Login failed");
@@ -47,8 +47,11 @@ function RegistrationPage() {
   return (
     <div className="form-container">
       <h1 className="title-registration">Registration</h1>
-      <form className= "register-form" onSubmit={handleSubmit}>
-        <label className="register-form-label" htmlFor="username"> Username: </label>
+      <form className="register-form" onSubmit={handleSubmit}>
+        <label className="register-form-label" htmlFor="username">
+          {" "}
+          Username:{" "}
+        </label>
         <input
           type="text"
           id="username"
@@ -58,7 +61,10 @@ function RegistrationPage() {
         />
         <br />
 
-        <label className="register-form-label"  htmlFor="email"> Email: </label>
+        <label className="register-form-label" htmlFor="email">
+          {" "}
+          Email:{" "}
+        </label>
         <input
           type="text"
           id="email"
@@ -68,7 +74,10 @@ function RegistrationPage() {
         />
         <br />
 
-        <label className="register-form-label"  htmlFor="phonenumber"> Phone number: </label>
+        <label className="register-form-label" htmlFor="phonenumber">
+          {" "}
+          Phone number:{" "}
+        </label>
         <input
           type="text"
           id="phonenumber"
@@ -78,7 +87,10 @@ function RegistrationPage() {
         />
         <br />
 
-        <label className="register-form-label"  htmlFor="password"> Password: </label>
+        <label className="register-form-label" htmlFor="password">
+          {" "}
+          Password:{" "}
+        </label>
         <input
           type="password"
           id="password"

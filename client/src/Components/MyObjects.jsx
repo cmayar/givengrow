@@ -33,6 +33,27 @@ const MyObjects = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete (`http://localhost:4000/api/items/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token in the Authorization header
+        },
+      });
+
+       // Update the state to remove the deleted object
+       setObjects((prevObjects) =>
+        prevObjects.filter((object) => object.id !== id)
+      );
+      console.log(`Item with ID ${id} deleted successfully.`);
+    } catch (err) {
+      console.error("Error deleting item:", err);
+    }
+  };
+
+
   return (
     <Container>
       <h3 className="title-style">My Objects</h3>
@@ -68,8 +89,14 @@ const MyObjects = () => {
                     >
                       <strong>{object.status}</strong>
                     </Card.Text>
+                    {/* //REVIEW - need the implementation to edit item*/}
                     <Button className="button-edit">Edit</Button>
-                    <Button className="button-delete">Delete</Button>
+                    <Button
+                      className="button-delete"
+                      onClick={() => handleDelete(object.id)}
+                    >
+                      Delete
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>

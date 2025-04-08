@@ -20,7 +20,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BadgeCountsProvider } from "./Components/BadgeCountsContext.jsx";
 import Profile from "./Components/Profile.jsx";
-import LogInPage from "./Components/LogInPage";
+import LogInPage from "./Components/LogIn.jsx";
 import RegistrationPage from "./Components/Registration.jsx";
 import NavigationBar from "./Components/Navigation.jsx";
 
@@ -43,7 +43,7 @@ function App() {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<LogInPage />} />
-          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
           <Route path="/items/:id" element={<Item />} />
           <Route path="/images" element={<Images />} />
           <Route path="/profile" element={<Profile />} />

@@ -1,0 +1,101 @@
+/* Container styling */
+.container-profile {
+    margin-top: 50px;
+  }
+  
+  /* Card styling */
+  .card-profile {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+  
+  /* Card title styling */
+  .card-title-profile {
+    font-size: 24px; 
+    font-weight: bold;
+    color: #333; 
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Text styling */
+  /* .card-text {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+   */
+  /* Strong text styling */
+  /* .card-text strong {
+    color: #3469b7;
+  }
+   */
+  /* Form input styling */
+  form .form-control .profile-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  /* Buttons styling */
+  
+ .edit-button {
+    color: #ffffff;
+    font-size: 14px;
+    margin: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+    border: none;
+    background:#4bd190;
+    border-radius: 25px;
+    padding: 20;
+    text-decoration: none;
+  }
+  
+.edit-button:hover {
+  color: white;
+    background:#389f6e;
+  }
+  
+
+  .profile-button {
+    background-color:var(--button-background-color); ;  /* I use here the variable of the styles.css for the button color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration:  'none';
+
+  }
+  
+.profile-button:hover {
+    background-color: var(--button-hover-color); /* variable color here */
+    text-decoration:  'none';
+  }
+
+    
+
+  .profile-back-button {
+    background-color:#9186c0; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration:'none';
+
+  }
+  
+.profile-back-button:hover {
+    background-color: #726998;
+
+  }

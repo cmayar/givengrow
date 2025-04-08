@@ -43,23 +43,27 @@
   
   /* Buttons styling */
   
-  button.edit-button {
-    color: #3469b7;
+ .edit-button {
+    color: #ffffff;
     font-size: 14px;
+    margin: 10px;
     text-decoration: underline;
     cursor: pointer;
     border: none;
-    background: none;
-    padding: 0;
+    background:#4bd190;
+    border-radius: 25px;
+    padding: 20;
+    text-decoration: none;
   }
   
-  button.edit-button:hover {
-    color: #285a9e;
+.edit-button:hover {
+  color: white;
+    background:#389f6e;
   }
   
 
   .profile-button {
-    background-color: var(--button-background-color);  /* I use here the variable of the styles.css for the button color */
+    background-color:var(--button-background-color); ;  /* I use here the variable of the styles.css for the button color */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -74,4 +78,24 @@
 .profile-button:hover {
     background-color: var(--button-hover-color); /* variable color here */
     text-decoration:  'none';
+  }
+
+    
+
+  .profile-back-button {
+    background-color:#9186c0; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration:'none';
+
+  }
+  
+.profile-back-button:hover {
+    background-color: #726998;
+
   }

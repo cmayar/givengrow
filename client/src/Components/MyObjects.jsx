@@ -47,7 +47,7 @@ const MyObjects = () => {
                       <Image
                         src={object.image || defaultImage} // Use defaultImage if object.image is falsy
                         alt="Item Image"
-                        className="card-img"
+                        className="object-card-img"
                         onError={(e) => {
                           e.target.onerror = null; // Prevent infinite loop
                           e.target.src = defaultImage; // Fallback to default image

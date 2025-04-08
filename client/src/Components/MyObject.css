@@ -10,7 +10,8 @@
   width: auto;
   border-radius: 15px;
 }
-.card-img {
+.object-card-img {
+  align-items: center;
   width: 250px;
   object-fit: cover;
   margin-bottom: 0 auto;

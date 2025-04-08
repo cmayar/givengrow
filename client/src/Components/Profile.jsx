@@ -152,7 +152,7 @@ const Profile = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="edit-button">
+                <Button type="submit" className="profile-button">
                   Save Email
                 </Button>
               </Form>
@@ -160,9 +160,8 @@ const Profile = () => {
               <>
                 {user.email}
                 <Button
-                  variant="link"
+     className="edit-button"
                   onClick={() => handleEdit("email")}
-                  className="edit-button"
                 >
                   Edit
                 </Button>
@@ -181,7 +180,7 @@ const Profile = () => {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="edit-button">
+                <Button variant="primary" type="submit" className="profile-button ">
                   Save Phone Number
                 </Button>
               </Form>
@@ -210,7 +209,7 @@ const Profile = () => {
                   value={formData.password}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button variant="primary" type="submit" className="profile-button">
                   Save Password
                 </Button>
               </Form>
@@ -220,7 +219,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("password")}
-                  className="ml-3"
+                  className="edit-button"
                 >
                   Edit
                 </Button>
@@ -231,12 +230,12 @@ const Profile = () => {
           {/* Navigation Buttons */}
           <div className="d-flex justify-content-center mt-4">
             <Link to="/home">
-              <button className="profile-button m-2">
+              <button className="profile-back-button m-2">
                 Go to Home
               </button>
             </Link>
             <Link to="/dashboard">
-              <button className="profile-button m-2">
+              <button className="profile-back-button m-2">
                 Go to Dashboard
               </button>
             </Link>

@@ -7,8 +7,6 @@ import {
   Row,
   Col,
   Container,
-  Navbar,
-  Nav,
   Image,
   Button,
 } from "react-bootstrap";
@@ -16,6 +14,7 @@ import "./home.css";
 import "./styles.css";
 import headerImg from "../assets/images/header_image.jpg";
 import defaultImage from "../assets/images/default_image.png";
+import How from "./how";
 import NavigationBar from "./Navigation.jsx";
 
 // Home component displays shared items and filters them by category
@@ -25,7 +24,8 @@ const Home = () => {
 
   // State to store selected category from dropdown
   const [selectedCategory, setSelectedCategory] = useState("");
-
+  //State to manage the visibility of "how it works" button
+  const [showHow, setShowHow] = useState(false);
   // Categories used for dropdown filter as per ENUM in DB
   const categories = [
     "tools",
@@ -89,11 +89,9 @@ const Home = () => {
 
   return (
     <>
-      
-      {/* Flexible navigation bar that changes based on user login status */}
-      <NavigationBar/>
-      
   
+      {/* Flexible navigation bar that changes based on user login status */}
+      <NavigationBar />
 
       {/* //NOTE - header image */}
       <Container className="mt-3" style={{ position: "relative" }}>
@@ -120,17 +118,22 @@ const Home = () => {
               <Card.Text>
                 Share objects to help others, borrow objects that you need!
               </Card.Text>
-              <Link
-                to="/how"
-                style={{ textDecoration: "none" }}
+              <button
                 className="button"
+                onClick={() => setShowHow(!showHow)} // Toggle visibility of How component
               >
                 How it works?
-              </Link>
+              </button>
             </Card.Body>
           </Card>
         </div>
       </Container>
+      {/* Conditionally render the How component */}
+      {showHow && (
+        <Container className="mt-4">
+          <How />
+        </Container>
+      )}
 
       <h4 className="subtitle">Need something? Explore!</h4>
       {/* Category dropdown filter */}

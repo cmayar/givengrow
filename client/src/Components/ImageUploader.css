@@ -37,13 +37,13 @@ h3 {
     transition: all 0.3s ease;
     text-align: center;
     background-color: #fff;
-}
+} */
 
-input[type="file"]:focus {
+/* input[type="file"]:focus {
     border-color: var(--color-primary);
     outline:none;
     box-shadow: 0 0 5px var(--color-primary);
-}
+} */
 
 /*upload button*/
 /* button {
@@ -57,7 +57,7 @@ input[type="file"]:focus {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /*submit hover function*/
 /* button:hover {
@@ -70,7 +70,7 @@ input[type="file"]:focus {
     background-color: var(--color-primary);
     transform: scale(0.98);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /* Image gallery */
 /* div img {
@@ -87,4 +87,3 @@ input[type="file"]:focus {
     justify-content: center;
     gap: 20px; /* Space between images */
 /* margin-top: 20px; */
-/* }  */

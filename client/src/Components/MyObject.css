@@ -1,3 +1,29 @@
+.item-card-container {
+  width: 280px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px 0; 
+  padding: 10px;
+}
+
+.my-object-card {
+  width: auto;
+  border-radius: 15px;
+}
+.card-img {
+  width: 250px;
+  object-fit: cover;
+  margin-bottom: 0 auto;
+}
+.title-style {
+  font-size: 24px; 
+  font-weight: bold;
+  color: #333; 
+
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 .button-edit {
     background-color: var(--button-background-color);  /* I use here the variable of the styles.css for the button color */
     color: white;
@@ -10,7 +36,7 @@
     text-decoration:  'none';
   }
   
-.button-edit :hover {
+.button-edit:hover {
     background-color: var(--button-hover-color); /* variable color here */
   }
 
@@ -27,7 +53,7 @@
     margin: 10px;
   }
   
-.button-delete :hover {
+.button-delete:hover {
     background-color: rgb(173, 50, 50); 
   }
 
@@ -40,14 +66,16 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    text-decoration: 'none';
-    margin-top: 10px;
+    text-decoration: none;
+    margin-top: 30px;
 }
 
-.button-back :hover {
+.button-back:hover {
     background-color: #7b6f80;
+    color: white;
+    text-decoration: none;
 }
 
-.button-back :active {
+.button-back:active {
     background-color: #7b6f80;
 }

@@ -42,8 +42,6 @@ function Landing() {
     }
   };
 
-
-
   return (
     <div className="container mt-5" style={{ maxWidth: "400px" }}>
       <h1 className="text-center mb-4">Share & Borrow App</h1>

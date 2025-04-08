@@ -22,7 +22,7 @@ import { BadgeCountsProvider } from "./Components/BadgeCountsContext.jsx";
 import Profile from "./Components/Profile.jsx";
 import LogInPage from "./Components/LogIn.jsx";
 import RegistrationPage from "./Components/Registration.jsx";
-import NavigationBar from "./Components/Navigation.jsx";
+import NavigationBar from "./Components/NavigationBar.jsx";
 
 function App() {
   return (
@@ -30,13 +30,11 @@ function App() {
     <AuthProvider>
       {/* Router component to manage the routes and enable navigation */}
       <Router>
-        {/* This is already in Landin.jsx*/}
-        {/* <div>
-        <h1> Share & Borrow app</h1>
-        <h2> Welcome! </h2>
-      </div> */}
         {/* ToastContainer to show notifications */}
         <ToastContainer position="top-center" autoClose={3000} />
+
+        {/* NavigationBar always visible */}
+        <NavigationBar />
 
         {/* Routes define URL paths and corresponding components */}
         <Routes>

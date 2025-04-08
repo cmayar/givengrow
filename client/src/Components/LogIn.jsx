@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./AuthContext"; 
+import { useAuth } from "./AuthContext";
 import "./LogIn.css";
 import "./styles.css";
 
@@ -21,30 +21,44 @@ function LogInPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const { data } = await axios("http://localhost:4000/api/login", {
         method: "POST",
         data: credentials,
       });
 
-      localStorage.setItem("token", data.token);
+      console.log("Login response:", data);
 
-      setIsSignedIn(true); // set isSignedIn to true in context
+      const token = data?.token;
+      const user = data?.user || data?.data?.[0];
 
+      if (!token || !user || !user.id) {
+        throw new Error("Invalid login response from server");
+      }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("isSignedIn", "true"); // for auth context
+
+      setIsSignedIn(true);
       navigate("/home");
-      console.log("Login successful:", data);
     } catch (err) {
       console.error("Login failed:", err);
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || err.message || "Login failed");
     }
   };
 
   return (
-    <div className= "form-container-login">
+    <div className="form-container-login">
       <h1 className="title-login">Log In</h1>
       <form className="login-form" onSubmit={handleSubmit}>
-        <label className="login-form-label" htmlFor="username"> Username: </label>
-        <input className="login-input"
+        <label className="login-form-label" htmlFor="username">
+          {" "}
+          Username:{" "}
+        </label>
+        <input
+          className="login-input"
           type="text"
           id="username"
           name="username"
@@ -53,8 +67,12 @@ function LogInPage() {
         />
         <br />
 
-        <label className="login-form-label" htmlFor="password"> Password: </label>
-        <input className="login-input"
+        <label className="login-form-label" htmlFor="password">
+          {" "}
+          Password:{" "}
+        </label>
+        <input
+          className="login-input"
           type="password"
           id="password"
           name="password"

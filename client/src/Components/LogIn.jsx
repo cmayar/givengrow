@@ -31,7 +31,7 @@ function LogInPage() {
       console.log("Login response:", data);
 
       const token = data?.token;
-      const user = data?.user || data?.data?.[0]; // ✅ fallback support
+      const user = data?.user || data?.data?.[0];
 
       if (!token || !user || !user.id) {
         throw new Error("Invalid login response from server");

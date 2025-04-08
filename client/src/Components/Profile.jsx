@@ -109,7 +109,7 @@ const Profile = () => {
     <Container className="mt-5">
       <Card>
         <Card.Body>
-          <Card.Title className="text-center mt-3">{user.username}</Card.Title>
+          <Card.Title className="card-title-profile text-center mt-3">{user.username}</Card.Title>
 
           {/* Username */}
           <Card.Text>

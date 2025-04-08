@@ -12,7 +12,7 @@
   }
   
   /* Card title styling */
-  .card-title {
+  .card-title-profile {
     font-size: 24px; 
     font-weight: bold;
     color: #333; 
@@ -22,17 +22,17 @@
   }
   
   /* Text styling */
-  .card-text {
+  /* .card-text {
     font-size: 16px;
     margin-bottom: 15px;
     color: #333;
   }
-  
+   */
   /* Strong text styling */
-  .card-text strong {
+  /* .card-text strong {
     color: #3469b7;
   }
-  
+   */
   /* Form input styling */
   form .form-control {
     border-radius: 5px;

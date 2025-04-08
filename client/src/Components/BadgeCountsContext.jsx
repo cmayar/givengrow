@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 // Create context
 const BadgeCountsContext = createContext();
@@ -10,24 +11,45 @@ export const BadgeCountsProvider = ({ children }) => {
   const [requestsCount, setRequestsCount] = useState(0);
   const [borrowedCount, setBorrowedCount] = useState(0);
 
+  // Use isSignedIn state from AuthContext
+  const { isSignedIn } = useAuth();
+
+  //NOTE - debug get userId
+
+  // Function to get user ID from localStorage safely
   const getUserId = () => {
     const userStr = localStorage.getItem("user");
+    console.log("Raw user data from localStorage:", userStr); // Debugging log
+
     if (!userStr || userStr === "undefined") return null;
 
     try {
       const user = JSON.parse(userStr);
+      console.log("Parsed user data:", user); // Debugging log
       return user?.id || null;
     } catch (err) {
       console.error("Failed to parse user from localStorage:", err);
       return null;
     }
   };
-  // Function to fetch and update badge counts
-  const fetchBadgeCounts = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const userId = getUserId();
 
+  // Function to fetch and update badge counts
+  // Fetch badge counts, borrowed items, and requests based on user sign-in
+  const fetchBadgeCounts = async () => {
+    if (!isSignedIn) {
+      console.log("User not signed in, cannot fetch badge counts.");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    const userId = getUserId();
+
+    if (!userId) {
+      console.error("No valid user ID found, cannot fetch badge counts.");
+      return;
+    }
+
+    try {
       const [ownerRes, borrowerRes] = await Promise.all([
         axios.get(`http://localhost:4000/api/interactions/owner/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -37,38 +59,42 @@ export const BadgeCountsProvider = ({ children }) => {
         }),
       ]);
 
-      const ownerData = ownerRes.data.interactions;
-      const borrowerData = borrowerRes.data.interactions;
+      //NOTE newer code
+      // Add fallbacks in case data is missing
+      const ownerData = ownerRes.data?.interactions || [];
+      const borrowerData = borrowerRes.data?.interactions || [];
 
-      // Count requested interactions for the owner with filter
+      // Count requested interactions for the owner
       const requests = ownerData.filter(
-        ({ interaction }) => interaction.status === "requested"
+        (item) => item?.interaction?.status === "requested"
       );
       setRequestsCount(requests.length);
 
-      // Count borrowed items borrower needs to return
+      // Count borrowed items that need to be returned by the borrower
       const borrowerItems = borrowerData.filter(
-        ({ interaction }) => interaction.status === "borrowed"
+        (item) => item?.interaction?.status === "borrowed"
       );
 
       // Count returned items that the owner needs to confirm
       const returnsToConfirm = ownerData.filter(
-        ({ interaction }) => interaction.status === "borrower-returned"
+        (item) => item?.interaction?.status === "borrower-returned"
       );
 
-      // Sum both for borrowed badge
+      // Sum both for the borrowed badge
       setBorrowedCount(borrowerItems.length + returnsToConfirm.length);
     } catch (error) {
       console.error("Error fetching badge counts:", error);
     }
   };
 
-  // Set up polling
+  // Set up polling to fetch badge counts every 10 seconds
   useEffect(() => {
-    fetchBadgeCounts();
-    const interval = setInterval(fetchBadgeCounts, 10000); // Every 10 seconds
-    return () => clearInterval(interval);
-  }, []);
+    if (isSignedIn) {
+      fetchBadgeCounts();
+      const interval = setInterval(fetchBadgeCounts, 10000); // Every 10 seconds
+      return () => clearInterval(interval);
+    }
+  }, [isSignedIn]);
 
   return (
     <BadgeCountsContext.Provider

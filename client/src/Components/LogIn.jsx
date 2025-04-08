@@ -31,6 +31,8 @@ function LogInPage() {
       console.log("Login response:", data);
 
       const token = data?.token;
+      //NOTE - missing line to extrad data
+      const user = data?.user;
 
       if (!token) {
         throw new Error("Invalid login response from server");
@@ -38,6 +40,14 @@ function LogInPage() {
 
       localStorage.setItem("token", token);
       localStorage.setItem("isSignedIn", "true"); // for auth context
+
+      //NOTE - missing line to extract data
+      // Store the user object in localStorage
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+      } else {
+        console.error("No user data received from server");
+      }
 
       setIsSignedIn(true);
       navigate("/home");

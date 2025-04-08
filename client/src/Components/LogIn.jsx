@@ -40,11 +40,11 @@ function LogInPage() {
   };
 
   return (
-    <div>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username"> Username: </label>
-        <input
+    <div className= "form-container-login">
+      <h1 className="title-login">Log In</h1>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <label className="login-form-label" htmlFor="username"> Username: </label>
+        <input className="login-input"
           type="text"
           id="username"
           name="username"
@@ -53,8 +53,8 @@ function LogInPage() {
         />
         <br />
 
-        <label htmlFor="password"> Password: </label>
-        <input
+        <label className="login-form-label" htmlFor="password"> Password: </label>
+        <input className="login-input"
           type="password"
           id="password"
           name="password"

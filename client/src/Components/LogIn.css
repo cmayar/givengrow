@@ -1,19 +1,25 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap'); */
 
 /* container for the login form */
-/* form {
+
+.form-container-login {
     display: flex;
-    flex-direction: column;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    min-height: 100vh; /* Makes the container take the full height of the viewport */
+    background-color: #f4f4f4; /* Optional: Add a background color */
+  }
+
+.login-form {
+    margin: 0 auto;
     background-color: var(--color-background);
     padding: 20px;
     border-radius: 8px;
     max-width: 400px;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-} */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-/* h1 {
+.title-login {
     text-align: center;
     color: var(--color-primary);
     background: var(--color-primary), var(--color-secondary);
@@ -24,10 +30,27 @@
     margin-bottom: 20px;
     margin-top: 40px;
     font-family: 'Poppins', sans-serif;
-} */
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  
 
 /*input form fields */
-/* input[type="text"],
+input[type="text"],
 input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -37,10 +60,10 @@ input[type="password"] {
     font-size: 16px;
     background-color: #fff;
     transition: all 0.3s ease;
-} */
+}
 
 /*submit button*/
-/* input[type="submit"] {
+input[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: var(--color-primary);
@@ -51,19 +74,19 @@ input[type="password"] {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-} */
+}
 
 /*submit hover function*/
-/* input[type="submit"]:hover {
+input[type="submit"]:hover {
     background-color: #3e66a2;
     transform: scale(1.05);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
-} */
+}
 /*submit active (clicked) effect*/
-/* input[type="submit"]:active {
+input[type="submit"]:active {
     background-color: var(--color-primary);
     transform: scale(0.98);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
- */
+

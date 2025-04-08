@@ -1,16 +1,26 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap'); */
 
 /* container for the form */
-/* form {
+
+.form-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    min-height: 100vh; /* Makes the container take the full height of the viewport */
+    background-color: #f4f4f4; /* Optional: Add a background color */
+  }
+
+.register-form {
+    margin: 50px auto;
     background-color: var(--color-background);
     padding: 20px;
     border-radius: 8px;
     max-width: 400px;
     margin: 40px auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-} */
+}
 
-/* h1 {
+.title-registration {
     text-align: center;
     color: var(--color-primary);
     background: var(--color-primary), var(--color-secondary);
@@ -21,9 +31,17 @@
     margin-bottom: 20px;
     margin-top: 40px;
     font-family: 'Poppins', sans-serif;
-} */
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+
 /*input form fields */
-/* input[type="text"],
+input[type="text"],
 input[type="password"],
 input[type="email"] {
     width: 100%;
@@ -32,9 +50,9 @@ input[type="email"] {
     border: 1px solid var(--color-secondary);
     border-radius: 4px;
     font-size: 16px;
-} */
+}
 /*submit button*/
-/* input[type="submit"] {
+input[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: var(--color-primary);
@@ -45,23 +63,23 @@ input[type="email"] {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-} */
+}
 
 /*submit hover function*/
-/* input[type="submit"]:hover {
+input[type="submit"]:hover {
     background-color: var(--color-secondary);
     transform: scale(1.05);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-} */
+}
 /*submit active (clicked) effect*/
-/* input[type="submit"]:active {
+input[type="submit"]:active {
     background-color: var(--color-primary);
     transform: scale(0.98);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-} */
+}
 
 /*label*/
-/* label {
+label {
     font-size: 14px;
     font-weight: 600;
     color: var(--color-text);
@@ -71,4 +89,27 @@ input[type="email"] {
 
 br {
     margin-bottom: 10px;
-} */
+}
+
+.button-back {
+    background-color: #a59aaa;
+    color:white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    margin-top: 30px;
+}
+
+.button-register:hover {
+    background-color: #7b6f80;
+    color: white;
+    text-decoration: none;
+}
+
+.button-register:active {
+    background-color: #7b6f80;
+}

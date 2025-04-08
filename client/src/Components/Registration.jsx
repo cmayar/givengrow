@@ -11,6 +11,7 @@ function RegistrationPage() {
     phonenumber: "",
     password: "",
   });
+
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -44,10 +45,10 @@ function RegistrationPage() {
   };
 
   return (
-    <div>
-      <h1>Registration</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username"> Username: </label>
+    <div className="form-container">
+      <h1 className="title-registration">Registration</h1>
+      <form className= "register-form" onSubmit={handleSubmit}>
+        <label className="register-form-label" htmlFor="username"> Username: </label>
         <input
           type="text"
           id="username"
@@ -57,7 +58,7 @@ function RegistrationPage() {
         />
         <br />
 
-        <label htmlFor="email"> Email: </label>
+        <label className="register-form-label"  htmlFor="email"> Email: </label>
         <input
           type="text"
           id="email"
@@ -67,7 +68,7 @@ function RegistrationPage() {
         />
         <br />
 
-        <label htmlFor="phonenumber"> Phone number: </label>
+        <label className="register-form-label"  htmlFor="phonenumber"> Phone number: </label>
         <input
           type="text"
           id="phonenumber"
@@ -77,7 +78,7 @@ function RegistrationPage() {
         />
         <br />
 
-        <label htmlFor="password"> Password: </label>
+        <label className="register-form-label"  htmlFor="password"> Password: </label>
         <input
           type="password"
           id="password"
@@ -86,8 +87,7 @@ function RegistrationPage() {
           onChange={handleChange}
         />
         <br />
-
-        <input type="submit" value="Submit" />
+        <input className="button-register" type="submit" value="Submit" />
       </form>
     </div>
   );

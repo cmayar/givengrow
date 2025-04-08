@@ -2,20 +2,12 @@ import React, { use } from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  Row,
-  Col,
-  Container,
-  Image,
-  Button,
-} from "react-bootstrap";
+import { Card, Row, Col, Container, Image, Button } from "react-bootstrap";
 import "./home.css";
 import "./styles.css";
 import headerImg from "../assets/images/header_image.jpg";
 import defaultImage from "../assets/images/default_image.png";
 import How from "./how";
-import NavigationBar from "./Navigation.jsx";
 
 // Home component displays shared items and filters them by category
 const Home = () => {
@@ -89,10 +81,6 @@ const Home = () => {
 
   return (
     <>
-  
-      {/* Flexible navigation bar that changes based on user login status */}
-      <NavigationBar />
-
       {/* //NOTE - header image */}
       <Container className="mt-3" style={{ position: "relative" }}>
         <Image

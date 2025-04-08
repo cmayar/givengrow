@@ -11,15 +11,22 @@ export const BadgeCountsProvider = ({ children }) => {
   const [borrowedCount, setBorrowedCount] = useState(0);
 
   const getUserId = () => {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user).id : null;
-  };
+    const userStr = localStorage.getItem("user");
+    if (!userStr || userStr === "undefined") return null;
 
+    try {
+      const user = JSON.parse(userStr);
+      return user?.id || null;
+    } catch (err) {
+      console.error("Failed to parse user from localStorage:", err);
+      return null;
+    }
+  };
   // Function to fetch and update badge counts
   const fetchBadgeCounts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const userId = getUserId;
+      const userId = getUserId();
 
       const [ownerRes, borrowerRes] = await Promise.all([
         axios.get(`http://localhost:4000/api/interactions/owner/${userId}`, {

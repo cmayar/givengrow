@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Container, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "./Profile.css";
 
 const Profile = () => {
   // State to store the user data
@@ -121,7 +122,7 @@ const Profile = () => {
                   value={formData.username}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button className="profile-button" type="submit">
                   Save Username
                 </Button>
               </Form>
@@ -131,7 +132,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("username")}
-                  className="ml-2"
+                  className="edit-button"
                 >
                   Edit
                 </Button>
@@ -150,7 +151,7 @@ const Profile = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button variant="primary" type="submit" className="edit-button">
                   Save Email
                 </Button>
               </Form>
@@ -160,7 +161,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("email")}
-                  className="ml-3"
+                  className="edit-button"
                 >
                   Edit
                 </Button>
@@ -179,7 +180,7 @@ const Profile = () => {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="mt-2">
+                <Button variant="primary" type="submit" className="edit-button">
                   Save Phone Number
                 </Button>
               </Form>
@@ -189,7 +190,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("phoneNumber")}
-                  className="ml-3"
+                 className="edit-button"
                 >
                   Edit
                 </Button>
@@ -229,14 +230,14 @@ const Profile = () => {
           {/* Navigation Buttons */}
           <div className="d-flex justify-content-center mt-4">
             <Link to="/home">
-              <Button variant="primat" className="mr-4">
+              <button className="profile-button m-2">
                 Go to Home
-              </Button>
+              </button>
             </Link>
             <Link to="/dashboard">
-              <Button variant="primary" className="ml-3">
+              <button className="profile-button m-2">
                 Go to Dashboard
-              </Button>
+              </button>
             </Link>
           </div>
         </Card.Body>

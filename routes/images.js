@@ -14,6 +14,8 @@ const __dirname = dirname(__filename);
 const router = express.Router();
 const upload = multer({ dest: "public/img/" });
 
+
+
 const getImages = async (req, res) => {
   try {
     const results = await db("SELECT * FROM images;");
@@ -49,7 +51,10 @@ console.log('Target', target_path)
     await fs.rename(tmp_path, target_path);
 
      // store image in the DB
-    await db(`INSERT INTO images (path) VALUES ("${filename}");`);
+    await db(`INSERT INTO images (path, item_id) VALUES ("${filename}", ${
+				item_id ? `"${item_id}"` : 'NULL'
+			});`,
+		);
 
     getImages(req, res);
   } catch (err) {

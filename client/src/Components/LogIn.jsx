@@ -21,34 +21,34 @@ function LogInPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const { data } = await axios.post(
         "http://localhost:4000/api/login",
         credentials
       );
-
+  
       console.log("Login response:", data);
-
+  
       const token = data?.token;
-      //NOTE - missing line to extrad data
       const user = data?.user;
-
+  
       if (!token) {
         throw new Error("Invalid login response from server");
       }
-
+  
+      // ✅ Store the token so it's available for authenticated requests
       localStorage.setItem("token", token);
-      localStorage.setItem("isSignedIn", "true"); // for auth context
-
-      //NOTE - missing line to extract data
-      // Store the user object in localStorage
+      localStorage.setItem("isSignedIn", "true");
+  
+      // ✅ Optional: Store user info if needed later
       if (user) {
         localStorage.setItem("user", JSON.stringify(user));
       } else {
         console.error("No user data received from server");
       }
-
+  
+      // ✅ Update auth context & navigate
       setIsSignedIn(true);
       navigate("/home");
     } catch (err) {
@@ -56,6 +56,7 @@ function LogInPage() {
       setError(err.response?.data?.message || err.message || "Login failed");
     }
   };
+  
 
   return (
     <div className="form-container-login">

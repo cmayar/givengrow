@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Form, Image, Row, Col } from "react-bootstrap";
-import "./item.css";
+import "./Item.css";
 import "./styles.css";
 import defaultImage from "../assets/images/default_image.png";
 import { toast } from "react-toastify";

@@ -22,6 +22,7 @@ import Profile from "./Components/Profile.jsx";
 import LogInPage from "./Components/LogIn.jsx";
 import RegistrationPage from "./Components/Registration.jsx";
 import NavigationBar from "./Components/NavigationBar.jsx";
+import About from "./Components/About";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/items/:id" element={<Item />} />
           <Route path="/images" element={<Images />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/about" element={<About />} />
 
           {/* Profile dashboardwith nested routes and shared sidebar layout */}
           {/* wrapped in BadgeCountsProvider */}

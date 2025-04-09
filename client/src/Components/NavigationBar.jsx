@@ -22,13 +22,16 @@ const NavigationBar = () => {
     >
       <Container>
         <Navbar.Brand as={Link} to="/">
-         <strong>Give N Grow</strong>
+          <strong>Give N Grow</strong>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/">
               Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/about">
+              About
             </Nav.Link>
             {isSignedIn ? (
               <>

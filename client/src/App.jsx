@@ -23,6 +23,13 @@ import LogInPage from "./Components/LogIn.jsx";
 import RegistrationPage from "./Components/Registration.jsx";
 import NavigationBar from "./Components/NavigationBar.jsx";
 import About from "./Components/About";
+import PostNewItemPage from "./Components/PostNewItem.jsx";
+import path from "path";
+
+
+
+
+
 
 function App() {
   return (
@@ -61,7 +68,8 @@ function App() {
               path="post"
               element={
                 <div style={{ padding: "2rem" }}>
-                  <h2>Post new object</h2>
+                
+                <PostNewItemPage />
                   
                 </div>
               }

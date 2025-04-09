@@ -1,16 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ImageUploader from "./ImageUploader"; // Assuming this is where you're uploading images
+import "./PostNewItem.css";
 
-function PostItemPage() {
-  const [itemData, setItemData] = useState({
-    title: "",
-    description: "",
-    category: "",
-    image: null,
-  });
+function PostNewItemPage() {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [imageFile, setImageFile] = useState(null); // Store the file here
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   const categories = [
     "tools", "outdoor", "kitchenware", "cleaning", "electronics",
@@ -18,92 +17,113 @@ function PostItemPage() {
     "crafts", "media", "vehicles", "misc"
   ];
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setItemData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setItemData((prevData) => ({ ...prevData, image: file }));
+  const handleImageUpload = (uploadedFile) => {
+    setImageFile(uploadedFile); // Set the file (not the image path)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
 
-    formData.append("title", itemData.title);
-    formData.append("description", itemData.description);
-    formData.append("category", itemData.category);
-    formData.append("image", itemData.image);
+    if (!title || !description || !category || !imageFile) {
+      alert('Please fill in all fields and upload an image.');
+      return;
+    }
 
     try {
-      await axios.post("http://localhost:4000/items", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const token = localStorage.getItem("token"); // Or wherever you're storing your JWT
 
-      navigate("/home");
+      if (!token) {
+        alert('Please log in before posting an item.');
+        return;
+      }
+
+      // Create a new FormData object to send both the text fields and the file
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('category', category);
+      formData.append('status', 'available'); // default status
+      formData.append('imagefile', imageFile); // Add the image file here
+
+      const response = await axios.post(
+        'http://localhost:5175/api/items',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data', // Set the content type for file uploads
+          },
+        }
+      );
+
+      console.log('Item created:', response.data);
+      alert('Item successfully created!');
+      // Reset form
+      setTitle('');
+      setDescription('');
+      setCategory('');
+      setImageFile(null);
     } catch (err) {
-      console.error("Failed to post item:", err);
-      setError(err.response?.data?.message || "Failed to post item.");
+      console.error('Error creating item:', err);
+      setError('Failed to create item. Please try again.');
     }
   };
 
   return (
-    <div>
-      <h1>Post a New Item</h1>
+    <div className="form">
+      <h1 className="title-style">Post New Item</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <label htmlFor="title">Title:</label>
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className="form">
+        <label htmlFor="title" className="form-label">Title</label>
         <input
           type="text"
           name="title"
           id="title"
-          value={itemData.title}
-          onChange={handleChange}
+          value={title}
+          onChange={e => setTitle(e.target.value)}
           required
+          className="form-input"
         />
         <br />
 
-        <label htmlFor="description">Description:</label>
+        <label htmlFor="description" className="form-label">Description</label>
         <textarea
           name="description"
           id="description"
-          value={itemData.description}
-          onChange={handleChange}
+          value={description}
+          onChange={e => setDescription(e.target.value)}
           required
+          className="form-input"
         />
         <br />
 
-        <label htmlFor="category">Category:</label>
+        <label htmlFor="category" className="form-label">Category</label>
         <select
           name="category"
           id="category"
-          value={itemData.category}
-          onChange={handleChange}
+          value={category}
+          onChange={e => setCategory(e.target.value)}
           required
+          className="form-input"
         >
           <option value="">-- Select --</option>
-          {/* LOCATION THING- NOT BOTHERING WITH IT? */}
-          {/* {categories.map((cat) => (
+          {categories.map((cat) => (
             <option key={cat} value={cat}>
               {cat.charAt(0).toUpperCase() + cat.slice(1)}
             </option>
-          ))} */}
+          ))}
         </select>
         <br />
 
-        <label htmlFor="image">Image:</label>
-        {/* IMAGE UPLOADER BY FATIMA */}
+        <label htmlFor="image" className="form-label">Image</label>
+        <ImageUploader onUpload={handleImageUpload} />
+        <br />
 
-        <input type="submit" value="Post Item" />
+        <input type="submit" value="Submit" className="form-input" />
       </form>
     </div>
   );
 }
 
-export default PostItemPage;
+export default PostNewItemPage;

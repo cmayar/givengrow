@@ -2,14 +2,14 @@ import express from "express";
 import db from "../model/helper.js";
 import dotenv from "dotenv";
 import loginUsers from "../middleware.js";
-
+import multer from 'multer';
+const upload = multer({ dest: 'public/img/' });
 dotenv.config();
 
 const router = express.Router();
 
-// //GET all Items
+// GET all Items
 router.get("/", async (req, res) => {
-  //NOTE - I change this endpoint to use the join to access to username of the owner.
   try {
     const query = `
       SELECT 
@@ -26,36 +26,25 @@ router.get("/", async (req, res) => {
   }
 });
 
-//FILTER BY SOMETHING
-//if I dont have any query parameters, I want to return all the items
-// (("SELECT * FROM items;"))
-//if I have a query parameter, I want to return the items that match the query parameter
-// ("SELECT * FROM items WHERE title = 'Tent';")
-// ("SELECT * FROM items WHERE catergory = 'outdoor';")
-
+// Filter Items
 router.get("/filter", async (req, res) => {
-  console.log("REQ.QUERY", req.query);
-
   const { key, value } = req.query;
   let url = "SELECT * FROM items";
   if (key && value) {
     url += ` WHERE ${key} = '${value}'`;
   }
-  console.log("URL", url);
   try {
     const results = await db(url);
     res.status(200).send(results.data);
   } catch (error) {
-    console.log(error);
+    console.error("Error filtering items", error);
+    res.status(500).send({ message: "Error filtering items" });
   }
-  // NOTE: This is the same as res.status(200).send(results.data) in the try block
-  // res.send(results)
 });
 
-//TODO - New endpoint to get the objects of login user. It user the owner_id of the loged user.
+// Get User's Items
 router.get("/my-objects", loginUsers, async (req, res) => {
-  const owner_id = req.user_id; // Obtenemos el ID del usuario autenticado
-  console.log("Owner ID:", owner_id); 
+  const owner_id = req.user_id; 
   try {
     const query = `
       SELECT 
@@ -66,25 +55,19 @@ router.get("/my-objects", loginUsers, async (req, res) => {
       WHERE items.owner_id = ?;
     `;
     const result = await db(query, [owner_id]);
-    console.log("Query Result:", result);
     if (result.length === 0) {
       return res.status(404).send({ error: "Item not found" });
     }
-    res.status(200).send(result); 
-    // console.log("Owner ID:", owner_id);
-    // console.log("Query result:", result);
-
+    res.status(200).send(result);
   } catch (err) {
     console.error("Error fetching user's objects:", err);
     res.status(500).send({ error: "Internal Server Error" });
   }
 });
 
-// GET by user_id
-  //NOTE - I change this endpoint to use the join to access to username of the owner.
+// Get Item by ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-
   try {
     const query = `
       SELECT 
@@ -94,15 +77,11 @@ router.get("/:id", async (req, res) => {
       JOIN users ON items.owner_id = users.id
       WHERE items.id = ?;
     `;
-    // console.log("Executing query:", query, "with id:", id);
     const result = await db(query, [id]);
-    // console.log("Query result:", result); 
-
     if (result.data.length === 0) {
       return res.status(404).send({ error: "Item not found" });
     }
-    // console.log("Sending response", result.data[0]);
-    res.status(200).send(result.data[0]); // Send the first item
+    res.status(200).send(result.data[0]);
   } catch (err) {
     console.error("Error fetching item:", err);
     res.status(500).send({ error: "Internal Server Error" });
@@ -110,73 +89,67 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a new Item (protected)
-router.post("/", loginUsers, async (req, res) => {
-  const {
-    title,
-    image,
-    description,
-    category,
-    // owner_id, remove owner_id from here
-    status,
-    latitude,
-    longitude,
-  } = req.body;
+router.post('/', loginUsers, upload.single('imagefile'), async (req, res) => {
+  const { title, description, category, status, latitude, longitude } = req.body;
+  const imagefile = req.file;
+  
+  // Ensure image is provided
+  if (!imagefile) {
+    return res.status(400).send({ message: 'Image file is required' });
+  }
 
-  const owner_id = req.user_id; //added here
+  const imagePath = `img/${imagefile.filename}`;
+  const owner_id = req.user_id;
 
-  if (!title || !image || !description || !category || !owner_id || !status) {
-    return res.status(400).send({ message: "Missing required information" });
+  // Ensure other fields are provided
+  if (!title || !description || !category || !status) {
+    return res.status(400).send({ message: 'Missing required information' });
   }
 
   try {
-    await db(
+    // Insert new item
+    const result = await db(
       `INSERT INTO items (title, image, description, category, owner_id, status, latitude, longitude)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
-        image,
+        imagePath,
         description,
         category,
         owner_id,
         status,
-        latitude ?? null, // NOTE replace with null if undefined
-        longitude ?? null, // NOTE replace with null if undefined
-      ]
+        latitude ?? null,
+        longitude ?? null,
+      ],
     );
-    const result = await db(`SELECT * FROM items`);
-    res.send(result.data);
+
+    const newItemId = result.insertId;
+
+    // Fetch all items after insertion
+    const allItems = await db(`SELECT * FROM items`);
+    res.send(allItems.data);
   } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: "Internal Server Error" });
+    console.error("Error creating item:", err);
+    res.status(500).send({ error: 'Internal Server Error' });
   }
 });
 
-//UPDATE ITEMS INFO (protected)
+// Update an Item (protected)
 router.put("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
-  const { title, image, description, category, latitude, longitude } =
-    req.body;
+  const { title, image, description, category, latitude, longitude } = req.body;
+  const owner_id = req.user_id;
 
-    const owner_id = req.user_id;
+  if (!title || !image || !description || !category) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
 
-    console.log("Request body:", req.body);
-    console.log("Request params:", req.params);
-
-    // const itemsCheck = await db("SELECT id FROM items WHERE id = ?;", [id]);
-    // if (itemsCheck.data.length === 0) {
-    //   return res.status(404).json({ error: "Item not found" });
-    // }
-
-    if (!title || !image || !description || !category) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    try {
+  try {
     const updatedItems = `
-    UPDATE items
-    SET title = ?, image = ?, description = ?, category = ?, owner_id = ?, latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP
-    WHERE id = ?;
-  `;
+      UPDATE items
+      SET title = ?, image = ?, description = ?, category = ?, owner_id = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?;
+    `;
 
     const result = await db(updatedItems, [
       title,
@@ -184,8 +157,6 @@ router.put("/:id", loginUsers, async (req, res) => {
       description,
       category,
       owner_id,
-      latitude || null,
-      longitude || null,
       id,
     ]);
 
@@ -200,13 +171,12 @@ router.put("/:id", loginUsers, async (req, res) => {
   }
 });
 
-// DELETE ITEM (protected)
+// Delete an Item (protected)
 router.delete("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
-  const owner_id = req.user_id; // Get the authenticated user's ID from the middleware
+  const owner_id = req.user_id;
 
   try {
-    // Check if the item exists and belongs to the user
     const item = await db("SELECT * FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
 
     if (item.length === 0) {
@@ -215,12 +185,8 @@ router.delete("/:id", loginUsers, async (req, res) => {
         .json({ error: "Item not found or does not belong to the user" });
     }
 
-    // Delete the item
     await db("DELETE FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
-
-    res.status(200).json({
-      message: "Item deleted successfully",
-    });
+    res.status(200).json({ message: "Item deleted successfully" });
   } catch (err) {
     console.error("Error deleting item:", err);
     res.status(500).json({ error: "Internal Server Error" });

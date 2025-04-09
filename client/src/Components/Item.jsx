@@ -65,8 +65,10 @@ const Item = () => {
 
       console.log("Interaction response:", res.data);
       toast.success("Request submitted! The owner will review it soon.");
+
+      setItem((prev) => ({ ...prev, status: "unavailable" }));
     } catch (err) {
-      console.err("Error requesting item:", err);
+      console.error("Error requesting item:", err);
       toast.error("Something went wrong. Please try again.");
     }
   };
@@ -77,75 +79,78 @@ const Item = () => {
 
   return (
     <div className="container mt-5">
-    <Card className="mx-auto p-3" style={{ maxWidth: "800px" }}>
-    <Row>
-    <Col md={4} className="d-flex align-self-start">
-    
-      <Image
-        variant="left"
-        src={item.imageUrl || defaultImage}
-        alt="Item Image"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = defaultImage;
-        }}
-         className="img-fluid rounded"
-      />
+      <Card className="mx-auto p-3" style={{ maxWidth: "800px" }}>
+        <Row>
+          <Col md={4} className="d-flex align-self-start">
+            <Image
+              variant="left"
+              src={item.imageUrl || defaultImage}
+              alt="Item Image"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = defaultImage;
+              }}
+              className="img-fluid rounded"
+            />
           </Col>
           <Col md={8}>
-          
-    <Card.Body>
-          <Card.Title>{item.title}</Card.Title>
-          <Card.Text>
-            <strong>Description:</strong> {item.description}
-          </Card.Text>
-          <Card.Text>
-            <strong>Category:</strong> {item.category}
-          </Card.Text>
-          <Card.Text
-            className={
-              item.status === "available"
-                ? "status-available"
-                : "status-unavailable"
-            }
-          >
-          <strong> {item.status}</strong>
-          </Card.Text>
-          <Card.Text>
-            <strong>Owner:</strong> {item.owner_name}
-          </Card.Text>
-          {/* Set date and request */}
-          {item.status === "available" && (
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Start Date</strong></Form.Label>
-                <Form.Control
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>End Date</strong></Form.Label>
-                <Form.Control
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                />
-              </Form.Group>
-              <button className="button" onClick={requestItem}>
-                Request to Borrow
-              </button>
-            </Form>
-            
-          )}
-           <Link to="/home" className="custom-link">
-            Back to Home
-          </Link>
-        </Card.Body>
-        
-        </Col>
-        
+            <Card.Body>
+              <Card.Title>{item.title}</Card.Title>
+              <Card.Text>
+                <strong>Description:</strong> {item.description}
+              </Card.Text>
+              <Card.Text>
+                <strong>Category:</strong> {item.category}
+              </Card.Text>
+              <Card.Text
+                className={
+                  item.status === "available"
+                    ? "status-available"
+                    : "status-unavailable"
+                }
+              >
+                <strong> {item.status}</strong>
+              </Card.Text>
+              <Card.Text>
+                <strong>Owner:</strong> {item.owner_name}
+              </Card.Text>
+              {/* Set date and request */}
+              {item.status === "available" && (
+                <Form>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      <strong>Start Date</strong>
+                    </Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      <strong>End Date</strong>
+                    </Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                    />
+                  </Form.Group>
+                  <button
+                    type="button"
+                    className="button"
+                    onClick={requestItem}
+                  >
+                    Request to Borrow
+                  </button>
+                </Form>
+              )}
+              <Link to="/home" className="custom-link">
+                Back to Home
+              </Link>
+            </Card.Body>
+          </Col>
         </Row>
       </Card>
     </div>

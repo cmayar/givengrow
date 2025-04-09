@@ -25,38 +25,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.button-edit {
-    background-color: var(--button-background-color);  /* I use here the variable of the styles.css for the button color */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration:  'none';
-  }
-  
-.button-edit:hover {
-    background-color: var(--button-hover-color); /* variable color here */
-  }
 
-  .button-delete {
-    background-color:rgb(219, 70, 70); 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration:  'none';
-    margin: 10px;
-  }
-  
-.button-delete:hover {
-    background-color: rgb(173, 50, 50); 
-  }
 
 .button-back {
     background-color: #a59aaa;
@@ -79,4 +48,39 @@
 
 .button-back:active {
     background-color: #7b6f80;
+}
+
+.edit-button {
+  background:#4bd190;
+  color:white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  margin-top: 30px;
+ 
+}
+
+.edit-button:hover {
+  background:#389f6e;
+}
+
+.button-delete {
+  background-color:rgb(219, 70, 70); 
+  color:white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  /* margin-top: 30px; */
+}
+
+.button-delete:hover {
+  background-color: rgb(173, 50, 50); 
 }

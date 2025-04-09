@@ -148,9 +148,11 @@ const Borrowed = () => {
     ({ interaction }) => interaction.status === "borrowed"
   );
 
-  // Filter owner-side interactions with status 'borrower-returned'
-  const ownerReturnedItems = ownerInteractions.filter(
-    ({ interaction }) => interaction.status === "borrower-returned"
+  // Filter owner-side interactions with status 'borrowed' and 'borrower-returned'
+  const ownerBorrowedItems = ownerInteractions.filter(
+    ({ interaction }) =>
+      interaction.status === "borrowed" ||
+      interaction.status === "borrower-returned"
   );
 
   return (
@@ -206,10 +208,10 @@ const Borrowed = () => {
 
       {/* Section: Items borrowed from the user that need confirmation */}
       <h4 className="title-style">Items Borrowed From You</h4>
-      {ownerReturnedItems.length === 0 ? (
-        <p>No items are awaiting your return confirmation.</p>
+      {ownerBorrowedItems.length === 0 ? (
+        <p>No one is currently borrowing your items.</p>
       ) : (
-        ownerReturnedItems.map(({ interaction }) => (
+        ownerBorrowedItems.map(({ interaction }) => (
           <div
             key={interaction.id}
             className="card item-card-container mb-3 p-3"
@@ -239,12 +241,20 @@ const Borrowed = () => {
               <p>
                 <strong>Status:</strong> {interaction.status}
               </p>
-              <button
+              {/* <button
                 className="btn btn-success"
                 onClick={() => handleConfirmReturn(interaction.id)}
               >
                 Confirm Return
-              </button>
+              </button> */}
+              {interaction.status === "borrower-returned" && (
+                <button
+                  className="btn btn-success"
+                  onClick={() => handleConfirmReturn(interaction.id)}
+                >
+                  Confirm Return
+                </button>
+              )}
             </div>
           </div>
         ))

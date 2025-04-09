@@ -27,43 +27,29 @@ const Profile = () => {
   const userId = 1;
 
   //FIXME: Commented code to be uncommented when backend is ready
-  //   useEffect(() => {
-  //     const fetchUserData = async () => {
-  //       try {
-  //         const response = await axios.get(
-  //           `http://localhost:4000/api/users/${userId}`
-  //         );
-  //         setUser(response.data);
-  //         setFormData({
-  //           username: response.data.username,
-  //           email: response.data.email,
-  //           phoneNumber: response.data.phoneNumber,
-  //           password: response.data.password,
-  //         });
-  //       } catch (error) {
-  //         console.error("Error fetching user data:", error);
-  //       }
-  //     };
-  //     fetchUserData();
-  //   }, []);
-
-  // FIXME - Hardcoded user data (remove this once the backend is fixed)
-  // Effect hook to set hardcoded user data for testing (replace with API call when backend is ready)
   useEffect(() => {
-    setUser({
-      id: 1,
-      username: "tania",
-      email: "tania@test.com",
-      phoneNumber: "1234567890",
-      password: "******",
-    });
-
-    setFormData({
-      username: "tania",
-      email: "tania@test.com",
-      phoneNumber: "1234567890",
-      password: "******",
-    });
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/users/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming token is stored here
+            },
+          }
+        );
+        setUser(response.data);
+        setFormData({
+          username: response.data.username,
+          email: response.data.email,
+          phoneNumber: response.data.phoneNumber,
+          password: response.data.password,
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
   }, []);
 
   // Handle form field changes
@@ -81,12 +67,20 @@ const Profile = () => {
     const updatedData = { [field]: formData[field] };
 
     try {
-      // FIXME: Uncomment this when backend is ready
-      //   const response = await axios.put(
-      //     `http://localhost:4000/api/users/${userId}`,
-      //     updatedData
-      //   );
-      //   setUser(response.data);
+      const updatedData = {
+        ...user,
+        [field]: formData[field],
+      };
+
+      const response = await axios.put(
+        "http://localhost:4000/api/users/profile",
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       // FIXME: cancel this line once backend it's fixed as it's to temporarily update the user state wihtout API
       setUser({ ...user, [field]: formData[field] });
       setIsEditing((prev) => ({ ...prev, [field]: false }));
@@ -109,7 +103,9 @@ const Profile = () => {
     <Container className="container-profile mt-5">
       <Card className="card-profile">
         <Card.Body>
-          <Card.Title className="card-title-profile text-center mt-3">{user.username}</Card.Title>
+          <Card.Title className="card-title-profile text-center mt-3">
+            {user.username}
+          </Card.Title>
 
           {/* Username */}
           <Card.Text>
@@ -117,7 +113,7 @@ const Profile = () => {
             {isEditing.username ? (
               <Form onSubmit={(e) => handleSubmit(e, "username")}>
                 <Form.Control
-                className="profile-control"
+                  className="profile-control"
                   type="text"
                   name="username"
                   value={formData.username}
@@ -160,7 +156,7 @@ const Profile = () => {
               <>
                 {user.email}
                 <Button
-     className="edit-button"
+                  className="edit-button"
                   onClick={() => handleEdit("email")}
                 >
                   Edit
@@ -180,7 +176,11 @@ const Profile = () => {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="profile-button ">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="profile-button "
+                >
                   Save Phone Number
                 </Button>
               </Form>
@@ -190,7 +190,7 @@ const Profile = () => {
                 <Button
                   variant="link"
                   onClick={() => handleEdit("phoneNumber")}
-                 className="edit-button"
+                  className="edit-button"
                 >
                   Edit
                 </Button>
@@ -209,7 +209,11 @@ const Profile = () => {
                   value={formData.password}
                   onChange={handleChange}
                 />
-                <Button variant="primary" type="submit" className="profile-button">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="profile-button"
+                >
                   Save Password
                 </Button>
               </Form>
@@ -230,9 +234,7 @@ const Profile = () => {
           {/* Navigation Buttons */}
           <div className="d-flex justify-content-center mt-4">
             <Link to="/home">
-              <button className="profile-back-button m-2">
-                Go to Home
-              </button>
+              <button className="profile-back-button m-2">Go to Home</button>
             </Link>
             <Link to="/dashboard">
               <button className="profile-back-button m-2">

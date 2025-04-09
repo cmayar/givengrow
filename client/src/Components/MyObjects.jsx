@@ -38,6 +38,7 @@ const MyObjects = () => {
     }
   };
 
+  // handle edit funcionallity
   const handleEditClick = (object) => {
     setEditingObjectId(object.id); // Set the object being edited
     setFormData({

@@ -174,7 +174,7 @@ router.put("/:id", loginUsers, async (req, res) => {
     try {
     const updatedItems = `
     UPDATE items
-    SET title = ?, image = ?, description = ?, category = ?, owner_id = ?, status = ?, latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP
+    SET title = ?, image = ?, description = ?, category = ?, owner_id = ?, latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?;
   `;
 
@@ -184,7 +184,6 @@ router.put("/:id", loginUsers, async (req, res) => {
       description,
       category,
       owner_id,
-      "available",
       latitude || null,
       longitude || null,
       id,

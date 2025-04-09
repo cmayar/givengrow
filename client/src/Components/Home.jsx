@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Card, Row, Col, Container, Image, Button } from "react-bootstrap";
-import "./home.css";
+import "./Home.css";
 import "./styles.css";
 import headerImg from "../assets/images/header_image.jpg";
 import defaultImage from "../assets/images/default_image.png";

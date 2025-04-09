@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Container, Row, Col, Image, Form } from "react-bootstrap";
 import "./MyObject.css";
-import "./item.css";
+import "./Item.css";
 import "./styles.css";
 import defaultImage from "../assets/images/default_image.png";
 

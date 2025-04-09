@@ -100,7 +100,7 @@ const Requests = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Incoming Requests</h2>
+      <h4 className="title-style">Incoming Requests</h4>
 
       {requestedInteractions.length === 0 ? (
         <p>No requests at the moment.</p>

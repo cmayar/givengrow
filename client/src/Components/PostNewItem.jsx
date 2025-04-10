@@ -196,6 +196,10 @@ function PostNewItemPage() {
         status: "available",
       };
 
+      if (imageFile) {
+        formData.append('imagefile', imageFile);
+      }
+      
       const response = await axios.post(
         "http://localhost:4000/api/items",
         body,

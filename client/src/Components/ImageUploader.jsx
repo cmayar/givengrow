@@ -66,11 +66,11 @@ export default function ImageUploader({ onUpload }) {
   };
 
   return (
-    <div className="App">
-      <input type="file" onChange={onFileChange} />
-      <button onClick={onFileUpload}>Upload</button>
+    <div className="uploader-container">
+      <input className="upload-input" type="file" onChange={onFileChange} />
+      <button className="upload-button" onClick={onFileUpload}>Upload</button>
 
-      <div>
+      <div className="img-gallery">
         {images.map((image) => (
           <img key={image.id} src={`/${image.path}`} alt={image.path} />
         ))}

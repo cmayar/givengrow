@@ -3,7 +3,7 @@ import db from "../model/helper.js";
 import dotenv from "dotenv";
 import loginUsers from "../middleware.js";
 import multer from 'multer';
-const upload = multer({ dest: 'public/img/' });
+// const upload = multer({ dest: 'public/img/' });
 dotenv.config();
 
 const router = express.Router();
@@ -89,43 +89,34 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a new Item (protected)
-router.post('/', loginUsers, upload.single('imagefile'), async (req, res) => {
-  const { title, description, category, status, latitude, longitude } = req.body;
-  const imagefile = req.file;
-  
-  // Ensure image is provided
-  if (!imagefile) {
-    return res.status(400).send({ message: 'Image file is required' });
-  }
-
-  const imagePath = `img/${imagefile.filename}`;
+router.post('/', loginUsers, async (req, res) => {
+  const { title, image, description, category, status, latitude, longitude } = req.body;
   const owner_id = req.user_id;
 
-  // Ensure other fields are provided
+  
   if (!title || !description || !category || !status) {
     return res.status(400).send({ message: 'Missing required information' });
   }
 
   try {
-    // Insert new item
+
     const result = await db(
       `INSERT INTO items (title, image, description, category, owner_id, status, latitude, longitude)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
-        imagePath,
+        image ?? null,
         description,
         category,
         owner_id,
         status,
         latitude ?? null,
         longitude ?? null,
-      ],
+      ]
     );
 
     const newItemId = result.insertId;
 
-    // Fetch all items after insertion
     const allItems = await db(`SELECT * FROM items`);
     res.send(allItems.data);
   } catch (err) {
@@ -134,13 +125,18 @@ router.post('/', loginUsers, upload.single('imagefile'), async (req, res) => {
   }
 });
 
+
+
+
+
+
 // Update an Item (protected)
 router.put("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
   const { title, image, description, category, latitude, longitude } = req.body;
   const owner_id = req.user_id;
 
-  if (!title || !image || !description || !category) {
+  if (!title || !description || !category) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 

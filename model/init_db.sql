@@ -17,7 +17,7 @@ CREATE TABLE `items`(
     `created_at` TIMESTAMP DEFAULT  CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT  CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `title` VARCHAR(255) NOT NULL,
-    `image` VARCHAR(255) NOT NULL,
+    `image` VARCHAR(255) NULL,
     `description` TEXT NOT NULL,
     `category` ENUM(
         'tools',

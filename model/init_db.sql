@@ -17,7 +17,7 @@ CREATE TABLE `items`(
     `created_at` TIMESTAMP DEFAULT  CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT  CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `title` VARCHAR(255) NOT NULL,
-    `image` VARCHAR(255) NOT NULL,
+    `image` VARCHAR(255) NULL,
     `description` TEXT NOT NULL,
     `category` ENUM(
         'tools',
@@ -37,8 +37,6 @@ CREATE TABLE `items`(
     ) NOT NULL,
     `owner_id` INT NOT NULL,
     `status` ENUM('available', 'unavailable') NOT NULL DEFAULT 'available',
-    `latitude` INT NULL,
-    `longitude` INT NULL,
     PRIMARY KEY(`id`),
     FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`) ON DELETE CASCADE 
 );

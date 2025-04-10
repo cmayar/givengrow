@@ -173,25 +173,20 @@ router.post("/", loginUser, async (req, res) => {
   }
 });
 
-// GET request for owner interactions
+// // GET request for owner interactions
 router.get("/owner/:id", loginUser, async (req, res) => {
-  // // const { id: ownerId } = req.params;
-  // const { id } = req.params;
-
-  // //FIXME - TEMPORARY - this will come from the token
-  // const owner_id = 1;
-
   const owner_id = req.user_id;
 
   try {
     const result = await getInteractionsByUser(owner_id, "owner");
 
-    //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {
-      return res.status(404).send({ message: "No interactions found" });
+      return res.status(200).json({
+        owner: null,
+        interactions: [],
+      });
     }
 
-    // Extract owner info (will be the same for all interactions)
     const ownerInfo = {
       id: result[0].owner_id,
       username: result[0].owner_username,
@@ -199,7 +194,6 @@ router.get("/owner/:id", loginUser, async (req, res) => {
       phone: result[0].owner_phone,
     };
 
-    // Format the data without repeating owner info
     const formattedData = result.map((interaction) => ({
       interaction: {
         id: interaction.interaction_id,
@@ -224,7 +218,6 @@ router.get("/owner/:id", loginUser, async (req, res) => {
       },
     }));
 
-    //Return the interactions
     res.status(200).json({
       owner: ownerInfo,
       interactions: formattedData,
@@ -236,20 +229,18 @@ router.get("/owner/:id", loginUser, async (req, res) => {
 
 // GET request for borrower interactions
 router.get("/borrower/:id", loginUser, async (req, res) => {
-  // const { id: borrowerId } = req.params;
-  // const { id } = req.params;
-
   const borrower_id = req.user_id;
 
   try {
     const result = await getInteractionsByUser(borrower_id, "borrower");
 
-    //If no interactions are found, return message that no interactions were found
     if (result.length === 0) {
-      return res.status(404).send({ message: "No interactions found" });
+      return res.status(200).json({
+        borrower: null,
+        interactions: [],
+      });
     }
 
-    // Extract borrower info (will be the same for all interactions)
     const borrowerInfo = {
       id: result[0].borrower_id,
       username: result[0].borrower_username,
@@ -257,7 +248,6 @@ router.get("/borrower/:id", loginUser, async (req, res) => {
       phone: result[0].borrower_phone,
     };
 
-    // Format the data without repeating borrower info
     const formattedData = result.map((interaction) => ({
       interaction: {
         id: interaction.interaction_id,
@@ -282,7 +272,6 @@ router.get("/borrower/:id", loginUser, async (req, res) => {
       },
     }));
 
-    //Return the interactions
     res.status(200).json({
       borrower: borrowerInfo,
       interactions: formattedData,

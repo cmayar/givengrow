@@ -37,8 +37,6 @@ CREATE TABLE `items`(
     ) NOT NULL,
     `owner_id` INT NOT NULL,
     `status` ENUM('available', 'unavailable') NOT NULL DEFAULT 'available',
-    `latitude` INT NULL,
-    `longitude` INT NULL,
     PRIMARY KEY(`id`),
     FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`) ON DELETE CASCADE 
 );

@@ -2,7 +2,7 @@ import express from "express";
 import db from "../model/helper.js";
 import dotenv from "dotenv";
 import loginUsers from "../middleware.js";
-import multer from 'multer';
+import multer from "multer";
 // const upload = multer({ dest: 'public/img/' });
 dotenv.config();
 
@@ -44,7 +44,7 @@ router.get("/filter", async (req, res) => {
 
 // Get User's Items
 router.get("/my-objects", loginUsers, async (req, res) => {
-  const owner_id = req.user_id; 
+  const owner_id = req.user_id;
   try {
     const query = `
       SELECT 
@@ -89,17 +89,16 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a new Item (protected)
-router.post('/', loginUsers, async (req, res) => {
-  const { title, image, description, category, status, latitude, longitude } = req.body;
+router.post("/", loginUsers, async (req, res) => {
+  const { title, image, description, category, status, latitude, longitude } =
+    req.body;
   const owner_id = req.user_id;
 
-  
   if (!title || !description || !category || !status) {
-    return res.status(400).send({ message: 'Missing required information' });
+    return res.status(400).send({ message: "Missing required information" });
   }
 
   try {
-
     const result = await db(
       `INSERT INTO items (title, image, description, category, owner_id, status, latitude, longitude)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -121,7 +120,7 @@ router.post('/', loginUsers, async (req, res) => {
     res.send(allItems.data);
   } catch (err) {
     console.error("Error creating item:", err);
-    res.status(500).send({ error: 'Internal Server Error' });
+    res.status(500).send({ error: "Internal Server Error" });
   }
 });
 
@@ -173,7 +172,10 @@ router.delete("/:id", loginUsers, async (req, res) => {
   const owner_id = req.user_id;
 
   try {
-    const item = await db("SELECT * FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
+    const item = await db(
+      "SELECT * FROM items WHERE id = ? AND owner_id = ?;",
+      [id, owner_id]
+    );
 
     if (item.length === 0) {
       return res
@@ -181,7 +183,10 @@ router.delete("/:id", loginUsers, async (req, res) => {
         .json({ error: "Item not found or does not belong to the user" });
     }
 
-    await db("DELETE FROM items WHERE id = ? AND owner_id = ?;", [id, owner_id]);
+    await db("DELETE FROM items WHERE id = ? AND owner_id = ?;", [
+      id,
+      owner_id,
+    ]);
     res.status(200).json({ message: "Item deleted successfully" });
   } catch (err) {
     console.error("Error deleting item:", err);

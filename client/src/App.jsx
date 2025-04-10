@@ -26,11 +26,6 @@ import About from "./Components/About";
 import PostNewItemPage from "./Components/PostNewItem.jsx";
 import path from "path";
 
-
-
-
-
-
 function App() {
   return (
     // AuthProvider component to manage authentication state and provide context for navigation bar
@@ -45,6 +40,7 @@ function App() {
 
         {/* Routes define URL paths and corresponding components */}
         <Routes>
+          <Route path="/images" element={<Images />} />
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<LogInPage />} />
@@ -68,9 +64,7 @@ function App() {
               path="post"
               element={
                 <div style={{ padding: "2rem" }}>
-                
-                <PostNewItemPage />
-                  
+                  <PostNewItemPage />
                 </div>
               }
             />

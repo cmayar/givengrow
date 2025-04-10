@@ -8,7 +8,7 @@ function PostNewItemPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
-  const [imageFile, setImageFile] = useState(null); // Store the file here
+  // const [imageFile, setImageFile] = useState(null); // Store the file here
   const [error, setError] = useState(null);
 
   const categories = [
@@ -24,8 +24,8 @@ function PostNewItemPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !description || !category || !imageFile) {
-      alert('Please fill in all fields and upload an image.');
+    if (!title || !description || !category ) {
+      alert('Please fill in all fields');
       return;
     }
 
@@ -43,8 +43,12 @@ function PostNewItemPage() {
       formData.append('description', description);
       formData.append('category', category);
       formData.append('status', 'available'); // default status
-      formData.append('imagefile', imageFile); // Add the image file here
+      // formData.append('imagefile', imageFile); // Add the image file here
 
+      if (imageFile) {
+        formData.append('imagefile', imageFile);
+      }
+      
       const response = await axios.post(
         'http://localhost:5175/api/items',
         formData,
@@ -116,7 +120,7 @@ function PostNewItemPage() {
         </select>
         <br />
 
-        <label htmlFor="image" className="form-label">Image</label>
+        <label htmlFor="image" className="form-label">Image (Optional)</label>
         <ImageUploader onUpload={handleImageUpload} />
         <br />
 

@@ -9,6 +9,7 @@ import defaultImage from "../assets/images/default_image.png";
 const MyObjects = () => {
   const [objects, setObjects] = useState([]); // Store the objects
   const [editingObjectId, setEditingObjectId] = useState(null); // Track the object being edited
+  const [imageFile, setImageFile] = useState(null); // Track selected image file
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -32,6 +33,12 @@ const MyObjects = () => {
           },
         }
       );
+      console.log("MyObjects - Full response:", response.data);
+      console.log("MyObjects - Items:", response.data.data);
+      if (response.data.data && response.data.data.length > 0) {
+        console.log("MyObjects - First item:", response.data.data[0]);
+        console.log("MyObjects - First item image:", response.data.data[0].image);
+      }
       setObjects(response.data.data);
     } catch (err) {
       console.error("Error fetching user's objects:", err);
@@ -61,6 +68,7 @@ const MyObjects = () => {
     try {
       const token = localStorage.getItem("token");
 
+      // Step 1: Update item details (title, description, category)
       await axios.put(
         `http://localhost:4000/api/items/${id}`,
         formData,
@@ -71,6 +79,31 @@ const MyObjects = () => {
         }
       );
 
+      // Step 2: Upload new image if one was selected
+      if (imageFile) {
+        const imageFormData = new FormData();
+        imageFormData.append("imagefile", imageFile);
+
+        try {
+          const imgResponse = await axios.post(
+            `http://localhost:4000/api/images/${id}/image`,
+            imageFormData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          // Update formData with the new image path
+          formData.image = imgResponse.data.image;
+        } catch (imgErr) {
+          console.error("Error uploading image:", imgErr);
+          alert("Item updated but image upload failed");
+        }
+      }
+
       // Update the object in the state
       setObjects((prevObjects) =>
         prevObjects.map((object) =>
@@ -79,6 +112,7 @@ const MyObjects = () => {
       );
 
       setEditingObjectId(null); // Exit edit mode
+      setImageFile(null); // Clear the image file
     } catch (err) {
       console.error("Error updating item:", err);
     }
@@ -86,6 +120,11 @@ const MyObjects = () => {
 
   const handleCancel = () => {
     setEditingObjectId(null); // Exit edit mode without saving
+    setImageFile(null); // Clear the selected image file
+  };
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]); // Set the selected image file
   };
 
 
@@ -114,16 +153,22 @@ const MyObjects = () => {
       <h3 className="title-style">My Objects</h3>
       <Row>
         {objects.length > 0 ? (
-          objects.map((object) => (
+          objects.map((object) => {
+            const imageSrc = object.image
+              ? `http://localhost:4000${object.image.startsWith('/') ? object.image : `/${object.image}`}`
+              : defaultImage;
+            console.log(`Item ${object.id} - Raw image:`, object.image, "Final src:", imageSrc);
+            return (
             <Col md={4} sm={6} xs={12} key={object.id}>
               <Card className="my-object-card p-3" border="0">
                 <Card.Body>
                   <div className="card-img-container">
                     <Image
-                      src={object.image || defaultImage}
+                      src={imageSrc}
                       alt="Item Image"
                       className="object-card-img"
                       onError={(e) => {
+                        console.error(`Image failed to load for item ${object.id}:`, imageSrc);
                         e.target.onerror = null;
                         e.target.src = defaultImage;
                       }}
@@ -158,6 +203,19 @@ const MyObjects = () => {
                             value={formData.category}
                             onChange={handleChange}
                           />
+                        </Form.Group>
+                        <Form.Group className="mt-2">
+                          <Form.Label>Change Image (Optional)</Form.Label>
+                          <Form.Control
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                          />
+                          {imageFile && (
+                            <small className="text-muted">
+                              New image selected: {imageFile.name}
+                            </small>
+                          )}
                         </Form.Group>
                       </Form>
                       <Button
@@ -206,7 +264,8 @@ const MyObjects = () => {
                 </Card.Body>
               </Card>
             </Col>
-          ))
+            );
+          })
         ) : (
           <p>No objects found.</p>
         )}

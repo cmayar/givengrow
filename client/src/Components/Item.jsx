@@ -84,7 +84,7 @@ const Item = () => {
           <Col md={4} className="d-flex align-self-start">
             <Image
               variant="left"
-              src={item.imageUrl || defaultImage}
+              src={item.image ? `http://localhost:4000${item.image.startsWith('/') ? item.image : `/${item.image}`}` : defaultImage}
               alt="Item Image"
               onError={(e) => {
                 e.target.onerror = null;

@@ -153,6 +153,7 @@ function PostNewItemPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
@@ -196,10 +197,7 @@ function PostNewItemPage() {
         status: "available",
       };
 
-      if (imageFile) {
-        formData.append('imagefile', imageFile);
-      }
-      
+      // Step 1: Create the item
       const response = await axios.post(
         "http://localhost:4000/api/items",
         body,
@@ -212,10 +210,36 @@ function PostNewItemPage() {
       );
 
       console.log("Item created:", response.data);
+
+      // Step 2: Upload image if one was selected
+      if (imageFile && response.data && response.data.id) {
+        const newItemId = response.data.id;
+        const formData = new FormData();
+        formData.append("imagefile", imageFile);
+
+        try {
+          await axios.post(
+            `http://localhost:4000/api/images/${newItemId}/image`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log("Image uploaded successfully");
+        } catch (imgErr) {
+          console.error("Error uploading image:", imgErr);
+          alert("Item created but image upload failed");
+        }
+      }
+
       alert("Item successfully created!");
       setTitle("");
       setDescription("");
       setCategory("");
+      setImageFile(null);
       navigate("/dashboard");
     } catch (err) {
       console.error("Error creating item:", err);
@@ -271,6 +295,17 @@ function PostNewItemPage() {
             </option>
           ))}
         </select>
+
+        <label htmlFor="image" className="form-label">
+          Image (Optional)
+        </label>
+        <input
+          type="file"
+          id="image"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
+          className="form-input"
+        />
 
         <input type="submit" value="Submit" className="form-input" />
       </form>

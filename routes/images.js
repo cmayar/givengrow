@@ -1,5 +1,5 @@
 import express from "express";
-import db from "../model/helper.js"; // Ensure helper.js uses ES modules too
+import db from "../model/helper.js";
 import fs from "fs/promises";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
@@ -14,17 +14,11 @@ const __dirname = dirname(__filename);
 const router = express.Router();
 const upload = multer({ dest: "public/img/" });
 
-const getImages = async (req, res) => {
-  try {
-    const results = await db("SELECT * FROM images;");
-    res.send(results.data);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
-
-router.get("/", getImages);
-
+/**
+ * POST /api/images/:id/image
+ * Upload or update an image for a specific item
+ * The image is saved to public/img/ and the path is updated in the items table
+ */
 router.post("/:id/image", upload.single("imagefile"), async (req, res) => {
   // file is available in req.file
   const { id } = req.params; //item id
@@ -56,11 +50,10 @@ router.post("/:id/image", upload.single("imagefile"), async (req, res) => {
     // rename the file
     await fs.rename(tmp_path, target_path);
 
-    const imagePath = `img/${filename}`; //image route to store the image in database
+    const imagePath = `/img/${filename}`; //image route to store the image in database (with leading slash)
 
     //update image column in table items
     await db(`UPDATE items SET image = ? WHERE id = ?`, [imagePath, id]);
-    //  store image in the DB
 
     //updated item
     const updatedItem = await db(`SELECT * FROM items WHERE id = ?`, [id]);

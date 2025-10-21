@@ -90,8 +90,7 @@ router.get("/:id", async (req, res) => {
 
 // Create a new Item (protected)
 router.post("/", loginUsers, async (req, res) => {
-  const { title, image, description, category, status, latitude, longitude } =
-    req.body;
+  const { title, image, description, category, status } = req.body;
   const owner_id = req.user_id;
 
   if (!title || !description || !category || !status) {
@@ -100,8 +99,8 @@ router.post("/", loginUsers, async (req, res) => {
 
   try {
     const result = await db(
-      `INSERT INTO items (title, image, description, category, owner_id, status, latitude, longitude)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO items (title, image, description, category, owner_id, status)
+      VALUES (?, ?, ?, ?, ?, ?)`,
       [
         title,
         image ?? null,
@@ -109,18 +108,17 @@ router.post("/", loginUsers, async (req, res) => {
         category,
         owner_id,
         status,
-        latitude ?? null,
-        longitude ?? null,
       ]
     );
 
     const newItemId = result.insertId;
 
-    const allItems = await db(`SELECT * FROM items`);
-    res.send(allItems.data);
+    // Fetch and return only the newly created item
+    const newItem = await db(`SELECT * FROM items WHERE id = ?`, [newItemId]);
+    res.status(201).send(newItem.data[0]);
   } catch (err) {
     console.error("Error creating item:", err);
-    res.status(500).send({ error: "Internal Server Error" });
+    res.status(500).send({ error: "Internal Server Error", message: err.message });
   }
 });
 
@@ -132,7 +130,7 @@ router.post("/", loginUsers, async (req, res) => {
 // Update an Item (protected)
 router.put("/:id", loginUsers, async (req, res) => {
   const { id } = req.params;
-  const { title, image, description, category, latitude, longitude } = req.body;
+  const { title, image, description, category } = req.body;
   const owner_id = req.user_id;
 
   if (!title || !description || !category) {

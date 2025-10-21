@@ -159,11 +159,14 @@ const Home = () => {
                   <Card.Body>
                     {/* Imagen cuadrada */}
                     <div className="card-img-container">
-                      {/* //REVIEW - need to change this logic when upload is ready */}
                       <Image
-                        src={item.imageUrl ? item.imageUrl : defaultImage}
+                        src={item.image ? `http://localhost:4000${item.image.startsWith('/') ? item.image : `/${item.image}`}` : defaultImage}
                         alt="Item Image"
                         className="card-img"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = defaultImage;
+                        }}
                       />
                     </div>
                     <Card.Title>{item.title}</Card.Title>

@@ -12,7 +12,6 @@ import Dashboard from "./Components/Dashboard";
 import Item from "./Components/Item";
 import Requests from "./Components/Requests";
 import Borrowed from "./Components/Borrowed";
-import Images from "./Components/ImageUploader.jsx";
 import { AuthProvider } from "./Components/AuthContext.jsx";
 import MyObjects from "./Components/MyObjects";
 import { ToastContainer } from "react-toastify";
@@ -24,7 +23,6 @@ import RegistrationPage from "./Components/Registration.jsx";
 import NavigationBar from "./Components/NavigationBar.jsx";
 import About from "./Components/About";
 import PostNewItemPage from "./Components/PostNewItem.jsx";
-import path from "path";
 
 function App() {
   return (
@@ -40,13 +38,11 @@ function App() {
 
         {/* Routes define URL paths and corresponding components */}
         <Routes>
-          <Route path="/images" element={<Images />} />
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<LogInPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/items/:id" element={<Item />} />
-          <Route path="/images" element={<Images />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
 

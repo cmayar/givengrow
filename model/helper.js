@@ -20,8 +20,15 @@ async function db(query, params = []) {
     });
 
     // Execute query
-    const [rows] = await connection.execute(query, params);
-    return { data: rows };
+    const [rows, fields] = await connection.execute(query, params);
+
+    // For INSERT queries, return insertId and affectedRows
+    // For SELECT queries, return the rows
+    return {
+      data: rows,
+      insertId: rows.insertId,
+      affectedRows: rows.affectedRows
+    };
   } catch (error) {
     console.error("Database error:", error);
     throw error; // This will be caught in trips.js and returned as a 500 error
